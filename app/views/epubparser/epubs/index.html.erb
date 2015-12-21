@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Epubs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Book</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @epubs.each do |epub| %>
+      <tr>
+        <td><%= epub.book %></td>
+        <td><%= link_to 'Show', epub %></td>
+        <td><%= link_to 'Edit', edit_epub_path(epub) %></td>
+        <td><%= link_to 'Destroy', epub, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Epub', new_epub_path %>

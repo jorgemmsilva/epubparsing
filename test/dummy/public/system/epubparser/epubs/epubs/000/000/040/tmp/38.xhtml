@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Dynamic Programming | Set 28 (Minimum insertions to form a palindrome)</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="dynamic-programming-set-28-minimum-insertions-to-form-a-palindrome" class="section level1">
+<h1>Dynamic Programming | Set 28 (Minimum insertions to form a palindrome)</h1>
+<p>Given a string, find the minimum number of characters to be inserted to convert it to palindrome.<span id="more-117391"></span></p>
+<p>Before we go further, let us understand with few examples:<br />     ab: Number of insertions required is 1. <strong>b</strong>ab<br />     aa: Number of insertions required is 0. aa<br />     abcd: Number of insertions required is 3. <strong>dcb</strong>abcd<br />     abcda: Number of insertions required is 2. a<strong>dc</strong>bcda which is same as number of insertions in the substring bcd(Why?).<br />     abcde: Number of insertions required is 4. <strong>edcb</strong>abcde</p>
+<p>Let the input string be <em>str[l……h]</em>. The problem can be broken down into three parts:<br /> <strong>1.</strong> Find the minimum number of insertions in the substring str[l+1,…….h].<br /> <strong>2.</strong> Find the minimum number of insertions in the substring str[l…….h-1].<br /> <strong>3.</strong> Find the minimum number of insertions in the substring str[l+1……h-1].</p>
+<p><strong>Recursive Solution</strong><br /> The minimum number of insertions in the string str[l…..h] can be given as:<br /> minInsertions(str[l+1…..h-1]) if str[l] is equal to str[h]<br /> min(minInsertions(str[l…..h-1]), minInsertions(str[l+1…..h])) + 1 otherwise</p>
+<pre><code> 
+// A Naive recursive program to find minimum number insertions
+// needed to make a string palindrome
+#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;string.h&gt;
+
+// A utility function to find minimum of two numbers
+int min(int a, int b)
+{  return a &lt; b ? a : b; }
+
+// Recursive function to find minimum number of insersions
+int findMinInsertions(char str[], int l, int h)
+{
+    // Base Cases
+    if (l &gt; h) return INT_MAX;
+    if (l == h) return 0;
+    if (l == h - 1) return (str[l] == str[h])? 0 : 1;
+
+    // Check if the first and last characters are same. On the basis of the
+    // comparison result, decide which subrpoblem(s) to call
+    return (str[l] == str[h])? findMinInsertions(str, l + 1, h - 1):
+                               (min(findMinInsertions(str, l, h - 1),
+                                   findMinInsertions(str, l + 1, h)) + 1);
+}
+
+// Driver program to test above functions
+int main()
+{
+    char str[] = &quot;geeks&quot;;
+    printf(&quot;%d&quot;, findMinInsertions(str, 0, strlen(str)-1));
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> 3 </code></pre>
+<p><strong>Dynamic Programming based Solution</strong><br /> If we observe the above approach carefully, we can find that it exhibits <a href="http://www.geeksforgeeks.org/dynamic-programming-set-1/">overlapping subproblems</a>.<br /> Suppose we want to find the minimum number of insertions in string “abcde”:</p>
+<pre><code>                       abcde
+            /       |      \
+           /        |        \
+           bcde         abcd       bcd  &lt;- case 3 is discarded as str[l] != str[h]
+       /   |   \       /   |   \
+      /    |    \     /    |    \
+     cde   bcd  cd   bcd abc bc
+   / | \  / | \ /|\ / | \
+de cd d cd bc c…………………. </code></pre>
+<p>The substrings in bold show that the recursion to be terminated and the recursion tree cannot originate from there. Substring in the same color indicates <a href="http://www.geeksforgeeks.org/dynamic-programming-set-1/">overlapping subproblems</a>.</p>
+<p><em>How to reuse solutions of subproblems?</em><br /> We can create a table to store results of subproblems so that they can be used directly if same subproblem is encountered again.</p>
+<p>The below table represents the stored values for the string abcde.</p>
+<pre><code> a b c d e
+----------
+0 1 2 3 4
+0 0 1 2 3 
+0 0 0 1 2 
+0 0 0 0 1 
+0 0 0 0 0 </code></pre>
+<p><em>How to fill the table?</em><br /> The table should be filled in diagonal fashion. For the string abcde, 0….4, the following should be order in which the table is filled:</p>
+<pre><code> 
+Gap = 1:
+(0, 1) (1, 2) (2, 3) (3, 4)
+
+Gap = 2:
+(0, 2) (1, 3) (2, 4)
+
+Gap = 3:
+(0, 3) (1, 4)
+
+Gap = 4:
+(0, 4) </code></pre>
+<pre><code> 
+// A Dynamic Programming based program to find minimum number
+// insertions needed to make a string palindrome
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+// A utility function to find minimum of two integers
+int min(int a, int b)
+{   return a &lt; b ? a : b;  }
+
+// A DP function to find minimum number of insersions
+int findMinInsertionsDP(char str[], int n)
+{
+    // Create a table of size n*n. table[i][j] will store
+    // minumum number of insertions needed to convert str[i..j]
+    // to a palindrome.
+    int table[n][n], l, h, gap;
+
+    // Initialize all table entries as 0
+    memset(table, 0, sizeof(table));
+
+    // Fill the table
+    for (gap = 1; gap &lt; n; ++gap)
+        for (l = 0, h = gap; h &lt; n; ++l, ++h)
+            table[l][h] = (str[l] == str[h])? table[l+1][h-1] :
+                          (min(table[l][h-1], table[l+1][h]) + 1);
+
+    // Return minimum number of insertions for str[0..n-1]
+    return table[0][n-1];
+}
+
+// Driver program to test above function.
+int main()
+{
+    char str[] = &quot;geeks&quot;;
+    printf(&quot;%d&quot;, findMinInsertionsDP(str, strlen(str)));
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> 3 </code></pre>
+<p>Time complexity: O(N^2)<br /> Auxiliary Space: O(N^2)</p>
+<p><strong>Another Dynamic Programming Solution (Variation of <a href="http://www.geeksforgeeks.org/dynamic-programming-set-4-longest-common-subsequence/">Longest Common Subsequence Problem)</a></strong><br /> The problem of finding minimum insertions can also be solved using Longest Common Subsequence (LCS) Problem. If we find out LCS of string and its reverse, we know how many maximum characters can form a palindrome. We need insert remaining characters. Following are the steps.<br /> 1) Find the length of LCS of input string and its reverse. Let the length be ‘l’.<br /> 2) The minimum number insertions needed is length of input string minus ‘l’.</p>
+<pre><code> 
+// An LCS based program to find minimum number insertions needed to
+// make a string palindrome
+#include&lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+/* Utility function to get max of 2 integers */
+int max(int a, int b)
+{   return (a &gt; b)? a : b; }
+
+/* Returns length of LCS for X[0..m-1], Y[0..n-1]. 
+   See http://goo.gl/bHQVP for details of this function */
+int lcs( char *X, char *Y, int m, int n )
+{
+   int L[n+1][n+1];
+   int i, j;
+
+   /* Following steps build L[m+1][n+1] in bottom up fashion. Note
+      that L[i][j] contains length of LCS of X[0..i-1] and Y[0..j-1] */
+   for (i=0; i&lt;=m; i++)
+   {
+     for (j=0; j&lt;=n; j++)
+     {
+       if (i == 0 || j == 0)
+         L[i][j] = 0;
+
+       else if (X[i-1] == Y[j-1])
+         L[i][j] = L[i-1][j-1] + 1;
+
+       else
+         L[i][j] = max(L[i-1][j], L[i][j-1]);
+     }
+   }
+
+   /* L[m][n] contains length of LCS for X[0..n-1] and Y[0..m-1] */
+   return L[m][n];
+}
+
+// LCS based function to find minimum number of insersions
+int findMinInsertionsLCS(char str[], int n)
+{
+   // Creata another string to store reverse of &#39;str&#39;
+   char rev[n+1];
+   strcpy(rev, str);
+   strrev(rev);
+
+   // The output is length of string minus length of lcs of
+   // str and it reverse
+   return (n - lcs(str, rev, n, n));
+}
+
+// Driver program to test above functions
+int main()
+{
+    char str[] = &quot;geeks&quot;;
+    printf(&quot;%d&quot;, findMinInsertionsLCS(str, strlen(str)));
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> 3 </code></pre>
+<p>Time complexity of this method is also O(n^2) and this method also requires O(n^2) extra space.</p>
+<p>This article is compiled by <a href="https://www.facebook.com/barnwal.aashish?fref=ts">Aashish Barnwal</a>. Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above</p>
+<p><br /></p>
+<div id="source-34" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/dynamic-programming-set-28-minimum-insertions-to-form-a-palindrome/" class="uri">http://www.geeksforgeeks.org/dynamic-programming-set-28-minimum-insertions-to-form-a-palindrome/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-programs/">Misc</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+<p><br /></p>
+<p>Post navigation</p>
+<p><span class="nav-previous"><a href="http://www.geeksforgeeks.org/longest-prefix-matching-a-trie-based-solution-in-java/"><span class="meta-nav">←</span> Longest prefix matching – A Trie based solution in Java</a></span> <span class="nav-next"><a href="http://www.geeksforgeeks.org/longest-common-substring/">Dynamic Programming | Set 29 (Longest Common Substring) <span class="meta-nav">→</span></a></span></p>
+<p>Writing code in comment? Please use <a href="http://code.geeksforgeeks.org/">code.geeksforgeeks.org</a>, generate link and share the link here.</p>
+</div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Dynamic Programming | Set 16 (Floyd Warshall Algorithm)</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="dynamic-programming-set-16-floyd-warshall-algorithm" class="section level1">
+<h1>Dynamic Programming | Set 16 (Floyd Warshall Algorithm)</h1>
+<p>The <a href="http://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm">Floyd Warshall Algorithm</a> is for solving the All Pairs Shortest Path problem. The problem is to find shortest distances between every pair of vertices in a given edge weighted directed Graph. <span id="more-19772"></span></p>
+<p>Example:</p>
+<pre><code> 
+Input:
+       graph[][] = { {0,   5,  INF, 10},
+                    {INF,  0,  3,  INF},
+                    {INF, INF, 0,   1},
+                    {INF, INF, INF, 0} }
+which represents the following graph
+             10
+       (0)-------&gt;(3)
+        |         /|\
+      5 |          |
+        |          | 1
+       \|/         |
+       (1)-------&gt;(2)
+            3       
+Note that the value of graph[i][j] is 0 if i is equal to j 
+And graph[i][j] is INF (infinite) if there is no edge from vertex i to j.
+
+Output:
+Shortest distance matrix
+      0      5      8      9
+    INF      0      3      4
+    INF    INF      0      1
+    INF    INF    INF      0 
+ </code></pre>
+<p><strong>Floyd Warshall Algorithm</strong><br /> We initialize the solution matrix same as the input graph matrix as a first step. Then we update the solution matrix by considering all vertices as an intermediate vertex. The idea is to one by one pick all vertices and update all shortest paths which include the picked vertex as an intermediate vertex in the shortest path. When we pick vertex number k as an intermediate vertex, we already have considered vertices {0, 1, 2, .. k-1} as intermediate vertices. For every pair (i, j) of source and destination vertices respectively, there are two possible cases.<br /> <strong>1)</strong> k is not an intermediate vertex in shortest path from i to j. We keep the value of dist[i][j] as it is.<br /> <strong>2)</strong> k is an intermediate vertex in shortest path from i to j. We update the value of dist[i][j] as dist[i][k] + dist[k][j].</p>
+<p>The following figure is taken from the Cormen book. It shows the above optimal substructure property in the all-pairs shortest path problem.</p>
+<p><a href="http://d2hc1qfcrygj4j.cloudfront.net//wp-content/uploads/Floyd-Warshell1.jpg"><img src="media/file8.jpg" title="Floyd Warshell" /></a></p>
+<p>Following is C implementation of the Floyd Warshall algorithm.</p>
+<pre><code> 
+// Program for Floyd Warshall Algorithm
+#include&lt;stdio.h&gt;
+
+// Number of vertices in the graph
+#define V 4
+
+/* Define Infinite as a large enough value. This value will be used
+  for vertices not connected to each other */
+#define INF 99999
+
+// A function to print the solution matrix
+void printSolution(int dist[][V]);
+
+// Solves the all-pairs shortest path problem using Floyd Warshall algorithm
+void floydWarshell (int graph[][V])
+{
+    /* dist[][] will be the output matrix that will finally have the shortest 
+      distances between every pair of vertices */
+    int dist[V][V], i, j, k;
+
+    /* Initialize the solution matrix same as input graph matrix. Or 
+       we can say the initial values of shortest distances are based
+       on shortest paths considering no intermediate vertex. */
+    for (i = 0; i &lt; V; i++)
+        for (j = 0; j &lt; V; j++)
+            dist[i][j] = graph[i][j];
+
+    /* Add all vertices one by one to the set of intermediate vertices.
+      ---&gt; Before start of a iteration, we have shortest distances between all
+      pairs of vertices such that the shortest distances consider only the
+      vertices in set {0, 1, 2, .. k-1} as intermediate vertices.
+      ----&gt; After the end of a iteration, vertex no. k is added to the set of
+      intermediate vertices and the set becomes {0, 1, 2, .. k} */
+    for (k = 0; k &lt; V; k++)
+    {
+        // Pick all vertices as source one by one
+        for (i = 0; i &lt; V; i++)
+        {
+            // Pick all vertices as destination for the
+            // above picked source
+            for (j = 0; j &lt; V; j++)
+            {
+                // If vertex k is on the shortest path from
+                // i to j, then update the value of dist[i][j]
+                if (dist[i][k] + dist[k][j] &lt; dist[i][j])
+                    dist[i][j] = dist[i][k] + dist[k][j];
+            }
+        }
+    }
+
+    // Print the shortest distance matrix
+    printSolution(dist);
+}
+
+/* A utility function to print solution */
+void printSolution(int dist[][V])
+{
+    printf (&quot;Following matrix shows the shortest distances&quot;
+            &quot; between every pair of vertices \n&quot;);
+    for (int i = 0; i &lt; V; i++)
+    {
+        for (int j = 0; j &lt; V; j++)
+        {
+            if (dist[i][j] == INF)
+                printf(&quot;%7s&quot;, &quot;INF&quot;);
+            else
+                printf (&quot;%7d&quot;, dist[i][j]);
+        }
+        printf(&quot;\n&quot;);
+    }
+}
+
+// driver program to test above function
+int main()
+{
+    /* Let us create the following weighted graph
+            10
+       (0)-------&gt;(3)
+        |         /|\
+      5 |          |
+        |          | 1
+       \|/         |
+       (1)-------&gt;(2)
+            3           */
+    int graph[V][V] = { {0,   5,  INF, 10},
+                        {INF, 0,   3, INF},
+                        {INF, INF, 0,   1},
+                        {INF, INF, INF, 0}
+                      };
+
+    // Print the solution
+    floydWarshell(graph);
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> 
+Following matrix shows the shortest distances between every pair of vertices
+      0      5      8      9
+    INF      0      3      4
+    INF    INF      0      1
+    INF    INF    INF      0
+ </code></pre>
+<p>Time Complexity: O(V^3)</p>
+<p>The above program only prints the shortest distances. We can modify the solution to print the shortest paths also by storing the predecessor information in a separate 2D matrix.<br /> Also, the value of INF can be taken as INT_MAX from limits.h to make sure that we handle maximum possible value. When we take INF as INT_MAX, we need to change the if condition in the above program to avoid arithmatic overflow.</p>
+<pre><code> 
+#include&lt;limits.h&gt;
+
+#define INF INT_MAX
+..........................
+if (dist[i][k] != INF &amp;&amp; dist[k][j] != INF &amp;&amp; dist[i][k] + dist[k][j] &lt; dist[i][j])
+    dist[i][j] = dist[i][k] + dist[k][j];
+...........................
+ </code></pre>
+<p>Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above</p>
+<p><br /></p>
+<div id="source-21" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/dynamic-programming-set-16-floyd-warshall-algorithm/" class="uri">http://www.geeksforgeeks.org/dynamic-programming-set-16-floyd-warshall-algorithm/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/graph/">Graph</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a>, <a href="http://www.geeksforgeeks.org/tag/graph/">Graph</a></span></p>
+<p><br /></p>
+<p>Post navigation</p>
+<p><span class="nav-previous"><a href="http://www.geeksforgeeks.org/dynamic-programming-set-15-longest-bitonic-subsequence/"><span class="meta-nav">←</span> Dynamic Programming | Set 15 (Longest Bitonic Subsequence)</a></span> <span class="nav-next"><a href="http://www.geeksforgeeks.org/find-a-sorted-subsequence-of-size-3-in-linear-time/">Find a sorted subsequence of size 3 in linear time <span class="meta-nav">→</span></a></span></p>
+<p>Writing code in comment? Please use <a href="http://code.geeksforgeeks.org/">code.geeksforgeeks.org</a>, generate link and share the link here.</p>
+</div>
+</div>
+</body>
+</html>
+

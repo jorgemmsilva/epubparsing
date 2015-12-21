@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Count of n digit numbers whose sum of digits equals to given sum</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="count-of-n-digit-numbers-whose-sum-of-digits-equals-to-given-sum" class="section level1">
+<h1>Count of n digit numbers whose sum of digits equals to given sum</h1>
+<p>Given two integers ‘n’ and ‘sum’, find count of all n digit numbers with sum of digits as ‘sum’. Leading 0’s are not counted as digits.<br /> 1</p>
+<p>Example:</p>
+<pre><code> 
+Input:  n = 2, sum = 2
+Output: 2
+Explanation: Numbers are 11 and 20
+
+Input:  n = 2, sum = 5
+Output: 5
+Explanation: Numbers are 14, 23, 32, 41 and 50
+
+Input:  n = 3, sum = 6
+Output: 21
+ </code></pre>
+<p><strong>We strongly recommend you to minimize your browser and try this yourself first</strong></p>
+<p>The idea is simple, we subtract all values from 0 to 9 from given sum and recur for sum minus that digit. Below is recursive formula.</p>
+<pre><code> 
+     countRec(n, sum) = ∑finalCount(n-1, sum-x)
+                           where 1 == 0
+    One important observation is, leading 0&#39;s must be
+    handled explicitly as they are not counted as digits.
+    So our final count can be written as below.
+     
+    finalCount(n, sum) = ∑finalCount(n-1, sum-x)
+                            where 0 == 0 </code></pre>
+<p>Below is a simple recursive solution based on above recursive formula.</p>
+<pre><code> 
+// A recursive program to count numbers with sum
+// of digits as given &#39;sum&#39;
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Recursive function to count &#39;n&#39; digit numbers
+// with sum of digits as &#39;sum&#39;. This function
+// considers leading 0&#39;s also as digits, that is
+// why not directly called
+unsigned long long int countRec(int n, int sum)
+{
+    // Base case
+    if (n == 0)
+       return sum == 0;
+
+    // Initialize answer
+    unsigned long long int ans = 0;
+
+    // Traverse through every digit and count
+    // numbers beginning with it using recursion
+    for (int i=0; i&lt;=9; i++)
+       if (sum-i &gt;= 0)
+          ans += countRec(n-1, sum-i);
+
+    return ans;
+}
+
+// This is mainly a wrapper over countRec. It
+// explicitly handles leading digit and calls
+// countRec() for remaining digits.
+unsigned long long int finalCount(int n, int sum)
+{
+    // Initialize final answer
+    unsigned long long int ans = 0;
+
+    // Traverse through every digit from 1 to
+    // 9 and count numbers beginning with it
+    for (int i = 1; i &lt;= 9; i++)
+      if (sum-i &gt;= 0)
+         ans += countRec(n-1, sum-i);
+
+    return ans;
+}
+
+// Driver program
+int main()
+{
+    int n = 2, sum = 5;
+    cout &lt;&lt; finalCount(n, sum);
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> 5 </code></pre>
+<p>The time complexity of above solution is exponential. If we draw the complete recursion tree, we can observer that many subproblems are solved again and again. For example, if we start with n = 3 and sum = 10, we can reach n = 1, sum = 8, by considering digit sequences 1,1 or 2, 0.<br /> Since same suproblems are called again, this problem has Overlapping Subprolems property. So min square sum problem has both properties (see <a href="http://www.geeksforgeeks.org/archives/12635">this</a>and <a href="http://www.geeksforgeeks.org/archives/12819">this</a>) of a dynamic programming problem.</p>
+<p>Below is Memoization based C++ implementation.</p>
+<pre><code> 
+// A memoization based recursive program to count 
+// numbers with sum of n as given &#39;sum&#39;
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+// A lookup table used for memoization
+unsigned long long int lookup[101][50001];
+
+// Memoizatiob based implementation of recursive
+// function
+unsigned long long int countRec(int n, int sum)
+{
+    // Base case
+    if (n == 0)
+       return sum == 0;
+
+    // If this subproblem is already evaluated,
+    // return the evaluated value
+    if (lookup[n][sum] != -1)
+       return lookup[n][sum];
+
+    // Initialize answer
+    unsigned long long int ans = 0;
+
+    // Traverse through every digit and
+    // recursively count numbers beginning
+    // with it
+    for (int i=0; i&lt;10; i++)
+       if (sum-i &gt;= 0)
+          ans += countRec(n-1, sum-i);
+
+    return lookup[n][sum] = ans;
+}
+
+// This is mainly a wrapper over countRec. It
+// explicitly handles leading digit and calls
+// countRec() for remaining n.
+unsigned long long int finalCount(int n, int sum)
+{
+    // Initialize all entries of lookup table
+    memset(lookup, -1, sizeof lookup);
+
+    // Initialize final answer
+    unsigned long long int ans = 0;
+
+    // Traverse through every digit from 1 to
+    // 9 and count numbers beginning with it
+    for (int i = 1; i &lt;= 9; i++)
+      if (sum-i &gt;= 0)
+         ans += countRec(n-1, sum-i);
+    return ans;
+}
+
+// Driver program
+int main()
+{
+    int n = 3, sum = 5;
+    cout &lt;&lt; finalCount(n, sum);
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> 5 </code></pre>
+<p>Thanks to <a href="http://qa.geeksforgeeks.org/user/Mr.Lazy">Gaurav Ahirwar</a> for suggesting above solution.</p>
+<p>Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above</p>
+<p><br /></p>
+<div id="source-70" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/count-of-n-digit-numbers-whose-sum-of-digits-equals-to-given-sum/" class="uri">http://www.geeksforgeeks.org/count-of-n-digit-numbers-whose-sum-of-digits-equals-to-given-sum/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-programs/">Misc</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+</div>
+</div>
+</body>
+</html>
+

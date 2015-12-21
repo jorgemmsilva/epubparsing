@@ -1,0 +1,256 @@
+<?xml version='1.0' encoding='utf-8'?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy for Linux (vers 7 December 2008), see www.w3.org"/>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8"/>
+
+<meta name="GENERATOR" content="OpenOffice.org 3.0 (Unix)"/>
+<meta name="CREATED" content="20151109;11564100"/>
+<meta name="CHANGED" content="20151129;1342700"/>
+<meta name="Info_1" content=""/>
+<meta name="Info_2" content=""/>
+<meta name="Info_3" content=""/>
+<meta name="Info_4" content=""/>
+<title>Essential Python</title>
+<meta content="http://www.w3.org/1999/xhtml; charset=utf-8" http-equiv="Content-Type"/><link href="stylesheet.css" type="text/css" rel="stylesheet"/><style type="text/css">
+		@page { margin-bottom: 5.000000pt; margin-top: 5.000000pt; }</style></head>
+<body dir="ltr" class="calibre">
+<h1 lang="en-GB" class="western3" id="calibre_pb_21"><a id="XML"></a> 23. XML</h1>
+<p lang="en-GB" class="western">Extensible Mark Language (XML)
+is a language that uses tags in a similar way to HTML. XML is an
+open standard and is used as a cross platform language for
+specifying data files, it is mainly used for configuration
+files.</p>
+<p lang="en-GB" class="western">The standard Python interface
+has various libraries to work with XML the ones covered in this
+book are a simple parser called SAX (Simple API for XML) which
+parses the file and allows you to extract the data as it is read.
+The second method use DOM (Document Object Module) which reads the
+complete file into memory and stores it as a hierarchical format
+representing the data structure.</p>
+<h2 lang="en-GB" class="western4">Simple API for XML (SAX)</h2>
+<p lang="en-GB" class="western">SAX is read only so for example
+it would be a good option when you just want to load some data at
+start up. Since it doesn't require the whole of the XML file to be
+loaded at once it is also a better option for use with large
+files.</p>
+<p lang="en-GB" class="western">To show the XML parsers in
+process enter the following XML and save it as Books.xml</p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;collection
+catergory ="Thrillers"&gt;</span></p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;book title = "Crow
+Road"&gt;</span></p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;author&gt;Ian
+Banks&lt;/author&gt;</span></p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;year&gt;1993&lt;/year&gt;</span></p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;/book&gt;</span></p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;book title = "Dead
+Soles"&gt;</span></p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;author&gt;Ian
+Rankin&lt;/author&gt;</span></p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;year&gt;1999&lt;/year&gt;</span></p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;/book&gt;</span></p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;book title = "The
+Green Mile"&gt;</span></p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;author&gt;Stephen
+King&lt;/author&gt;</span></p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;year&gt;1996&lt;/year&gt;</span></p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;/book&gt;</span></p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;/collection&gt;</span></p>
+<p lang="en-GB" class="western">The above XML defines a category
+of books called thrillers and then 3 books by various authors. The
+following code will extract the records and display them on the
+screen.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+XML_SAX.py</span></p>
+<p lang="en-GB" class="c5"><span class="c6">import
+xml.sax</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+BookHandler(xml.sax.ContentHandler):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+__init__(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.author =
+''</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.year =
+''</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.currentdata =
+''</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># called when an
+element is found</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+start_element(self, tag, attr):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.currentdata =
+tag</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if tag ==
+'book':</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('--Book--')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">title =
+attr['title']</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Title',
+title)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Called when a
+character is read</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def characters(self,
+content):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if self.currentdata ==
+'author':</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.author =
+content</span></p>
+<p lang="en-GB" class="c5"><span class="c6">elif self.currentdata
+== 'year':</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.year =
+content</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># found at the end of
+an element</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+end_element(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if self.currentdata ==
+'author':</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Author: ',
+self.author)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">elif self.currentdata
+== 'year':</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Year: ',
+self.year)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.currentdata =
+''</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># create instance of
+parser</span></p>
+<p lang="en-GB" class="c5"><span class="c6">parser =
+xml.sax.make_parser()</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># turn off name
+spaces</span></p>
+<p lang="en-GB" class="c5"><span class="c6">parser.setFeature(xml.sax.handler.feature_namespaces,
+0)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># override the default
+Context handler</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Handler =
+BookHandler()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">parser.setContentHandler(Handler)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">parser.parse('Books.xml')</span></p>
+<p lang="en-GB" class="western">If you look at the definition
+for the class you can see that <b class="calibre2">BookHandler</b> imports the SAX
+class and then overloads three of the methods <b class="calibre2">startElement</b>,
+<b class="calibre2">characters</b> and <b class="calibre2">endElement</b> within the class. The
+constructor defines three variables, two are used within the class
+to save the record information <b class="calibre2">self.author</b> and
+<b class="calibre2">self.year</b> and the third variable <b class="calibre2">current_data</b> is used
+to store the current data field so the script can work out which
+field is currently being loaded.</p>
+<p lang="en-GB" class="western">The method <b class="calibre2">startElement</b>
+is called when an element is found it has two attributes the first
+is <b class="calibre2">tag</b> which is the tag name and the second is the
+<b class="calibre2">attributes</b> which relate to the tag. The method checks if the
+field is 'book' and if it is then gets the title field and displays
+it on the screen. The method also sets the value of
+<b class="calibre2">current_data</b> so that when <b class="calibre2">characters</b> is called it can
+determine what the current field is.</p>
+<p lang="en-GB" class="western">When characters are read into
+the parser the <b class="calibre2">characters</b> method is called, this sets the
+appropriate class variable to the current content.</p>
+<p lang="en-GB" class="western">The method <b class="calibre2">endElement</b> is
+called when the end of an element is found the method checks what
+the current data tag is that has been found and displays the data
+relating to it.</p>
+<p lang="en-GB" class="western">The code that uses the class
+starts by making an instance of the parser, it then turns off the
+namespace feature. An instance of the BookHandler class is then
+created and set to override the default handler in the parser. The
+parser is then used to parse the Book.xml file.</p>
+<h2 lang="en-GB" class="western4">Document Object Module for XML
+(DOM)</h2>
+<p lang="en-GB" class="western">DOM works by loading the whole
+XML file into memory at once this means that it can extract data
+randomly from the file and also modify the data. The following
+example uses the minidom object to create a DOM tree from the XML
+file.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+XML_DOM.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">import
+xml.dom.minidom</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">XMLFile =
+xml.dom.minidom.parse('Books.xml')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">library =
+XMLFile.documentElement</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if
+library.hasAttribute('catergory'):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Category: ',
+library.getAttribute('catergory'))</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># get the
+books</span></p>
+<p lang="en-GB" class="c5"><span class="c6">books =
+library.getElementsByTagName('book')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># loop printing out
+the books</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for book in
+books:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('--Book--')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># print the
+title</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if
+book.hasAttribute('title'):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Title: ',
+book.getAttribute('title'))</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># print the
+details</span></p>
+<p lang="en-GB" class="c5"><span class="c6">element =
+book.getElementsByTagName('author')[0]</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Author: ',
+element.childNodes[0].data)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">element =
+book.getElementsByTagName('year')[0]</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Year: ',
+element.childNodes[0].data)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># get the first book
+element</span></p>
+<p lang="en-GB" class="c5"><span class="c6">element =
+books[0].getElementsByTagName('year')[0]</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># change the
+value</span></p>
+<p lang="en-GB" class="c5"><span class="c6">element.childNodes[0].data = '2000'</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># display the new
+value</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Year: ',
+element.childNodes[0].data)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Write the modified
+DOM to a new file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">XMLOutputFile =
+open('Books1.xml', 'w')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">XMLFile.writexml(XMLOutputFile)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">XMLOutputFile.close()</span></p>
+<p lang="en-GB" class="western">The example above loads the file
+into a DOM tree called XMLFile, it then gets the
+<b class="calibre2">documentElement</b> property, this gives the main element of the
+XML document containing all the information. The
+<b class="calibre2">hasAttribute</b> method is then used to check if there is a
+category, if there is then this is displayed.</p>
+<p lang="en-GB" class="western">The program then gets a list of
+all the books using the <b class="calibre2">getElementsByTag</b> method, and loops
+through all the records in the book printing out the details. The
+'year' element of the first record in the list is then obtained and
+changed.</p>
+<p lang="en-GB" class="western">Finally the updated XML data is
+written using a new filename.</p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+</body>
+</html>

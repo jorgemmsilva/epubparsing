@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en">
+  <head>
+    <meta content="7093aa7e-c844-4da9-8c60-caadf178db7d" name="dtb:uid"/>
+    <meta content="2" name="dtb:depth"/>
+    <meta content="calibre (0.6.34)" name="dtb:generator"/>
+    <meta content="0" name="dtb:totalPageCount"/>
+    <meta content="0" name="dtb:maxPageNumber"/>
+  </head>
+  <docTitle>
+    <text>Essential Python</text>
+  </docTitle>
+  <navMap>
+    <navPoint id="f0a04228-f2ec-4a23-a47c-6fcf7d7ac4e1" playOrder="1">
+      <navLabel>
+        <text>1. Introduction</text>
+      </navLabel>
+      <content src="4.html#Introduction"/>
+    </navPoint>
+    <navPoint id="3fef2089-045e-41f9-b939-0344924208b3" playOrder="2">
+      <navLabel>
+        <text>2. What is Python</text>
+      </navLabel>
+      <content src="4.html#What_is_Python"/>
+    </navPoint>
+    <navPoint id="af0cb473-66f0-470f-91f6-e09972b86c18" playOrder="3">
+      <navLabel>
+        <text>3. Getting Python</text>
+      </navLabel>
+      <content src="4.html#Getting_Python"/>
+    </navPoint>
+    <navPoint id="d61215b1-714e-426f-92d1-d2cc5bca7c88" playOrder="4">
+      <navLabel>
+        <text>4. Python 2</text>
+      </navLabel>
+      <content src="5.html#Python_2"/>
+    </navPoint>
+    <navPoint id="11e79f11-72a0-44db-b403-0fb9c1afc84e" playOrder="5">
+      <navLabel>
+        <text>5. Python Basics</text>
+      </navLabel>
+      <content src="6.html#Python_Basics"/>
+    </navPoint>
+    <navPoint id="eea4cdd3-a298-4269-a9b6-5c0587f9d674" playOrder="6">
+      <navLabel>
+        <text>6. Python Help</text>
+      </navLabel>
+      <content src="7.html#Python_Help"/>
+    </navPoint>
+    <navPoint id="7a888f34-29cc-4f3b-ba08-574382323596" playOrder="7">
+      <navLabel>
+        <text>7. Python Syntax</text>
+      </navLabel>
+      <content src="8.html#Python_Syntax"/>
+    </navPoint>
+    <navPoint id="9c1343eb-cadb-4518-bed3-efd7ae289b44" playOrder="8">
+      <navLabel>
+        <text>8. Variables</text>
+      </navLabel>
+      <content src="9.html#Variables"/>
+    </navPoint>
+    <navPoint id="5cf15c10-641d-4d46-873f-91a14b361d3b" playOrder="9">
+      <navLabel>
+        <text>9. Data Types</text>
+      </navLabel>
+      <content src="10.html#Data_Types"/>
+    </navPoint>
+    <navPoint id="7085a3a2-c0c8-43d4-9d17-a82eb68b3d88" playOrder="10">
+      <navLabel>
+        <text>10. Data Type Conversion</text>
+      </navLabel>
+      <content src="11.html#Data_Type_Conversion"/>
+    </navPoint>
+    <navPoint id="9e68dd6a-4a60-4a51-b3c8-380a635470e5" playOrder="11">
+      <navLabel>
+        <text>11. Operators</text>
+      </navLabel>
+      <content src="12.html#Operators"/>
+    </navPoint>
+    <navPoint id="14fa4b37-4192-4f19-9115-c19e22d5ed68" playOrder="12">
+      <navLabel>
+        <text>12. Program Flow Control</text>
+      </navLabel>
+      <content src="13.html#Program_Flow_Control"/>
+    </navPoint>
+    <navPoint id="16669da3-ffb8-4877-93fd-cb8c65a90405" playOrder="13">
+      <navLabel>
+        <text>13. Functions</text>
+      </navLabel>
+      <content src="14.html#Functions"/>
+    </navPoint>
+    <navPoint id="84f92efe-5982-4735-ac33-d2363c00bf5f" playOrder="14">
+      <navLabel>
+        <text>14. Modules</text>
+      </navLabel>
+      <content src="15.html#Modules"/>
+    </navPoint>
+    <navPoint id="7eb685b9-b847-451a-8b46-54cc5e10534d" playOrder="15">
+      <navLabel>
+        <text>15. Classes and Objects</text>
+      </navLabel>
+      <content src="16.html#Classes_and_Objects"/>
+    </navPoint>
+    <navPoint id="e1dd1c07-3f51-4d5c-8709-a923bc647a68" playOrder="16">
+      <navLabel>
+        <text>16. Input and Output</text>
+      </navLabel>
+      <content src="17.html#Input_and_Output"/>
+    </navPoint>
+    <navPoint id="fafd897b-984c-4c66-a2a7-ebf4de610877" playOrder="17">
+      <navLabel>
+        <text>17. Exceptions</text>
+      </navLabel>
+      <content src="18.html#Exceptions"/>
+    </navPoint>
+    <navPoint id="5ffecb9a-5726-491c-9ec5-57e58a57814a" playOrder="18">
+      <navLabel>
+        <text>18. Date and Time</text>
+      </navLabel>
+      <content src="19.html#Date_and_Time"/>
+    </navPoint>
+    <navPoint id="3090ef48-cda8-42b9-badd-78bdb7a62a85" playOrder="19">
+      <navLabel>
+        <text>20. Command Line Arguments</text>
+      </navLabel>
+      <content src="21.html#Command_Line_Arguments"/>
+    </navPoint>
+    <navPoint id="9b1f9f6d-9262-4f75-8128-1655eea92099" playOrder="20">
+      <navLabel>
+        <text>21. Configuration Files</text>
+      </navLabel>
+      <content src="22.html#Configuration_Files"/>
+    </navPoint>
+    <navPoint id="00bb9d2c-dc77-4047-8cfd-f3b1ce9a273a" playOrder="21">
+      <navLabel>
+        <text>22. Databases</text>
+      </navLabel>
+      <content src="23.html#Databases"/>
+    </navPoint>
+    <navPoint id="6a04daa6-e373-474a-aa72-ff11d5c40b09" playOrder="22">
+      <navLabel>
+        <text>23. XML</text>
+      </navLabel>
+      <content src="24.html#XML"/>
+    </navPoint>
+    <navPoint id="b1e7cd22-1028-4e08-b3ef-9df0f3f7a5c5" playOrder="23">
+      <navLabel>
+        <text>24. HTML Parsing</text>
+      </navLabel>
+      <content src="25.html#HTML_Parsing"/>
+    </navPoint>
+    <navPoint id="082e3987-21a9-4bd2-a3fe-8b8e744657eb" playOrder="24">
+      <navLabel>
+        <text>25. Tkinter- GUI</text>
+      </navLabel>
+      <content src="26.html#Tkinter-_GUI"/>
+    </navPoint>
+    <navPoint id="fca9aa00-534b-470d-bbbc-09a5810cc969" playOrder="25">
+      <navLabel>
+        <text>26. Where Next?</text>
+      </navLabel>
+      <content src="27.html#Where_Next"/>
+    </navPoint>
+    <navPoint id="0c495b28-f13e-4487-a545-8c7bb21b8b04" playOrder="26">
+      <navLabel>
+        <text>27. Appendix 1-Interpreter Command Line Options</text>
+      </navLabel>
+      <content src="28.html#Appendix_1"/>
+    </navPoint>
+  </navMap>
+</ncx>

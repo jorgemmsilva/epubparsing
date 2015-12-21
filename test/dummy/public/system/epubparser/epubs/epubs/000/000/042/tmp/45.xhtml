@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Dynamic Programming | Set 35 (Longest Arithmetic Progression)</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="dynamic-programming-set-35-longest-arithmetic-progression" class="section level1">
+<h1>Dynamic Programming | Set 35 (Longest Arithmetic Progression)</h1>
+<p>Given a set of numbers, find the <strong>L</strong>ength of the <strong>L</strong>ongest <strong>A</strong>rithmetic <strong>P</strong>rogression (<strong>LLAP</strong>) in it. <span id="more-120380"></span></p>
+<p>Examples:</p>
+<pre><code> 
+set[] = {1, 7, 10, 15, 27, 29}
+output = 3
+The longest arithmetic progression is {1, 15, 29}
+
+set[] = {5, 10, 15, 20, 25, 30}
+output = 6
+The whole set is in AP
+ </code></pre>
+<p>For simplicity, we have assumed that the given set is sorted. We can always add a pre-processing step to first sort the set and then apply the below algorithms.</p>
+<p>A <strong>simple solution</strong> is to one by one consider every pair as first two elements of AP and check for the remaining elements in sorted set. To consider all pairs as first two elements, we need to run a O(n^2) nested loop. Inside the nested loops, we need a third loop which linearly looks for the more elements in <strong>A</strong>rithmetic <strong>P</strong>rogression (<strong>AP</strong>). This process takes O(n<sup>3</sup>) time.</p>
+<p>We can solve this problem in O(n<sup>2</sup>) time <strong>using Dynamic Programming</strong>. To get idea of the DP solution, let us first discuss solution of following simpler problem.</p>
+<p><strong><em>Given a sorted set, find if there exist three elements in Arithmetic Progression or not</em></strong><br /> Please note that, the answer is true if there are 3 or more elements in AP, otherwise false.<br /> To find the three elements, we first fix an element as middle element and search for other two (one smaller and one greater). We start from the second element and fix every element as middle element. For an element set[j] to be middle of AP, there must exist elements ‘set[i]’ and ‘set[k]’ such that set[i] + set[k] = 2*set[j] where 0 How to efficiently find i and k for a given j? We can find i and k in linear time using following simple algorithm.<br /> <strong>1)</strong> Initialize i as j-1 and k as j+1<br /> <strong>2)</strong> Do following while i &gt;= 0 and j a) If set[i] + set[k] is equal to 2*set[j], then we are done.<br /> ……..<strong>b)</strong> If set[i] + set[k] &gt; 2*set[j], then decrement i (do i–-).<br /> ……..<strong>c)</strong> Else if set[i] + set[k] // The function returns true if there exist three elements in AP // Assumption: set[0..n-1] is sorted. // The code strictly implements the algorithm provided in the reference. bool arithmeticThree(int set[], int n) { // One by fix every element as middle element for (int j=1; j&lt;n-1; j++) { // Initialize i and k for the current j int i = j-1, k = j+1; // Find if there exist i and k that form AP // with j as middle element while (i &gt;= 0 &amp;&amp; k &lt;= n-1) { if (set[i] + set[k] == 2*set[j]) return true; (set[i] + set[k] &lt; 2*set[j])? k++ : i–; } } return false; }</p>
+<p>See <a href="http://ideone.com/yL6r76">this</a>for a complete running program.</p>
+<p><em><strong>How to extend the above solution for the original problem?</strong></em><br /> The above function returns a boolean value. The required output of original problem is <strong>L</strong>ength of the <strong>L</strong>ongest <strong>A</strong>rithmetic <strong>P</strong>rogression (<strong>LLAP</strong>) which is an integer value. If the given set has two or more elements, then the value of LLAP is at least 2 (Why?).<br /> The idea is to create a 2D table L[n][n]. An entry L[i][j] in this table stores LLAP with set[i] and set[j] as first two elements of AP and j &gt; i. The last column of the table is always 2 (Why – see the meaning of L[i][j]). Rest of the table is filled from bottom right to top left. To fill rest of the table, j (second element in AP) is first fixed. i and k are searched for a fixed j. If i and k are found such that i, j, k form an AP, then the value of L[i][j] is set as L[j][k] + 1. Note that the value of L[j][k] must have been filled before as the loop traverses from right to left columns.</p>
+<p>Following is C++ implementation of the Dynamic Programming algorithm.</p>
+<pre><code> 
+// C++ program to find Length of the Longest AP (llap) in a given sorted set.
+// The code strictly implements the algorithm provided in the reference.
+#include &lt;iostream&gt;
+using namespace std;
+
+// Returns length of the longest AP subset in a given set
+int lenghtOfLongestAP(int set[], int n)
+{
+    if (n &lt;= 2)  return n;
+
+    // Create a table and initialize all values as 2. The value of
+    // L[i][j] stores LLAP with set[i] and set[j] as first two
+    // elements of AP. Only valid entries are the entries where j&gt;i
+    int L[n][n];
+    int llap = 2;  // Initialize the result
+
+    // Fill entries in last column as 2. There will always be
+    // two elements in AP with last number of set as second
+    // element in AP
+    for (int i = 0; i &lt; n; i++)
+        L[i][n-1] = 2;
+
+    // Consider every element as second element of AP
+    for (int j=n-2; j&gt;=1; j--)
+    {
+        // Search for i and k for j
+        int i = j-1, k = j+1;
+        while (i &gt;= 0 &amp;&amp; k &lt;= n-1)
+        {
+           if (set[i] + set[k] &lt; 2*set[j])
+               k++;
+
+           // Before changing i, set L[i][j] as 2
+           else if (set[i] + set[k] &gt; 2*set[j])
+           {   L[i][j] = 2, i--;   }
+
+           else
+           {
+               // Found i and k for j, LLAP with i and j as first two
+               // elements is equal to LLAP with j and k as first two
+               // elements plus 1. L[j][k] must have been filled
+               // before as we run the loop from right side
+               L[i][j] = L[j][k] + 1;
+
+               // Update overall LLAP, if needed
+               llap = max(llap, L[i][j]);
+
+               // Change i and k to fill more L[i][j] values for
+               // current j
+               i--; k++;
+           }
+        }
+
+        // If the loop was stopped due to k becoming more than
+        // n-1, set the remaining entties in column j as 2
+        while (i &gt;= 0)
+        {
+            L[i][j] = 2;
+            i--;
+        }
+    }
+    return llap;
+}
+
+/* Drier program to test above function*/
+int main()
+{
+    int set1[] = {1, 7, 10, 13, 14, 19};
+    int n1 = sizeof(set1)/sizeof(set1[0]);
+    cout &lt;&lt;   lenghtOfLongestAP(set1, n1) &lt;&lt; endl;
+
+    int set2[] = {1, 7, 10, 15, 27, 29};
+    int n2 = sizeof(set2)/sizeof(set2[0]);
+    cout &lt;&lt;   lenghtOfLongestAP(set2, n2) &lt;&lt; endl;
+
+    int set3[] = {2, 4, 6, 8, 10};
+    int n3 = sizeof(set3)/sizeof(set3[0]);
+    cout &lt;&lt;   lenghtOfLongestAP(set3, n3) &lt;&lt; endl;
+
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> 4
+3
+5 </code></pre>
+<p><strong>Time Complexity:</strong> O(n<sup>2</sup>)<br /> <strong>Auxiliary Space:</strong> O(n<sup>2</sup>)</p>
+<p><strong>References:</strong><br /> <a href="http://www.cs.uiuc.edu/~jeffe/pubs/pdf/arith.pdf" class="uri">http://www.cs.uiuc.edu/~jeffe/pubs/pdf/arith.pdf</a></p>
+<p>Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above</p>
+<p><br /></p>
+<div id="source-41" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/length-of-the-longest-arithmatic-progression-in-a-sorted-array/" class="uri">http://www.geeksforgeeks.org/length-of-the-longest-arithmatic-progression-in-a-sorted-array/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-programs/">Misc</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+<p><br /></p>
+<p>Post navigation</p>
+<p><span class="nav-previous"><a href="http://www.geeksforgeeks.org/dynamic-programming-set-34-assembly-line-scheduling/"><span class="meta-nav">←</span> Dynamic Programming | Set 34 (Assembly Line Scheduling)</a></span> <span class="nav-next"><a href="http://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/">How to check if two given line segments intersect? <span class="meta-nav">→</span></a></span></p>
+<p>Writing code in comment? Please use <a href="http://code.geeksforgeeks.org/">code.geeksforgeeks.org</a>, generate link and share the link here.</p>
+</div>
+</div>
+</body>
+</html>
+

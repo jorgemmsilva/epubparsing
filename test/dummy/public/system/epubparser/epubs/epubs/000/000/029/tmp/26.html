@@ -1,0 +1,758 @@
+<?xml version='1.0' encoding='utf-8'?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy for Linux (vers 7 December 2008), see www.w3.org"/>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8"/>
+
+<meta name="GENERATOR" content="OpenOffice.org 3.0 (Unix)"/>
+<meta name="CREATED" content="20151109;11564100"/>
+<meta name="CHANGED" content="20151129;1342700"/>
+<meta name="Info_1" content=""/>
+<meta name="Info_2" content=""/>
+<meta name="Info_3" content=""/>
+<meta name="Info_4" content=""/>
+<title>Essential Python</title>
+<meta content="http://www.w3.org/1999/xhtml; charset=utf-8" http-equiv="Content-Type"/><link href="stylesheet.css" type="text/css" rel="stylesheet"/><style type="text/css">
+		@page { margin-bottom: 5.000000pt; margin-top: 5.000000pt; }</style></head>
+<body dir="ltr" class="calibre">
+<h1 lang="en-GB" class="western3" id="calibre_pb_23"><a id="Tkinter-_GUI"></a> 25.
+Tkinter- GUI</h1>
+<h2 lang="en-GB" class="western4">Overview</h2>
+<p lang="en-GB" class="western">In the modern world people
+aren't used to using the command line for interacting with programs
+they are used to using GUIs, with Python there are several options
+for creating GUIs.</p>
+<p lang="en-GB" class="western">Tkinter is installed as part of
+Python and so is a good option to use as there is no need to
+download extra libraries. The other popular options to create GUIs
+with Python are wxPython which is an open source library for
+wxWindows and Jpython which gives Python scripts access to Java
+class libraries.</p>
+<p lang="en-GB" class="western">This book can't give full
+details of how to use Tkinter so the aim is to give enough details
+to allow the development of simple single form applications.</p>
+<p lang="en-GB" class="western">The examples will consist of a
+window which is an area on the screen with a standard frame around
+it, on to the window widgets will be added. Widgets are the common
+controls that you are familiar with such as buttons, text entry,
+radio buttons etc. To enable the widgets to be placed in positions
+on the screen Tkinter uses a frame widget which can contain other
+widgets.</p>
+<h3 lang="en-GB" class="western5">Widget Layout</h3>
+<p lang="en-GB" class="western">There are three layout managers
+that can be used when creating an application these are pack, place
+and grid. These layout managers allow you to arrange the widgets on
+the screen.</p>
+<h3 lang="en-GB" class="western5">Pack Manager</h3>
+<p lang="en-GB" class="western">This is the simplest and allows
+the widgets placement to be defined in relative terms rather than
+accurately placing the widgets at set positions. It is the simplest
+to use but due to its limited configuration options is generally
+used only for simple applications.</p>
+<h3 lang="en-GB" class="western5">Place Manager</h3>
+<p lang="en-GB" class="western">The place manager allows
+accurate placement of widgets within a window by specifying the
+co-ordinate of each item explicitly.</p>
+<h3 lang="en-GB" class="western5">Grid Manager</h3>
+<p lang="en-GB" class="western">Grid gives the user greater
+control than pack and is simpler to use than place so tends to be
+the preferred option in most cases. It arranges the widgets into a
+table and allows each widget to be placed in a particular cell,
+widgets can also be specified to span more than one column and
+align themselves differently within the grid.</p>
+<p lang="en-GB" class="western">The main advantage with the grid
+manager is that you do not have to supply any coordinate
+information, the rows and columns get automatically sized depending
+on the size of the widgets they contain. So if a widget is changed
+or updated the form will adjust the layout automatically.</p>
+<p lang="en-GB" class="western">Since Grid Manager is the most
+popular and flexible the examples in this book will be written
+using this method.</p>
+<h2 lang="en-GB" class="western4">Simple Form</h2>
+<p lang="en-GB" class="western">The following example shows the
+creation of a simple form, the widgets are first defined then they
+are added to the form.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+tkinter1.py</span></p>
+<p lang="en-GB" class="c5"><span class="c6">import tkinter as
+tk</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+Application(tk.Frame):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def __init__(self,
+master=None):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">tk.Frame.__init__(self, master)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.grid()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Create the
+widgets</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.helloButton =
+tk.Button(self, text='Hello', command=self.hello)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.label =
+tk.Label(self, text='----')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Add the widgets to
+the grid</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.helloButton.grid()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.label.grid()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+hello(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Change the label
+text</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.label.config(text='Good Bye')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Create the
+form</span></p>
+<p lang="en-GB" class="c5"><span class="c6">form =
+Application()</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># set the form
+title</span></p>
+<p lang="en-GB" class="c5"><span class="c6">form.master.title('tkinter1')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">form.mainloop()</span></p>
+<p lang="en-GB" class="western">In the example above a button
+and label widget are created, the label is set to show three dashes
+and the button text is set to 'Hello'. The command keyword in the
+definition of the <b class="calibre2">hellobutton</b> widget is the name of the
+method <b class="calibre2">hello</b>. The <b class="calibre2">hello</b> method will get called when
+the button is pressed. When the <b class="calibre2">hello</b> widget is called it
+will change the text of the label to' Good Bye'. After the widgets
+have been created they are added to the grid using the grid
+method.</p>
+<p lang="en-GB" class="western">If you run the program you will
+get a small form with a button and a label on it. If the button is
+pressed then the labels text will change to 'Good Bye'.</p>
+<p lang="en-GB" class="western">In the above example when the
+script is run the label will have been placed under the button by
+default the widgets will be placed on the grid in the order they
+have been added. Usually you will want to specify where the widgets
+are added into the grid and if they should be side by side or one
+above the other. The following example shows how to place the
+widgets on the grid.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+tkinter2.py</span></p>
+<p lang="en-GB" class="c5"><span class="c6">import tkinter as
+tk</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+Application(tk.Frame):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def __init__(self,
+master=None):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">tk.Frame.__init__(self, master)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.grid()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Create the
+widgets</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.helloButton =
+tk.Button(self, text='Say Hello', command=self.goodbye)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.goodbyebutton =
+tk.Button(self, text='Say Good Bye', command=self.hello)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.label =
+tk.Label(self, text='----')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># add to the
+grid</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.helloButton.grid(column=1, row=1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.goodbyebutton.grid(column=0, row=1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.label.grid(column=0, row=0, columnspan=2,
+sticky='E')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+hello(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.label.config(text='Good Bye')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+goodbye(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.label.config(text='Hello')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Create the
+form</span></p>
+<p lang="en-GB" class="c5"><span class="c6">form =
+Application()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">form.master.title('tkinter2')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">form.mainloop()</span></p>
+<p lang="en-GB" class="western">In the example above when the
+widgets are added to the grid their position is defined by using
+keywords to specify the row and column where they should be
+placed.</p>
+<p lang="en-GB" class="c5"><span class="c6">self.helloButton.grid(column = 1, row = 1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.goodbyebutton.grid(column = 0, row = 1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.label.grid(column
+= 0, row = 0, columnspan = 2)</span></p>
+<p lang="en-GB" class="western">The rows and columns are defined
+from the top left of the form. So the <b class="calibre2">label</b> button will be
+placed on row 0 above the two buttons and the <b class="calibre2">hello</b> button
+will be to the right of the <b class="calibre2">goodbye</b> button. The label has
+another keyword which is <b class="calibre2">columnspan</b> as the name suggests
+column span will allow the label to take up 2 columns it will be
+aligned in the centre of the form above the buttons.</p>
+<p lang="en-GB" class="western">The default for the grid manager
+is to align the widgets to the centre of the cell they are placed
+in. The alignment can be changed with the <b class="calibre2">sticky</b> keyword.
+The following code shows this being applied to the label.</p>
+<p lang="en-GB" class="c5"><span class="c6">self.label.grid(column
+= 0, row = 0, columnspan = 2, sticky = 'E')</span></p>
+<p lang="en-GB" class="western">This will cause the label to be
+aligned to the left of the form if you want to align it to the
+right of the form then change the line to.</p>
+<p lang="en-GB" class="c5"><span class="c6">self.label.grid(column
+= 0, row = 0, columnspan = 2, sticky = 'W')</span></p>
+<p lang="en-GB" class="western">The anchors for the widgets
+are</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">N</b> - Top
+centre</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">NE</b> - Top
+left</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">E</b> - Middle
+Left</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">SE</b> - Bottom
+left</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">S</b> - Bottom
+centre</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">SW</b> - Bottom
+Left</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">W</b> - Middle
+Right</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">NW</b> - Top
+Left</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">CENTER</b> -
+Centre</p>
+<h2 lang="en-GB" class="western4">Practical Form</h2>
+<p lang="en-GB" class="western">The next step is to look at a
+more practical form, this form will contain most of the commonly
+used widgets. The form will take an easy to remember password and
+convert it to a more complex password. The first widget we will
+need will be the entry widget this allows the user to enter their
+password into a text box. To set the length of the created password
+a option menu (drop down list) will be used, as some web sites only
+allow alpha numeric characters a check box will be used select if
+all the character set or just numbers and alphabet characters
+should be used.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+tkinter3.py</span></p>
+<p lang="en-GB" class="c5"><span class="c6">import tkinter as
+tk</span></p>
+<p lang="en-GB" class="c5"><span class="c6">from tkinter import
+messagebox</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+Application(tk.Frame):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def __init__(self,
+master=None):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">tk.Frame.__init__(self, master)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.grid()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">self.inText =
+tk.Entry(self)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.encryptedText =
+tk.Entry(self)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.passwordLabel =
+tk.Label(self, text='User Password', )</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.encryptedlabel =
+tk.Label(self, text='Encrypted Password')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.lengthlabel =
+tk.Label(self, text='Length')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.alphnumlabel =
+tk.Label(self, text='Alpha Numeric')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.updateButton =
+tk.Button(self, text='Update', command=self.encode)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.alpha_numeric =
+tk.IntVar()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.alphanum_checkbox
+= tk.Checkbutton(self, text='Alpha Numeric',</span></p>
+<p lang="en-GB" class="c5"><span class="c6">variable=self.alpha_numeric, command=self.encode)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.length_option_menu = tk.StringVar()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.lenoptionmenu =
+tk.OptionMenu(self, self.length_option_menu, '8', '9', '10', '11',
+'12', '13', '14', '15')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.length_option_menu.set('8')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Add widgets to
+grid</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.passwordLabel.grid(row=0, column=0, padx=5, pady=5,
+sticky='W')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.inText.grid(row=0, column=1, padx=5, pady=2,
+sticky='W')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.lengthlabel.grid(row=1, column=0, padx=5, pady=2,
+sticky='W')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.lenoptionmenu.grid(row=1, column=1, padx=5, pady=2,
+sticky='W')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.alphanum_checkbox.grid(row=2, column=1, columnspan=2,
+padx=5, pady=3, sticky='W')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.encryptedlabel.grid(row=3, column=0, padx=5, pady=2,
+sticky='W')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.encryptedText.grid(row=3, column=1, padx=5, pady=2,
+sticky='W')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.updateButton.grid(row=4, column=0, padx=5, pady=2,
+columnspan=3)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+encode(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">input_string =
+self.inText.get()</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># check there is an
+input string</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if input_string ==
+'':</span></p>
+<p lang="en-GB" class="c5"><span class="c6">messagebox.showerror('User Password Error', 'No user password
+entered')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">return</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># get encrypt string
+dependant on check box selection</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if
+self.alpha_numeric.get():</span></p>
+<p lang="en-GB" class="c5"><span class="c6">encrypt_list =
+'q0we1rt2yu8io4pas7df9gh1j3klzx6cv5bnm'</span></p>
+<p lang="en-GB" class="c5"><span class="c6">else:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">encrypt_list =
+'q!0we$1rt%2y(u8i)o4p=as7+df9-gh~1j3k?lzx6&lt;cv5b&gt;nm'</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">len_encrypt_list =
+len(encrypt_list)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># calculate the
+starting offset in the encrypt list by adding the value of all the
+characters in the input str</span></p>
+<p lang="en-GB" class="c5"><span class="c6">offset = 0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for i in
+input_string:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">offset +=
+ord(i)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># wrap the
+offset</span></p>
+<p lang="en-GB" class="c5"><span class="c6">offset %=
+len_encrypt_list</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">encrypted =
+''</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># get the length of
+the encrypted password</span></p>
+<p lang="en-GB" class="c5"><span class="c6">password_length =
+int(self.length_option_menu.get())</span></p>
+<p lang="en-GB" class="c5"><span class="c6">input_index =
+0</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># loop for the length
+of the required password</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for i in
+range(password_length):</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># update the offset
+into the encrypt table</span></p>
+<p lang="en-GB" class="c5"><span class="c6">offset +=
+ord(input_string[input_index])</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># update the index for
+the input variable</span></p>
+<p lang="en-GB" class="c5"><span class="c6">input_index +=
+1</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># wrap the input
+variable</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if input_index ==
+len(input_string):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">input_index =
+0</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># wrap the
+offset</span></p>
+<p lang="en-GB" class="c5"><span class="c6">offset %=
+len_encrypt_list</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># update the
+password</span></p>
+<p lang="en-GB" class="c5"><span class="c6">encrypted +=
+encrypt_list[offset]</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># delete the current
+text</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.encryptedText.delete(0,
+len(self.encryptedText.get()))</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># add new
+text</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.encryptedText.insert(0, encrypted)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">form =
+Application()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">form.master.title('Password Creator')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">form.mainloop()</span></p>
+<p lang="en-GB" class="western">The button and label widgets
+have already been discussed, the first new widget is the entry
+widget this creates a single line text input box allowing the
+password to be entered.</p>
+<p lang="en-GB" class="western">The check box for the selection
+of alpha numeric has a command which will be called when the box is
+checked or unchecked, this will call the <b class="calibre2">encode</b> method to
+update the encrypted password. It also has the control variable
+<b class="calibre2">self.alpha_numeric</b>.</p>
+<p lang="en-GB" class="c5"><span class="c6">self.alpha_numeric =
+tk.IntVar()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.alphanum_checkbox
+= tk.Checkbutton(self, text='Alpha Numeric',</span></p>
+<p lang="en-GB" class="c5"><span class="c6">variable=self.alpha_numeric,</span></p>
+<p lang="en-GB" class="c5"><span class="c6">command=self.encode)</span></p>
+<p lang="en-GB" class="western">The control variable is used to
+hold the state of the check button. Control variables can be shared
+by more than one widget and if one widget updates the variable then
+any widgets using the same control variable will also be updated,
+this also is the case if the code sets the control variable as
+shown below.</p>
+<p lang="en-GB" class="c5"><span class="c6">class.set(value)</span></p>
+<p lang="en-GB" class="western">The value of a control variable
+can be obtained using the <b class="calibre2">get</b> method.</p>
+<p lang="en-GB" class="western">The option menu also uses a
+control variable but in this case it uses a string control
+variable, which holds the selected value.</p>
+<p lang="en-GB" class="c5"><span class="c6">self.length_option_menu = tk.StringVar()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.lenoptionmenu =
+tk.OptionMenu(self, self.length_option_menu, '8', '9', '10', '11',
+'12', '13', '14', '15')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.length_option_menu.set('8')</span></p>
+<p lang="en-GB" class="western">After the OptionMenu has been
+created the <b class="calibre2">set</b> method is used to set the menu to default to
+8.</p>
+<p lang="en-GB" class="western">The widgets are then placed on
+the screen in defined rows and columns, two extra keywords have
+been used <b class="calibre2">padx</b> and <b class="calibre2">pady</b> the values of these are used
+to add to space around the widgets. For <b class="calibre2">padx</b> the value is
+added to the left and right of the widget and similarly <b class="calibre2">pady</b>
+adds space to the top and bottom of the widget.</p>
+<p lang="en-GB" class="western">If the button is pressed or the
+check box value is changed then the encode method is called. This
+checks that some text has been entered if there is no text then a
+message box is displayed. If some text has been entered then one of
+the two versions of the <b class="calibre2">encrypt_list</b> string is selected
+dependant on the value of the alpha numeric check box. The required
+length of the password is set by the option menu this is then used
+to create the new password.</p>
+<h2 lang="en-GB" class="western4">Message Boxes</h2>
+<p lang="en-GB" class="western">In the previous example a
+message box was used to display an error message, there are the
+following seven types of message boxes.</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">showerror</b> -
+Error icon with OK button</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">showinfo</b> - Query
+icon with OK button</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">showwarning</b> -
+Warning icon with OK button</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">askokcancel</b> -
+Query icon with OK and cancel button</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">askquestion</b> -
+Warning icon with yes and no button</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">askretrycancel</b> -
+Query icon with retry and cancel button</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">askyesno</b> - Query
+icon with yes and no button</p>
+<p lang="en-GB" class="western">All of the message boxes take
+arguments for a title which is displayed at the top of the screen
+and a message to be displayed in the box. Lines for multi line
+messages can be broken using a new line character ('\n').</p>
+<p lang="en-GB" class="western">Optional arguments are
+<b class="calibre2">default</b> which allows the selection of a button, <b class="calibre2">icon</b>
+which allows the icon to be changed (ERROR, INFO, QUESTION or
+WARNING) and <b class="calibre2">parent</b> which determines whether the the pop-up
+appears above a child window or the root window.</p>
+<p lang="en-GB" class="western">The value returned from the
+boxes are True for 'OK' and 'Yes', False for 'No' and 'Cancel'. The
+exception is the <b class="calibre2">askquestion</b> box which returns a u'yes' for
+'yes' and u'no' for no.</p>
+<h2 lang="en-GB" class="western4">Dialogs</h2>
+<p lang="en-GB" class="western">Tkinter supports two dialog
+types a file dialog and a colour selection dialog.</p>
+<h3 lang="en-GB" class="western5">File Dialog</h3>
+<p lang="en-GB" class="western">The file dialog has two types
+one to save files <b class="calibre2">asksaveasfilename</b> and the other to open
+files <b class="calibre2">askopenfilename</b>. If the user selects cancel in a
+<b class="calibre2">askopenfilename</b> dialog an empty string is returned, if they
+select a file the file name with its path is returned. The
+<b class="calibre2">asksaveasfilename</b> works slightly differently in that if a
+file is selected then an instance of the file is returned if it has
+been successfully opened.</p>
+<p lang="en-GB" class="western">Both of the dialogues have the
+same set of options. To set a title the title keyword is used, to
+set a default extension use the <b class="calibre2">defaultextension</b> keyword
+this should be a string starting with a period (.txt). To define
+the types of file that can be selected <b class="calibre2">filetypes</b> can be set
+to a tuple containing file names and file extensions.</p>
+<h2 lang="en-GB" class="western4">Menus</h2>
+<p lang="en-GB" class="western">Most GUI applications use menus
+to allow the user to select options. The next example will create a
+simple notepad application to show how a menu can be added to a
+form. The constructor for the notepad application will be as
+follows.</p>
+<p lang="en-GB" class="c5"><span class="c6">def __init__(self,
+master=None):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">tk.Frame.__init__(self, master)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">self.grid()</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Create the text
+widget</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.editText =
+tk.Text(self, height=20, width=80)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.editText.grid(row=0, column=0)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># create top level
+menu widget</span></p>
+<p lang="en-GB" class="c5"><span class="c6">top =
+self.winfo_toplevel()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.menuBar =
+tk.Menu(top)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">top.config(menu=self.menuBar)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># create file
+menu</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.fileMenu =
+tk.Menu(self.menuBar)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.menuBar.add_cascade(label='File',
+menu=self.fileMenu)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.fileMenu.add_command(label='Open...',
+command=self.load)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.fileMenu.add_command(label='Save as...',
+command=self.save)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.fileMenu.add_command(label='Exit',
+command=self.quit)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># create help
+menu</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.helpMenu =
+tk.Menu(self.menuBar, tearoff=0)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.menuBar.add_cascade(label='Help',
+menu=self.helpMenu)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.helpMenu.add_command(label='About',
+command=self.help)</span></p>
+<p lang="en-GB" class="western">The first few lines define a
+text area on the screen with a height of 20 characters and a width
+of 80.</p>
+<p lang="en-GB" class="c5"><span class="c6"># Create the text
+widget</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.editText =
+tk.Text(self, height=20, width=80)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.editText.grid(row=0, column=0)</span></p>
+<p lang="en-GB" class="western">To create the menu we need to
+get access to the top level window, this is done with a call to
+<b class="calibre2">winfo_toplevel</b> a menu is then created <b class="calibre2">self.menubar</b>
+and this is set to the top level window.</p>
+<p lang="en-GB" class="c5"><span class="c6"># create top level
+menu widget</span></p>
+<p lang="en-GB" class="c5"><span class="c6">top =
+self.winfo_toplevel()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.menuBar =
+tk.Menu(top)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">top.config(menu=self.menuBar)</span></p>
+<p lang="en-GB" class="western">The file menu is then created
+and added with the <b class="calibre2">add_cascade</b> method. The menu items can
+then be added to the menu using the <b class="calibre2">add_command</b> method.</p>
+<p lang="en-GB" class="c5"><span class="c6">self.fileMenu =
+tk.Menu(self.menuBar)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.menuBar.add_cascade(label='File',
+menu=self.fileMenu)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.fileMenu.add_command(label='Open...',
+command=self.load)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.fileMenu.add_command(label='Save as...',
+command=self.save)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.fileMenu.add_command(label='Exit',
+command=self.quit)</span></p>
+<p lang="en-GB" class="western">The help menu is then defined in
+the same way as the file menu. The only difference is that the tear
+off keyword is set to 0, without this it is possible to select the
+tear off on the menu and move the menu away from the form.</p>
+<p lang="en-GB" class="western">For the simple notepad
+application we need to add a couple of methods to support the menu
+commands the first one is the <b class="calibre2">load</b> method to load a
+file.</p>
+<p lang="en-GB" class="c5"><span class="c6">def
+load(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">filename =
+filedialog.askopenfilename(title='Open my File',
+defaultextension='.txt',</span></p>
+<p lang="en-GB" class="c5"><span class="c6">filetypes=[('Text
+files', '*.txt'), ('All files', '*.*')])</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># check a file name
+has been selected</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if filename !=
+'':</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># open a file and
+read</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile =
+open(filename, "r")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">lines =
+myfile.read()</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.close()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">try:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.editText.delete(1.0, tk.END)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">except
+Exception:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">pass</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Add the text to the
+screen</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.editText.insert(tk.END, lines)</span></p>
+<p lang="en-GB" class="western">The load method uses the
+<b class="calibre2">askopenfilename</b> dialog to allow the user to select the file
+to open in this case the default file extension is set to .txt for
+a text file and the filter allows the options for text files or to
+show all files. The returned string from <b class="calibre2">askopenfilename</b> is
+checked to make sure that the user didn't select cancel. If there
+is a string then the file is opened and read. To display the text
+on the screen any existing text must be removed form the text box,
+this is done using the <b class="calibre2">delete</b> method specifying that all
+characters from the first one to the end are deleted. This
+<b class="calibre2">delete</b> command is within a <b class="calibre2">try-except</b> statement in
+case there the text box is empty which would cause and exception.
+Finally the text is then inserted into the text box.</p>
+<p lang="en-GB" class="c5"><span class="c6">def
+save(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile =
+filedialog.asksaveasfile(title='Save my File',
+defaultextension='.txt', filetypes=[('Text files', '*.txt'), ('All
+files', '*.*')])</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># check a file name
+has been selected</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if myfile !=
+'':</span></p>
+<p lang="en-GB" class="c5"><span class="c6">textstr =
+''</span></p>
+<p lang="en-GB" class="c5"><span class="c6">try:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">textstr =
+self.editText.get(1.0, tk.END)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">except
+Exception:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">pass</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.write(textstr[0:-1])</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.close()</span></p>
+<p lang="en-GB" class="western">The <b class="calibre2">save</b> method is
+similar to the <b class="calibre2">load</b> method, remember that the
+<b class="calibre2">asksaveasfile</b> returns a file instance not a string unlike
+the <b class="calibre2">askopenfilename</b> option. If the file is opened then the
+text is read from the Text widget using the <b class="calibre2">get</b> method
+specifying all the text from the first character to the last, this
+is done within a <b class="calibre2">try-except</b> statement in case there is no
+text which would cause an error. The data is then written to the
+file. You will notice that the last character of the string is not
+written to the file this is because text data from a text widget
+ends with a line feed so before it is written the last character
+should be removed.</p>
+<p lang="en-GB" class="c5"><span class="c6">def
+help(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">messagebox.showinfo('About', 'Simple Notepad Program\nby
+Essential Python')</span></p>
+<p lang="en-GB" class="western">The help method simply uses a
+showinfo message box to display some details about the program. The
+last thing that needs to be added is the code to create the
+form.</p>
+<p lang="en-GB" class="c5"><span class="c6"># Create the
+form</span></p>
+<p lang="en-GB" class="c5"><span class="c6">form =
+Application()</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># set the form
+title</span></p>
+<p lang="en-GB" class="c5"><span class="c6">form.master.title('tkinter Notepad')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">form.mainloop()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">The full listing can
+be found in appendix</span></p>
+<h2 lang="en-GB" class="western4">Resizing the form</h2>
+<p lang="en-GB" class="western">If you try to resize the form
+you will find that the form size will change but the text box size
+doesn't change. The amount that each column or row grows to fill a
+form is defined by the <b class="calibre2">weight</b>, the default is that each row
+and column has a <b class="calibre2">weight</b> of 0 which means that the column and
+rows do not expand to fill spare space. If one column had the
+<b class="calibre2">weight</b> of four and another the <b class="calibre2">weight</b> of one then one
+would expand by four pixels and the other by one pixel.</p>
+<p lang="en-GB" class="western">The following shows how the
+constructor needs to be changed so that the frame and its contents
+resize.</p>
+<p lang="en-GB" class="c5"><span class="c6">def __init__(self,
+master=None):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">tk.Frame.__init__(self, master)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># make the form
+resizable</span></p>
+<p lang="en-GB" class="c5"><span class="c6">top =
+self.winfo_toplevel()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">top.rowconfigure(0,
+weight=1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">top.columnconfigure(0,
+weight=1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.rowconfigure(0,
+weight=1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.columnconfigure(0, weight=1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.grid(sticky='n' +
+'s' + 'e' + 'w')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Create the text
+widget</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.editText =
+tk.Text(self, height=20, width=80)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.editText.grid(row=0, column=0, sticky='n' + 's' + 'e' +
+'w')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># create top level
+menu widget</span></p>
+<p lang="en-GB" class="c5"><span class="c6">top =
+self.winfo_toplevel()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.menuBar =
+tk.Menu(top)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">top.config(menu=self.menuBar)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># create file
+menu</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.fileMenu =
+tk.Menu(self.menuBar)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.menuBar.add_cascade(label='File',
+menu=self.fileMenu)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.fileMenu.add_command(label='Open...',
+command=self.load)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.fileMenu.add_command(label='Save as...',
+command=self.save)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.fileMenu.add_command(label='Exit',
+command=self.quit)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># create help
+menu</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.helpMenu =
+tk.Menu(self.menuBar, tearoff=0)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.menuBar.add_cascade(label='Help',
+menu=self.helpMenu)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.helpMenu.add_command(label='About',
+command=self.help)</span></p>
+<p lang="en-GB" class="western">The first thing is to get an
+instance of the top level form and change the <b class="calibre2">weight</b> of the
+row and columns to one using <b class="calibre2">rowconfigure</b> and
+<b class="calibre2">columnconfigure</b>.</p>
+<p lang="en-GB" class="c5"><span class="c6">top =
+self.winfo_toplevel()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">top.rowconfigure(0,
+weight=1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">top.columnconfigure(0,
+weight=1)</span></p>
+<p lang="en-GB" class="western">The same values are then applied
+to the frame.</p>
+<p lang="en-GB" class="c5"><span class="c6">self.rowconfigure(0,
+weight=1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.columnconfigure(0, weight=1)</span></p>
+<p lang="en-GB" class="western">The widgets that need to resize
+have had sticky options added so they stick in all directions and
+so will stretch with the window.</p>
+<h2 lang="en-GB" class="western4">Scroll Bars</h2>
+<p lang="en-GB" class="western">If you start to use the notepad
+you will quickly discover that there is no scroll bar to allow you
+to easily navigate the screen. Adding a scroll bar is fairly
+straight forward it needs to be added to the right of the text box
+and stick to the top and the bottom of the grid</p>
+<p lang="en-GB" class="c5"><span class="c6">#create scrollbar for
+Text</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.scrollbar =
+tk.Scrollbar(self)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.scrollbar.grid(row=0, column=1, sticky='n' +
+'s')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.scrollbar.config(command=self.editText.yview)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.editText.config(yscrollcommand=self.scrollbar.set)</span></p>
+<p lang="en-GB" class="western">The above code creates the
+scroll bar and then adds it to the grid in column one, since it
+needs to grow vertically when the window is resized its sticky
+configuration is just to the top and bottom of the frame. It is
+then configured to call the Text <b class="calibre2">yview</b> method, this means
+that it will pass its position to the Text widget to use. Finally
+the Text widget <b class="calibre2">yscrollcommand</b> is set to update the scroll
+bar when the Text widget scrolls.</p>
+<p lang="en-GB" class="western">The full listing for the
+complete version of tkinter notepad can be found in appendix 5.</p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+</body>
+</html>

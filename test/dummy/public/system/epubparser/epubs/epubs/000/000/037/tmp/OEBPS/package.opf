@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<package xmlns="http://www.idpf.org/2007/opf" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" version="3.0" xml:lang="en" unique-identifier="pub-identifier">
+  <metadata>
+    <dc:identifier id="pub-identifier">_40164294-b6d4-4e23-9972-0e4a7500b111</dc:identifier>
+    <meta id="meta-identifier" property="dcterms:identifier">_40164294-b6d4-4e23-9972-0e4a7500b111</meta>
+    <dc:title id="pub-title">Lonely Road</dc:title>
+    <meta property="dcterms:title" id="meta-title">Lonely Road</meta>
+    <dc:language id="pub-language">en</dc:language>
+    <meta property="dcterms:language" id="meta-language">en</meta>
+    <meta property="dcterms:modified">2015-08-27T18:09:50Z</meta>
+    <!--The preceding date value is actually local time (not UTC) in UTC format because there is no function in XSLT 1.0 to generate a correct UTC time-->
+    <meta content="cover-image" name="cover"/>
+    <meta id="meta-creator2" property="dcterms:creator">Nevil Shute</meta>
+    <dc:creator id="pub-creator2">Nevil Shute</dc:creator>
+    <meta property="dcterms:date">2015-08-27</meta>
+    <dc:date>2015-08-27</dc:date>
+    <meta property="dcterms:publisher">epubBooks Classics</meta>
+    <dc:publisher>epubBooks Classics</dc:publisher>
+    <meta property="dcterms:rights">Copyright © 2015 epubBooks</meta>
+    <dc:rights>Copyright © 2015 epubBooks</dc:rights>
+    <meta property="dcterms:rightsHolder">epubBooks</meta>
+    <meta property="dcterms:subject">Thriller / Suspense Fiction</meta>
+    <dc:subject>Thriller / Suspense Fiction</dc:subject>
+  </metadata>
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+    <item id="htmltoc" properties="nav" media-type="application/xhtml+xml" href="bk01-toc.xhtml"/>
+    <item media-type="text/css" id="html-css" href="epubbooks.css"/>
+    <item media-type="text/css" id="docbook-css" href="docbook-epub.css"/>
+    <item id="cover" href="cover.xhtml" media-type="application/xhtml+xml"/>
+    <item id="cover-image" properties="cover-image" href="bookcover-generated.jpg" media-type="image/jpeg"/>
+    <item id="id-idp140228846648928" href="index.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228785211568" href="pr01.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228784955008" href="pr02.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228777920464" href="pr03.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228889948752" href="ch01.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228861560816" href="ch02.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228820028112" href="ch03.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228796874736" href="ch04.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228817424208" href="ch05.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228784871328" href="ch06.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228820667808" href="ch07.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228871270448" href="ch08.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228814180880" href="ch09.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228846777824" href="ch10.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228854214384" href="ch11.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228794510912" href="ch12.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228844015264" href="ch13.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228839921312" href="ch14.xhtml" media-type="application/xhtml+xml"/>
+    <item id="id-idp140228842541296" href="ch15.xhtml" media-type="application/xhtml+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="cover" linear="no"/>
+    <itemref idref="htmltoc" linear="yes"/>
+    <itemref idref="id-idp140228846648928"/>
+    <itemref idref="id-idp140228785211568"/>
+    <itemref idref="id-idp140228784955008"/>
+    <itemref idref="id-idp140228777920464"/>
+    <itemref idref="id-idp140228889948752"/>
+    <itemref idref="id-idp140228861560816"/>
+    <itemref idref="id-idp140228820028112"/>
+    <itemref idref="id-idp140228796874736"/>
+    <itemref idref="id-idp140228817424208"/>
+    <itemref idref="id-idp140228784871328"/>
+    <itemref idref="id-idp140228820667808"/>
+    <itemref idref="id-idp140228871270448"/>
+    <itemref idref="id-idp140228814180880"/>
+    <itemref idref="id-idp140228846777824"/>
+    <itemref idref="id-idp140228854214384"/>
+    <itemref idref="id-idp140228794510912"/>
+    <itemref idref="id-idp140228844015264"/>
+    <itemref idref="id-idp140228839921312"/>
+    <itemref idref="id-idp140228842541296"/>
+  </spine>
+  <guide>
+    <reference href="cover.xhtml" type="cover" title="Cover"/>
+    <reference href="bk01-toc.xhtml" type="toc" title="Table of Contents"/>
+  </guide>
+</package>

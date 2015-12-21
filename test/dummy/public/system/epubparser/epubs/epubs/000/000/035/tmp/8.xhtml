@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Program for Fibonacci numbers</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="program-for-fibonacci-numbers" class="section level1">
+<h1>Program for Fibonacci numbers</h1>
+<p>The Fibonacci numbers are the numbers in the following integer sequence.<span id="more-10120"></span></p>
+<p>0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 141, ……..</p>
+<p>In mathematical terms, the sequence Fn of Fibonacci numbers is defined by the recurrence relation</p>
+<pre><code> 
+    Fn = Fn-1 + Fn-2 </code></pre>
+<p>with seed values</p>
+<pre><code> 
+   F0 = 0 and F1 = 1.  </code></pre>
+<p>Write a function <em>int fib(int n)</em> that returns F<sub>n</sub>. For example, if <em>n</em> = 0, then <em>fib()</em> should return 0. If n = 1, then it should return 1. For n &gt; 1, it should return F<sub>n-1</sub> + F<sub>n-2</sub></p>
+<p>Following are different methods to get the nth Fibonacci number.</p>
+<p><strong>Method 1 ( Use recursion )</strong><br /> A simple method that is a direct recusrive implementation mathematical recurance relation given above.</p>
+<pre><code> 
+#include&lt;stdio.h&gt;
+int fib(int n)
+{
+   if (n &lt;= 1)
+      return n;
+   return fib(n-1) + fib(n-2);
+}
+
+int main ()
+{
+  int n = 9;
+  printf(&quot;%d&quot;, fib(n));
+  getchar();
+  return 0;
+}
+ </code></pre>
+<p><em>Time Complexity:</em> T(n) = T(n-1) + T(n-2) which is exponential.<br /> We can observe that this implementation does a lot of repeated work (see the following recursion tree). So this is a bad implementation for nth Fibonacci number.</p>
+<pre><code> 
+                         fib(5)   
+                     /             \     
+               fib(4)                fib(3)   
+             /      \                /     \
+         fib(3)      fib(2)         fib(2)    fib(1)
+        /     \        /    \       /    \  
+  fib(2)   fib(1)  fib(1) fib(0) fib(1) fib(0)
+  /    \
+fib(1) fib(0)
+ </code></pre>
+<p><em>Extra Space:</em> O(n) if we consider the function call stack size, otherwise O(1).</p>
+<p><strong>Method 2 ( Use Dynamic Programming )</strong><br /> We can avoid the repeated work done is the method 1 by storing the Fibonacci numbers calculated so far.</p>
+<pre><code> 
+#include&lt;stdio.h&gt;
+
+int fib(int n)
+{
+  /* Declare an array to store Fibonacci numbers. */
+  int f[n+1];
+  int i;
+
+  /* 0th and 1st number of the series are 0 and 1*/
+  f[0] = 0;
+  f[1] = 1;
+
+  for (i = 2; i &lt;= n; i++)
+  {
+      /* Add the previous 2 numbers in the series
+         and store it */
+      f[i] = f[i-1] + f[i-2];
+  }
+
+  return f[n];
+}
+
+int main ()
+{
+  int n = 9;
+  printf(&quot;%d&quot;, fib(n));
+  getchar();
+  return 0;
+}
+ </code></pre>
+<p><em>Time Complexity:</em> O(n)<br /> <em>Extra Space:</em> O(n)</p>
+<p><strong>Method 3 ( Space Otimized Method 2 )</strong><br /> We can optimize the space used in method 2 by storing the previous two numbers only because that is all we need to get the next Fibannaci number in series.</p>
+<pre><code> 
+#include&lt;stdio.h&gt;
+int fib(int n)
+{
+  int a = 0, b = 1, c, i;
+  if( n == 0)
+    return a;
+  for (i = 2; i &lt;= n; i++)
+  {
+     c = a + b;
+     a = b;
+     b = c;
+  }
+  return b;
+}
+
+int main ()
+{
+  int n = 9;
+  printf(&quot;%d&quot;, fib(n));
+  getchar();
+  return 0;
+}
+ </code></pre>
+<p><em>Time Complexity:</em> O(n)<br /> <em>Extra Space:</em> O(1)</p>
+<p><strong>Method 4 ( Using power of the matrix {{1,1},{1,0}} )</strong><br /> This another O(n) which relies on the fact that if we n times multiply the matrix M = {{1,1},{1,0}} to itself (in other words calculate power(M, n )), then we get the (n+1)th Fibonacci number as the element at row and column (0, 0) in the resultant matrix.</p>
+<p>The matrix representation gives the following closed expression for the Fibonacci numbers:<br /> <a href="http://d2hc1qfcrygj4j.cloudfront.net//wp-content/uploads/fibonaccimatrix.png"><img src="media/file0.png" alt="fibonaccimatrix" /></a></p>
+<pre><code> 
+#include &lt;stdio.h&gt;
+
+/* Helper function that multiplies 2 matricies F and M of size 2*2, and
+  puts the multiplication result back to F[][] */
+void multiply(int F[2][2], int M[2][2]);
+
+/* Helper function that calculates F[][] raise to the power n and puts the
+  result in F[][]
+  Note that this function is desinged only for fib() and won&#39;t work as general
+  power function */
+void power(int F[2][2], int n);
+
+int fib(int n)
+{
+  int F[2][2] = {{1,1},{1,0}};
+  if (n == 0)
+      return 0;
+  power(F, n-1);
+
+  return F[0][0];
+}
+
+void multiply(int F[2][2], int M[2][2])
+{
+  int x =  F[0][0]*M[0][0] + F[0][1]*M[1][0];
+  int y =  F[0][0]*M[0][1] + F[0][1]*M[1][1];
+  int z =  F[1][0]*M[0][0] + F[1][1]*M[1][0];
+  int w =  F[1][0]*M[0][1] + F[1][1]*M[1][1];
+
+  F[0][0] = x;
+  F[0][1] = y;
+  F[1][0] = z;
+  F[1][1] = w;
+}
+
+void power(int F[2][2], int n)
+{
+  int i;
+  int M[2][2] = {{1,1},{1,0}};
+
+  // n - 1 times multiply the matrix to {{1,0},{0,1}}
+  for (i = 2; i &lt;= n; i++)
+      multiply(F, M);
+}
+
+/* Driver program to test above function */
+int main()
+{
+  int n = 9;
+  printf(&quot;%d&quot;, fib(n));
+  getchar();
+  return 0;
+}
+ </code></pre>
+<p><em><br /> Time Complexity:</em> O(n)<br /> <em>Extra Space:</em> O(1)</p>
+<p><strong>Method 5 ( Optimized Method 4 )</strong><br /> The method 4 can be optimized to work in O(Logn) time complexity. We can do recursive multiplication to get power(M, n) in the prevous method (Similar to the optimization done in <a href="http://geeksforgeeks.org/?p=28">this</a>post)</p>
+<pre><code> 
+#include &lt;stdio.h&gt;
+
+void multiply(int F[2][2], int M[2][2]);
+
+void power(int F[2][2], int n);
+
+/* function that returns nth Fibonacci number */
+int fib(int n)
+{
+  int F[2][2] = {{1,1},{1,0}};
+  if (n == 0)
+    return 0;
+  power(F, n-1);
+  return F[0][0];
+}
+
+/* Optimized version of power() in method 4 */
+void power(int F[2][2], int n)
+{
+  if( n == 0 || n == 1)
+      return;
+  int M[2][2] = {{1,1},{1,0}};
+
+  power(F, n/2);
+  multiply(F, F);
+
+  if (n%2 != 0)
+     multiply(F, M);
+}
+
+void multiply(int F[2][2], int M[2][2])
+{
+  int x =  F[0][0]*M[0][0] + F[0][1]*M[1][0];
+  int y =  F[0][0]*M[0][1] + F[0][1]*M[1][1];
+  int z =  F[1][0]*M[0][0] + F[1][1]*M[1][0];
+  int w =  F[1][0]*M[0][1] + F[1][1]*M[1][1];
+
+  F[0][0] = x;
+  F[0][1] = y;
+  F[1][0] = z;
+  F[1][1] = w;
+}
+
+/* Driver program to test above function */
+int main()
+{
+  int n = 9;
+  printf(&quot;%d&quot;, fib(9));
+  getchar();
+  return 0;
+}
+ </code></pre>
+<p><strong><em>Time Complexity:</em> O(Logn)</strong><br /> <em>Extra Space:</em> O(Logn) if we consider the function call stack size, otherwise O(1).</p>
+<p>Please write comments if you find the above codes/algorithms incorrect, or find other ways to solve the same problem.</p>
+<p><strong>References:</strong><br /> <a href="http://en.wikipedia.org/wiki/Fibonacci_number" class="uri">http://en.wikipedia.org/wiki/Fibonacci_number</a><br /> <a href="http://www.ics.uci.edu/~eppstein/161/960109.html" class="uri">http://www.ics.uci.edu/~eppstein/161/960109.html</a></p>
+<p><br /></p>
+<div id="source-3" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/program-for-nth-fibonacci-number/" class="uri">http://www.geeksforgeeks.org/program-for-nth-fibonacci-number/</a></p>
+</div>
+</div>
+</body>
+</html>
+

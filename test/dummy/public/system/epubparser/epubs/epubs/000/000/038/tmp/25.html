@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='utf-8'?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy for Linux (vers 7 December 2008), see www.w3.org"/>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8"/>
+
+<meta name="GENERATOR" content="OpenOffice.org 3.0 (Unix)"/>
+<meta name="CREATED" content="20151109;11564100"/>
+<meta name="CHANGED" content="20151129;1342700"/>
+<meta name="Info_1" content=""/>
+<meta name="Info_2" content=""/>
+<meta name="Info_3" content=""/>
+<meta name="Info_4" content=""/>
+<title>Essential Python</title>
+<meta content="http://www.w3.org/1999/xhtml; charset=utf-8" http-equiv="Content-Type"/><link href="stylesheet.css" type="text/css" rel="stylesheet"/><style type="text/css">
+		@page { margin-bottom: 5.000000pt; margin-top: 5.000000pt; }</style></head>
+<body dir="ltr" class="calibre">
+<h1 lang="en-GB" class="western3" id="calibre_pb_22"><a id="HTML_Parsing"></a> 24.
+HTML Parsing</h1>
+<p lang="en-GB" class="western">Python includes libraries for
+reading html files and parsing them. The simplest example is
+probably to download a website page and display source.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+html1.py</span></p>
+<p lang="en-GB" class="c5"><span class="c6">from urllib.request
+import urlopen</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">sock =
+urlopen('http://www.google.com')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">htmlSource =
+sock.read()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">sock.close()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(htmlSource)</span></p>
+<p lang="en-GB" class="western">To parse the html data would
+obviously take some effort but Python has a library to make the
+task easier. The <b class="calibre2">HTMLParser</b> class works in a similar way to
+the XML parser in that you overload methods to get access to the
+parsed data. The example below opens a web site and then parses it.
+The required methods from HTML parser are overloaded in a new class
+<b class="calibre2">HTMLExtract</b> which simply displays the type of fields read
+in.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+html2.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">from html.parser
+import HTMLParser</span></p>
+<p lang="en-GB" class="c5"><span class="c6">from urllib.request
+import urlopen</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+HTMLExtract(HTMLParser):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+reset(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># extend (called by
+SGMLParser.__init__)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.pieces =
+[]</span></p>
+<p lang="en-GB" class="c5"><span class="c6">HTMLParser.reset(self)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+handle_starttag(self, tag, attrs):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Start
+Tag')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+handle_endtag(self, tag):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('End
+Tag')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+handle_charref(self, ref):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Char
+Ref')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+handle_entityref(self, ref):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Entity
+Ref')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def handle_data(self,
+text):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Data')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+handle_comment(self, text):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Comment')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def handle_pi(self,
+text):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('pi')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def handle_decl(self,
+text):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Decleration')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+output(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">"""Return processed
+HTML as a single string"""</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Need some
+output')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">sock =
+urlopen('http://www.google.com/')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">htmlSource =
+sock.read()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">sock.close()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">parser =
+HTMLExtract()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">parser.feed(str(htmlSource))</span></p>
+<p lang="en-GB" class="western">The above example is not
+particularly useful but suppose you want to extract the urls from a
+web site then this suddenly becomes a useful as all that is needed
+is to override the handle<b class="calibre2">_starttag</b> method and display the
+attribute which contains the url for the hyper link.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+html3.py</span></p>
+<p lang="en-GB" class="c5"><span class="c6">from html.parser
+import HTMLParser</span></p>
+<p lang="en-GB" class="c5"><span class="c6">from urllib.request
+import urlopen</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+BaseHTMLProcessor(HTMLParser):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+__init__(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">HTMLParser.__init__(self)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.href =
+False</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+reset(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># extend (called by
+SGMLParser.__init__)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">HTMLParser.reset(self)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def error(self,
+message):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('HTML
+Error')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+handle_starttag(self, tag, attrs):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if tag ==
+'a':</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(attrs[0][1])</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">sock =
+urlopen("http://www.avon-mc.org.uk")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">htmlSource =
+sock.read()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">sock.close()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">parser =
+BaseHTMLProcessor()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">parser.feed(str(htmlSource))</span></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+</body>
+</html>

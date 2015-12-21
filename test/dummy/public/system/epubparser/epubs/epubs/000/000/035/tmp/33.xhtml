@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Longest Palindromic Substring | Set 1</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="longest-palindromic-substring-set-1" class="section level1">
+<h1>Longest Palindromic Substring | Set 1</h1>
+<p>Given a string, find the longest substring which is palindrome. For example, if the given string is “forgeeksskeegfor”, the output should be “geeksskeeg”.<span id="more-25463"></span></p>
+<p><strong>Method 1 ( Brute Force )</strong><br /> The simple approach is to check each substring whether the substring is a palindrome or not. We can run three loops, the outer two loops pick all substrings one by one by fixing the corner characters, the inner loop checks whether the picked substring is palindrome or not.</p>
+<p>Time complexity: O ( n^3 )<br /> Auxiliary complexity: O ( 1 )</p>
+<p><strong>Method 2 ( Dynamic Programming )</strong><br /> The time complexity can be reduced by storing results of subproblems. The idea is similar to <a href="http://www.geeksforgeeks.org/archives/19155">this</a>post. We maintain a boolean table[n][n] that is filled in bottom up manner. The value of table[i][j] is true, if the substring is palindrome, otherwise false. To calculate table[i][j], we first check the value of table[i+1][j-1], if the value is true and str[i] is same as str[j], then we make table[i][j] true. Otherwise, the value of table[i][j] is made false.</p>
+<pre><code> 
+// A dynamic programming solution for longest palindr.
+// This code is adopted from following link
+// http://www.leetcode.com/2011/11/longest-palindromic-substring-part-i.html
+
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+// A utility function to print a substring str[low..high]
+void printSubStr( char* str, int low, int high )
+{
+    for( int i = low; i &lt;= high; ++i )
+        printf(&quot;%c&quot;, str[i]);
+}
+
+// This function prints the longest palindrome substring
+// of str[].
+// It also returns the length of the longest palindrome
+int longestPalSubstr( char *str )
+{
+    int n = strlen( str ); // get length of input string
+
+    // table[i][j] will be false if substring str[i..j]
+    // is not palindrome.
+    // Else table[i][j] will be true
+    bool table[n][n];
+    memset(table, 0, sizeof(table));
+
+    // All substrings of length 1 are palindromes
+    int maxLength = 1;
+    for (int i = 0; i &lt; n; ++i)
+        table[i][i] = true;
+
+    // check for sub-string of length 2.
+    int start = 0;
+    for (int i = 0; i &lt; n-1; ++i)
+    {
+        if (str[i] == str[i+1])
+        {
+            table[i][i+1] = true;
+            start = i;
+            maxLength = 2;
+        }
+    }
+
+    // Check for lengths greater than 2. k is length
+    // of substring
+    for (int k = 3; k &lt;= n; ++k)
+    {
+        // Fix the starting index
+        for (int i = 0; i &lt; n-k+1 ; ++i)
+        {
+            // Get the ending index of substring from
+            // starting index i and length k
+            int j = i + k - 1;
+
+            // checking for sub-string from ith index to
+            // jth index iff str[i+1] to str[j-1] is a
+            // palindrome
+            if (table[i+1][j-1] &amp;&amp; str[i] == str[j])
+            {
+                table[i][j] = true;
+
+                if (k &gt; maxLength)
+                {
+                    start = i;
+                    maxLength = k;
+                }
+            }
+        }
+    }
+
+    printf(&quot;Longest palindrome substring is: &quot;);
+    printSubStr( str, start, start + maxLength - 1 );
+
+    return maxLength; // return length of LPS
+}
+
+// Driver program to test above functions
+int main()
+{
+    char str[] = &quot;forgeeksskeegfor&quot;;
+    printf(&quot;\nLength is: %d\n&quot;, longestPalSubstr( str ) );
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> Longest palindrome substring is: geeksskeeg
+Length is: 10 </code></pre>
+<p>Time complexity: O ( n^2 )<br /> Auxiliary Space: O ( n^2 )</p>
+<p>We will soon be adding more optimized methods as separate posts.</p>
+<p>Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above.</p>
+<p><br /></p>
+<div id="source-28" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/longest-palindrome-substring-set-1/" class="uri">http://www.geeksforgeeks.org/longest-palindrome-substring-set-1/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-strings/">Strings</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+<p>Given a graph and a source vertex <em>src</em> in graph, find shortest paths from <em>src</em> to all vertices in the given graph. The graph may contain negative weight edges.<span id="more-27914"></span><br /> We have discussed <a href="http://www.geeksforgeeks.org/archives/27697">Dijkstra’s algorithm</a> for this problem. Dijksra’s algorithm is a Greedy algorithm and time complexity is O(VLogV) (with the use of Fibonacci heap). <em>Dijkstra doesn’t work for Graphs with negative weight edges, Bellman-Ford works for such graphs. Bellman-Ford is also simpler than Dijkstra and suites well for distributed systems. But time complexity of Bellman-Ford is O(VE), which is more than Dijkstra.</em></p>
+<p><strong>Algorithm</strong><br /> Following are the detailed steps.</p>
+<p><em>Input:</em> Graph and a source vertex <em>src</em><br /> <em>Output:</em> Shortest distance to all vertices from <em>src</em>. If there is a negative weight cycle, then shortest distances are not calculated, negative weight cycle is reported.</p>
+<p><strong>1)</strong> This step initializes distances from source to all vertices as infinite and distance to source itself as 0. Create an array dist[] of size |V| with all values as infinite except dist[src] where src is source vertex.</p>
+<p><strong>2)</strong> This step calculates shortest distances. Do following |V|-1 times where |V| is the number of vertices in given graph.<br /> …..<strong>a)</strong> Do following for each edge u-v<br /> ………………If dist[v] &gt; dist[u] + weight of edge uv, then update dist[v]<br /> ………………….dist[v] = dist[u] + weight of edge uv</p>
+<p><strong>3)</strong> This step reports if there is a negative weight cycle in graph. Do following for each edge u-v<br /> ……If dist[v] &gt; dist[u] + weight of edge uv, then “Graph contains negative weight cycle”<br /> The idea of step 3 is, step 2 guarantees shortest distances if graph doesn’t contain negative weight cycle. If we iterate through all edges one more time and get a shorter path for any vertex, then there is a negative weight cycle</p>
+<p><em><strong>How does this work?</strong></em> Like other Dynamic Programming Problems, the algorithm calculate shortest paths in bottom-up manner. It first calculates the shortest distances for the shortest paths which have at-most one edge in the path. Then, it calculates shortest paths with at-nost 2 edges, and so on. After the ith iteration of outer loop, the shortest paths with at most i edges are calculated. There can be maximum |V| – 1 edges in any simple path, that is why the outer loop runs |v| – 1 times. The idea is, assuming that there is no negative weight cycle, if we have calculated shortest paths with at most i edges, then an iteration over all edges guarantees to give shortest path with at-most (i+1) edges (Proof is simple, you can refer <a href="http://courses.csail.mit.edu/6.006/spring11/lectures/lec15.pdf">this</a> or <a href="http://www.youtube.com/watch?v=Ttezuzs39nk">MIT Video Lecture</a>)</p>
+<p><strong>Example</strong><br /> Let us understand the algorithm with following example graph. The images are taken from <a href="http://www.cs.arizona.edu/classes/cs445/spring07/ShortestPath2.prn.pdf">this</a>source.</p>
+<p>Let the given source vertex be 0. Initialize all distances as infinite, except the distance to source itself. Total number of vertices in the graph is 5, so <em>all edges must be processed 4 times.</em></p>
+<p><a href="http://d2hc1qfcrygj4j.cloudfront.net//wp-content/uploads/bellman2.png"><img src="media/file12.png" title="bellman2" alt="Example Graph" /></a></p>
+<p>Let all edges are processed in following order: (B,E), (D,B), (B,D), (A,B), (A,C), (D,C), (B,C), (E,D). We get following distances when all edges are processed first time. The first row in shows initial distances. The second row shows distances when edges (B,E), (D,B), (B,D) and (A,B) are processed. The third row shows distances when (A,C) is processed. The fourth row shows when (D,C), (B,C) and (E,D) are processed.<br /> <a href="http://d2hc1qfcrygj4j.cloudfront.net//wp-content/uploads/After1stIteration.png"><img src="media/file13.png" title="After1stIteration" /></a></p>
+<p>The first iteration guarantees to give all shortest paths which are at most 1 edge long. We get following distances when all edges are processed second time (The last row shows final values).</p>
+<p><a href="http://d2hc1qfcrygj4j.cloudfront.net//wp-content/uploads/seconditeration2.png"><img src="media/file14.png" title="seconditeration" /></a></p>
+<p>The second iteration guarantees to give all shortest paths which are at most 2 edges long. The algorithm processes all edges 2 more times. The distances are minimized after the second iteration, so third and fourth iterations don’t update the distances.</p>
+<p><strong>Implementation:</strong></p>
+<pre><code> 
+// A C / C++ program for Bellman-Ford&#39;s single source shortest path algorithm.
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;limits.h&gt;
+
+// a structure to represent a weighted edge in graph
+struct Edge
+{
+    int src, dest, weight;
+};
+
+// a structure to represent a connected, directed and weighted graph
+struct Graph
+{
+    // V-&gt; Number of vertices, E-&gt; Number of edges
+    int V, E;
+
+    // graph is represented as an array of edges.
+    struct Edge* edge;
+};
+
+// Creates a graph with V vertices and E edges
+struct Graph* createGraph(int V, int E)
+{
+    struct Graph* graph = (struct Graph*) malloc( sizeof(struct Graph) );
+    graph-&gt;V = V;
+    graph-&gt;E = E;
+
+    graph-&gt;edge = (struct Edge*) malloc( graph-&gt;E * sizeof( struct Edge ) );
+
+    return graph;
+}
+
+// A utility function used to print the solution
+void printArr(int dist[], int n)
+{
+    printf(&quot;Vertex   Distance from Source\n&quot;);
+    for (int i = 0; i &lt; n; ++i)
+        printf(&quot;%d \t\t %d\n&quot;, i, dist[i]);
+}
+
+// The main function that finds shortest distances from src to all other
+// vertices using Bellman-Ford algorithm.  The function also detects negative
+// weight cycle
+void BellmanFord(struct Graph* graph, int src)
+{
+    int V = graph-&gt;V;
+    int E = graph-&gt;E;
+    int dist[V];
+
+    // Step 1: Initialize distances from src to all other vertices as INFINITE
+    for (int i = 0; i &lt; V; i++)
+        dist[i]   = INT_MAX;
+    dist[src] = 0;
+
+    // Step 2: Relax all edges |V| - 1 times. A simple shortest path from src
+    // to any other vertex can have at-most |V| - 1 edges
+    for (int i = 1; i &lt;= V-1; i++)
+    {
+        for (int j = 0; j &lt; E; j++)
+        {
+            int u = graph-&gt;edge[j].src;
+            int v = graph-&gt;edge[j].dest;
+            int weight = graph-&gt;edge[j].weight;
+            if (dist[u] != INT_MAX &amp;&amp; dist[u] + weight &lt; dist[v])
+                dist[v] = dist[u] + weight;
+        }
+    }
+
+    // Step 3: check for negative-weight cycles.  The above step guarantees
+    // shortest distances if graph doesn&#39;t contain negative weight cycle.
+    // If we get a shorter path, then there is a cycle.
+    for (int i = 0; i &lt; E; i++)
+    {
+        int u = graph-&gt;edge[i].src;
+        int v = graph-&gt;edge[i].dest;
+        int weight = graph-&gt;edge[i].weight;
+        if (dist[u] != INT_MAX &amp;&amp; dist[u] + weight &lt; dist[v])
+            printf(&quot;Graph contains negative weight cycle&quot;);
+    }
+
+    printArr(dist, V);
+
+    return;
+}
+
+// Driver program to test above functions
+int main()
+{
+    /* Let us create the graph given in above example */
+    int V = 5;  // Number of vertices in graph
+    int E = 8;  // Number of edges in graph
+    struct Graph* graph = createGraph(V, E);
+
+    // add edge 0-1 (or A-B in above figure)
+    graph-&gt;edge[0].src = 0;
+    graph-&gt;edge[0].dest = 1;
+    graph-&gt;edge[0].weight = -1;
+
+    // add edge 0-2 (or A-C in above figure)
+    graph-&gt;edge[1].src = 0;
+    graph-&gt;edge[1].dest = 2;
+    graph-&gt;edge[1].weight = 4;
+
+    // add edge 1-2 (or B-C in above figure)
+    graph-&gt;edge[2].src = 1;
+    graph-&gt;edge[2].dest = 2;
+    graph-&gt;edge[2].weight = 3;
+
+    // add edge 1-3 (or B-D in above figure)
+    graph-&gt;edge[3].src = 1;
+    graph-&gt;edge[3].dest = 3;
+    graph-&gt;edge[3].weight = 2;
+
+    // add edge 1-4 (or A-E in above figure)
+    graph-&gt;edge[4].src = 1;
+    graph-&gt;edge[4].dest = 4;
+    graph-&gt;edge[4].weight = 2;
+
+    // add edge 3-2 (or D-C in above figure)
+    graph-&gt;edge[5].src = 3;
+    graph-&gt;edge[5].dest = 2;
+    graph-&gt;edge[5].weight = 5;
+
+    // add edge 3-1 (or D-B in above figure)
+    graph-&gt;edge[6].src = 3;
+    graph-&gt;edge[6].dest = 1;
+    graph-&gt;edge[6].weight = 1;
+
+    // add edge 4-3 (or E-D in above figure)
+    graph-&gt;edge[7].src = 4;
+    graph-&gt;edge[7].dest = 3;
+    graph-&gt;edge[7].weight = -3;
+
+    BellmanFord(graph, 0);
+
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> Vertex   Distance from Source
+0                0
+1                -1
+2                2
+3                -2
+4                1 </code></pre>
+<p><strong>Notes</strong><br /> <strong>1)</strong> Negative weights are found in various applications of graphs. For example, instead of paying cost for a path, we may get some advantage if we follow the path.</p>
+<p><strong>2)</strong> Bellman-Ford works better (better than Dijksra’s) for distributed systems. Unlike Dijksra’s where we need to find minimum value of all vertices, in Bellman-Ford, edges are considered one by one.</p>
+<p><strong>Exercise</strong><br /> <strong>1)</strong> The standard Bellman-Ford algorithm reports shortest path only if there is no negative weight cycles. Modify it so that it reports minimum distances even if there is a negative weight cycle.</p>
+<p><strong>2)</strong> Can we use Dijksra’s algorithm for shortest paths for graphs with negative weights – one idea can be, calculate the minimum weight value, add a positive value (equal to absolute value of minimum weight value) to all weights and run the Dijksra’s algorithm for the modified graph. Will this algorithm work?</p>
+<p><strong>References:</strong><br /> <a href="http://www.youtube.com/watch?v=Ttezuzs39nk" class="uri">http://www.youtube.com/watch?v=Ttezuzs39nk</a><br /> <a href="http://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm">http://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm</a><br /> <a href="http://www.cs.arizona.edu/classes/cs445/spring07/ShortestPath2.prn.pdf" class="uri">http://www.cs.arizona.edu/classes/cs445/spring07/ShortestPath2.prn.pdf</a></p>
+<p>Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above.</p>
+<p><br /></p>
+</div>
+<div id="source-29" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/dynamic-programming-set-23-bellman-ford-algorithm/" class="uri">http://www.geeksforgeeks.org/dynamic-programming-set-23-bellman-ford-algorithm/</a></p>
+</div>
+</div>
+</body>
+</html>
+

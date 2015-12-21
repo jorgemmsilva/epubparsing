@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Dynamic Programming | Set 18 (Partition problem)</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="dynamic-programming-set-18-partition-problem" class="section level1">
+<h1>Dynamic Programming | Set 18 (Partition problem)</h1>
+<p>Partition problem is to determine whether a given set can be partitioned into two subsets such that the sum of elements in both subsets is same. <span id="more-21579"></span></p>
+<p>Examples</p>
+<pre><code> 
+arr[] = {1, 5, 11, 5}
+Output: true 
+The array can be partitioned as {1, 5, 5} and {11}
+
+arr[] = {1, 5, 3}
+Output: false 
+The array cannot be partitioned into equal sum sets.
+ </code></pre>
+<p>Following are the two main steps to solve this problem:<br /> 1) Calculate sum of the array. If sum is odd, there can not be two subsets with equal sum, so return false.<br /> 2) If sum of array elements is even, calculate sum/2 and find a subset of array with sum equal to sum/2.</p>
+<p>The first step is simple. The second step is crucial, it can be solved either using recursion or Dynamic Programming.</p>
+<p><strong>Recursive Solution</strong><br /> Following is the recursive property of the second step mentioned above.</p>
+<pre><code> 
+Let isSubsetSum(arr, n, sum/2) be the function that returns true if 
+there is a subset of arr[0..n-1] with sum equal to sum/2
+
+The isSubsetSum problem can be divided into two subproblems
+ a) isSubsetSum() without considering last element 
+    (reducing n to n-1)
+ b) isSubsetSum considering the last element 
+    (reducing sum/2 by arr[n-1] and n to n-1)
+If any of the above the above subproblems return true, then return true. 
+isSubsetSum (arr, n, sum/2) = isSubsetSum (arr, n-1, sum/2) ||
+                              isSubsetSum (arr, n-1, sum/2 - arr[n-1])
+ </code></pre>
+<pre><code> 
+// A recursive solution for partition problem
+#include &lt;stdio.h&gt;
+
+// A utility function that returns true if there is a subset of arr[]
+// with sun equal to given sum
+bool isSubsetSum (int arr[], int n, int sum)
+{
+   // Base Cases
+   if (sum == 0)
+     return true;
+   if (n == 0 &amp;&amp; sum != 0)
+     return false;
+
+   // If last element is greater than sum, then ignore it
+   if (arr[n-1] &gt; sum)
+     return isSubsetSum (arr, n-1, sum);
+
+   /* else, check if sum can be obtained by any of the following
+      (a) including the last element
+      (b) excluding the last element
+   */
+   return isSubsetSum (arr, n-1, sum) || isSubsetSum (arr, n-1, sum-arr[n-1]);
+}
+
+// Returns true if arr[] can be partitioned in two subsets of
+// equal sum, otherwise false
+bool findPartiion (int arr[], int n)
+{
+    // Calculate sum of the elements in array
+    int sum = 0;
+    for (int i = 0; i &lt; n; i++)
+       sum += arr[i];
+
+    // If sum is odd, there cannot be two subsets with equal sum
+    if (sum%2 != 0)
+       return false;
+
+    // Find if there is subset with sum equal to half of total sum
+    return isSubsetSum (arr, n, sum/2);
+}
+
+// Driver program to test above function
+int main()
+{
+  int arr[] = {3, 1, 5, 9, 12};
+  int n = sizeof(arr)/sizeof(arr[0]);
+  if (findPartiion(arr, n) == true)
+     printf(&quot;Can be divided into two subsets of equal sum&quot;);
+  else
+     printf(&quot;Can not be divided into two subsets of equal sum&quot;);
+  getchar();
+  return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> Can be divided into two subsets of equal sum </code></pre>
+<p>Time Complexity: O(2^n) In worst case, this solution tries two possibilities (whether to include or exclude) for every element.</p>
+<p><br /> <strong>Dynamic Programming Solution</strong><br /> The problem can be solved using dynamic programming when the sum of the elements is not too big. We can create a 2D array part[][] of size (sum/2)*(n+1). And we can construct the solution in bottom up manner such that every filled entry has following property</p>
+<pre><code> 
+part[i][j] = true if a subset of {arr[0], arr[1], ..arr[j-1]} has sum 
+             equal to i, otherwise false
+ </code></pre>
+<pre><code> 
+// A Dynamic Programming solution to partition problem
+#include &lt;stdio.h&gt;
+
+// Returns true if arr[] can be partitioned in two subsets of
+// equal sum, otherwise false
+bool findPartiion (int arr[], int n)
+{
+    int sum = 0;
+    int i, j;
+  
+    // Caculcate sun of all elements
+    for (i = 0; i &lt; n; i++)
+      sum += arr[i];
+    
+    if (sum%2 != 0)  
+       return false;
+  
+    bool part[sum/2+1][n+1];
+    
+    // initialize top row as true
+    for (i = 0; i &lt;= n; i++)
+      part[0][i] = true;
+      
+    // initialize leftmost column, except part[0][0], as 0
+    for (i = 1; i &lt;= sum/2; i++)
+      part[i][0] = false;     
+     
+     // Fill the partition table in botton up manner 
+     for (i = 1; i &lt;= sum/2; i++)  
+     {
+       for (j = 1; j &lt;= n; j++)  
+       {
+         part[i][j] = part[i][j-1];
+         if (i &gt;= arr[j-1])
+           part[i][j] = part[i][j] || part[i - arr[j-1]][j-1];
+       }        
+     }    
+     
+    /* // uncomment this part to print table 
+     for (i = 0; i &lt;= sum/2; i++)  
+     {
+       for (j = 0; j &lt;= n; j++)  
+          printf (&quot;%4d&quot;, part[i][j]);
+       printf(&quot;\n&quot;);
+     } */ 
+     
+     return part[sum/2][n];
+}     
+
+// Driver program to test above funtion
+int main()
+{
+  int arr[] = {3, 1, 1, 2, 2, 1};
+  int n = sizeof(arr)/sizeof(arr[0]);
+  if (findPartiion(arr, n) == true)
+     printf(&quot;Can be divided into two subsets of equal sum&quot;);
+  else
+     printf(&quot;Can not be divided into two subsets of equal sum&quot;);
+  getchar();
+  return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> Can be divided into two subsets of equal sum </code></pre>
+<p>Following diagram shows the values in partition table. The diagram is taken form the <a href="http://en.wikipedia.org/wiki/Partition_problem">wiki page of partition problem</a>.<br /> <a href="http://d2hc1qfcrygj4j.cloudfront.net//wp-content/uploads/Partition_Prob_DP_table_example2.jpg"><img src="media/file9.jpg" /></a></p>
+<p>Time Complexity: O(sum*n)<br /> Auxiliary Space: O(sum*n)<br /> Please note that this solution will not be feasible for arrays with big sum.</p>
+<p><strong>References:</strong><br /> <a href="http://en.wikipedia.org/wiki/Partition_problem" class="uri">http://en.wikipedia.org/wiki/Partition_problem</a></p>
+<p><br /> Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above.</p>
+<p><br /></p>
+<div id="source-23" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/dynamic-programming-set-18-partition-problem/" class="uri">http://www.geeksforgeeks.org/dynamic-programming-set-18-partition-problem/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-arrays/">Arrays</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+<p><br /></p>
+<p>Post navigation</p>
+<p><span class="nav-previous"><a href="http://www.geeksforgeeks.org/automata-theory-set-5/"><span class="meta-nav">←</span> Automata Theory | Set 5</a></span> <span class="nav-next"><a href="http://www.geeksforgeeks.org/database-management-systems-set-11/">Database Management Systems | Set 11 <span class="meta-nav">→</span></a></span></p>
+<p>Writing code in comment? Please use <a href="http://code.geeksforgeeks.org/">code.geeksforgeeks.org</a>, generate link and share the link here.</p>
+</div>
+</div>
+</body>
+</html>
+

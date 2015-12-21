@@ -1,0 +1,639 @@
+<?xml version='1.0' encoding='utf-8'?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy for Linux (vers 7 December 2008), see www.w3.org"/>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8"/>
+
+<meta name="GENERATOR" content="OpenOffice.org 3.0 (Unix)"/>
+<meta name="CREATED" content="20151109;11564100"/>
+<meta name="CHANGED" content="20151129;1342700"/>
+<meta name="Info_1" content=""/>
+<meta name="Info_2" content=""/>
+<meta name="Info_3" content=""/>
+<meta name="Info_4" content=""/>
+<title>Essential Python</title>
+<meta content="http://www.w3.org/1999/xhtml; charset=utf-8" http-equiv="Content-Type"/><link href="stylesheet.css" type="text/css" rel="stylesheet"/><style type="text/css">
+		@page { margin-bottom: 5.000000pt; margin-top: 5.000000pt; }</style></head>
+<body dir="ltr" class="calibre">
+<h1 lang="en-GB" class="western3" id="calibre_pb_14"><a id="Input_and_Output"></a>
+16. Input and Output</h1>
+<p lang="en-GB" class="western">This chapter covers input and
+output it covers keyboard, screen and files.</p>
+<h2 lang="en-GB" class="western4">Screen Output</h2>
+<p lang="en-GB" class="western">The simplest way of writing data
+to the screen is to use the <b class="calibre2">print</b> statement, this has
+already been used in preceding examples. The <b class="calibre2">print</b> statement
+takes the expressions passed in to it and converts them into a
+string which it then displays on the screen.</p>
+<p lang="en-GB" class="western">The general syntax of the print
+statement is</p>
+<p lang="en-GB" class="c5"><span class="c6">print([object, ...][,
+sep=' '][,end='\n'][, file=sys.stdout])</span></p>
+<p lang="en-GB" class="western">The keyword arguments
+<b class="calibre2">sep</b>, <b class="calibre2">end</b> and <b class="calibre2">file</b> control the <b class="calibre2">print</b>
+statement. The <b class="calibre2">sep</b> keyword defines the string that is
+inserted between each objects text, if this isn't specified then a
+single space is used.</p>
+<p lang="en-GB" class="western">The <b class="calibre2">end</b> keyword specifies
+the string that is placed at the end of each <b class="calibre2">print</b> statement
+if it is not specified then the default is for a line feed ('\n')
+to be appended to each string. If an empty string is passed then
+the next print statement will follow directly after the previous
+one.</p>
+<p lang="en-GB" class="western">The <b class="calibre2">file</b> keyword
+specifies where the string is sent the default is to the
+sys.stdout. The following example demonstrates the various
+possibilities available with the print statement.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+print.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Simple
+print</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Hello
+World")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(123)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># print with multiple
+fields</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Hello ",
+"World")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Number",
+234)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># print with default
+separator</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(1, 2, 3, 4,
+5)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># print with separator
+as ,</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(1, 2, 3, 4, 5,
+sep=', ')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># print with standard
+line endings</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Hello")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("World")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># print with no line
+ending</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Hello ",
+end='')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("World")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># change the separator
+and ending</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(1, 2, 3, 4, 5,
+sep=', ', end='..\n')</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># write and read to a
+file stream</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Hello World",
+end='..\n', file=open('Test.txt', 'w'))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(open('Test.txt').read())</span></p>
+<p lang="en-GB" class="western">The output of the print.py is
+shown below.</p>
+<p lang="en-GB" class="c5"><span class="c6">Hello World</span></p>
+<p lang="en-GB" class="c5"><span class="c6">123</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Hello World</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Number 234</span></p>
+<p lang="en-GB" class="c5"><span class="c6">1 2 3 4 5</span></p>
+<p lang="en-GB" class="c5"><span class="c6">1, 2, 3, 4,
+5</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Hello</span></p>
+<p lang="en-GB" class="c5"><span class="c6">World</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Hello World</span></p>
+<p lang="en-GB" class="c5"><span class="c6">1, 2, 3, 4,
+5..</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Hello
+World..</span></p>
+<p lang="en-GB" class="western">Although you can use the
+<b class="calibre2">print</b> statement as seen above to format output it is usually
+better to use a formatted string to send the data.</p>
+<h2 lang="en-GB" class="western4">Keyboard Input</h2>
+<p lang="en-GB" class="western">There is only a single input
+statement which is input this reads a line of text from the
+keyboard and returns it as a string. It can be used with or without
+a prompt as shown below.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+inputOutput.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># input with a
+prompt</span></p>
+<p lang="en-GB" class="c5"><span class="c6">mystr = input('Enter a
+string: ')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(mystr)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># input without a
+prompt</span></p>
+<p lang="en-GB" class="c5"><span class="c6">mystr =
+input()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(mystr)</span></p>
+<h2 lang="en-GB" class="western4">Opening Files for Reading and
+Writing</h2>
+<p lang="en-GB" class="western">To read or write to a file the
+file first needs to opened this is done using the <b class="calibre2">open</b>
+command which creates a file object. The syntax is as follows</p>
+<p lang="en-GB" class="c5"><span class="c6">fileobject =
+open(filename[,accessmode][,buffering])</span></p>
+<p lang="en-GB" class="western">The <b class="calibre2">filename</b> argument is
+the name of the file that is to be opened this can include the path
+of the file.</p>
+<p lang="en-GB" class="western">The <b class="calibre2">accessmode</b> argument
+determines how the file should be opened by defining how data is
+read from or written to the file. If no access mode is defined then
+the default is for the file to be opened in read mode. The list
+below shows the various available access modes</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">r</b> Opens a file
+for reading from.</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">rb</b> Opens a file
+in binary mode for reading from</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">r+</b> Opens a file
+for reading from and writing to.</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">rb+</b> Opens a file
+in binary mode for reading from and writing to.</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">w</b> Opens a file
+for writing to, if the file does not exist the it is created, if
+the file does exist then the existing file is over written.</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">wb</b> Opens a file
+in binary mode for writing to, if the file does not exist the it is
+created, if the file does exist then the existing file is over
+written.</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">w+</b> Opens a file
+for reading and writing to, if the file does not exist the it is
+created, if the file does exist then the existing file is over
+written.</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">wb+</b> Opens a file
+in binary mode for reading and writing to, if the file does not
+exist the it is created, if the file does exist then the existing
+file is over written.</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">a</b> Opens a file
+for appending to, if the file does not exist then it is
+created.</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">ab</b> Opens a file
+in binary mode for appending to, if the file does not exist then it
+is created.</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">ab+</b> Opens a file
+in binary mode for appending to and reading from, if the file does
+not exist then it is created.</p>
+<p lang="en-GB" class="western">If you want to open a Unicode
+file then the encoding can be specified in the open command.</p>
+<p lang="en-GB" class="c5"><span class="c6">open(“Test.txt”,
+encoding = 'latin-1')</span></p>
+<h2 lang="en-GB" class="western4">Writing to Files</h2>
+<p lang="en-GB" class="western">Once a file object has been
+created by opening it the file it can then be written to. To write
+data to a file the <b class="calibre2">write</b> method is used this sends the data
+to the file. The data is sent as a string but can contain binary
+data. The string is written to the file without a new line
+character appended to the end.</p>
+<p lang="en-GB" class="c5"><span class="c6">file.write("Data")</span></p>
+<h2 lang="en-GB" class="western4">Reading from Files</h2>
+<p lang="en-GB" class="western">Data is read out of file using
+the <b class="calibre2">read</b> method, the syntax for the read method is</p>
+<p lang="en-GB" class="c5"><span class="c6">file.read([bytes])</span></p>
+<p lang="en-GB" class="western">where bytes is the number of
+bytes to read, if the number of bytes to read is not specified then
+as many bytes as possible will be read.</p>
+<p lang="en-GB" class="western">If you want to load a list of
+strings from a file then you can use the <b class="calibre2">readlines</b> method.
+This has an optional argument that defines how many lines get
+read.</p>
+<p lang="en-GB" class="c5"><span class="c6">filedata =
+file.readlines()</span></p>
+<h2 lang="en-GB" class="western4">Closing Files</h2>
+<p lang="en-GB" class="western">When a file is finished with
+then it needs to be closed using the <b class="calibre2">close</b> method, if the
+file has been written to then any remaining data will be flushed
+from the buffers and written to the file. If it is required to
+write any data that might be in the output buffer to the file
+without closing the file then the <b class="calibre2">flush</b> method can be
+used.</p>
+<p lang="en-GB" class="western">The following code demonstrates
+the basic file operations.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+file.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># open a
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile =
+open('MyFile.txt', 'w')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># write some
+data</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.write('Line
+1\n')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.write('Line
+2\n')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.write('Line
+3\n')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.write('Line
+4\n')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.close()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># open a file and read
+a byte at a time</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile =
+open('MyFile.txt', 'r')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">byte = 1</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># loop until byte is
+False which indicate EOF</span></p>
+<p lang="en-GB" class="c5"><span class="c6">while byte:</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># read a byte a
+time</span></p>
+<p lang="en-GB" class="c5"><span class="c6">byte =
+myfile.read(1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(byte)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.close()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># open a file and read
+in one go</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile =
+open('MyFile.txt', 'r')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myfile.read())</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.close()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># open a file and read
+as lines</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile =
+open('MyFile.txt', 'r')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">lines =
+myfile.readlines()</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.close()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">for mystr in
+lines:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(mystr)</span></p>
+<p lang="en-GB" class="western">The code creates a text file
+then reads it in three different ways the first is to read an
+individual byte a time, the second reads the entire file into a
+string and the final reads the entire file into a list of
+strings.</p>
+<h2 lang="en-GB" class="western4">Binary Files</h2>
+<p lang="en-GB" class="western">The example above used text
+files to save some data and read it back, text files contain normal
+strings and performs end of line translation, in contrast binary
+files contain raw data . For most applications this is the file
+type that you will end up using.</p>
+<p lang="en-GB" class="western">The easiest way to store native
+Python objects and binary data is to use the pickle library module
+which takes care of serializing the objects. Serializing is a
+technique to package all the data into a binary sequence which is
+then written to the file.</p>
+<p lang="en-GB" class="c5"><span class="c6"># file:
+filebinarypickle.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># import the pickle
+module</span></p>
+<p lang="en-GB" class="c5"><span class="c6">import
+pickle</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># open a
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myFile =
+open("MyFile.bin", "wb")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># write some
+data</span></p>
+<p lang="en-GB" class="c5"><span class="c6">x = 20</span></p>
+<p lang="en-GB" class="c5"><span class="c6">y =
+(range(10))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">z = ["Ali", "Kate",
+"Andy", "Jane"]</span></p>
+<p lang="en-GB" class="c5"><span class="c6">pickle.dump(x,
+myFile)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">pickle.dump(y,
+myFile)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">pickle.dump(z,
+myFile)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myFile.close()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># open a
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myFile =
+open("MyFile.bin", "rb")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># read some
+data</span></p>
+<p lang="en-GB" class="c5"><span class="c6">x =
+pickle.load(myFile)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">y =
+pickle.load(myFile)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">z =
+pickle.load(myFile)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(x)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(y)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(z)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myFile.close()</span></p>
+<p lang="en-GB" class="western">While pickle is powerful if you
+need to have a file that can be opened or is created by another
+language (C, C++, JAVA etc) then pickle is probably not the best
+choice as it is not possible to guarantee how the data will be
+packed. So in these cases packing the binary data manually is
+probably the best option as the file format can then be
+guaranteed.</p>
+<p lang="en-GB" class="western">Packed binary files can be
+created with the <b class="calibre2">struct</b> module the syntax to read and write
+packed data is as follows.</p>
+<p lang="en-GB" class="c5"><span class="c6">struct.pack(fmt, v1,
+v2, ...)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">struct.unpack(fmt,
+string)</span></p>
+<p lang="en-GB" class="western">The <b class="calibre2">fmt</b> argument
+specifies the format of the data to be written or read. The first
+character of the format string determines the byte order, size and
+alignment.</p>
+<p lang="en-GB" class="list-indent-western">@ Native byte order,
+native size and native alignment</p>
+<p lang="en-GB" class="list-indent-western">= Native byte order,
+standard size and no alignment</p>
+<p lang="en-GB" class="list-indent-western">&lt; Little-endian,
+standard size and no alignment</p>
+<p lang="en-GB" class="list-indent-western">&gt; Big-endian,
+standard size and no alignment</p>
+<p lang="en-GB" class="list-indent-western">! Network (=
+big-endian), standard size and no alignment</p>
+<p lang="en-GB" class="western">The rest of the formatting
+string contains flags detailing the types of data to pack or
+unpack.</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">x</b> C Type: pad
+byte Python Type: no value</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">c</b> C Type: char
+Python Type: string Size: 1</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">b</b> C Type: signed
+char Python Type: integer Size: 1</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">B</b> C Type:
+unsigned char Python Type: integer Size: 1</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">?</b> C Type: _Bool
+Python Type: bool Size: 1</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">h</b> C Type: short
+Python Type: integer Size: 2</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">H</b> C Type:
+unsigned short Python Type: integer Size: 2</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">i</b> C Type: int
+Python Type: integer Size: 4</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">I</b> C Type:
+unsigned int Python Type: integer Size: 4</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">l</b> C Type: long
+Python Type: integer Size: 4</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">L</b> C Type:
+unsigned long Python Type: integer Size: 4</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">q</b> C Type: long
+long Python Type: integer Size: 8</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">Q</b> C Type:
+unsigned long long Python Type: integer Size: 8</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">f</b> C Type: float
+Python Type: float Size: 4</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">d</b> C Type: double
+Python Type: float Size: 8</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">s</b> C Type: char[]
+Python Type: string</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">p</b> C Type: char[]
+Python Type: string</p>
+<p lang="en-GB" class="list-indent-western"><b class="calibre2">P</b> C Type: void *
+Python Type: integer</p>
+<p lang="en-GB" class="western">So if it is required to pack a
+string, float and unsigned int in little endian format the format
+string would be <b class="calibre2">&lt;sfI</b>. If you try this you will find that
+it fails if you try to write a string and read it back you'll only
+get the first character. This is because the length of the string
+needs to be specified so if string is 6 bytes long then the format
+string would be <b class="calibre2">&lt;6sfI</b>.</p>
+<p lang="en-GB" class="c5"><span class="c6"># file:
+filebinarystruct.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># import the pickle
+module</span></p>
+<p lang="en-GB" class="c5"><span class="c6">import
+struct</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># open a
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myFile =
+open("MyFile.bin", "wb")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># write some
+data</span></p>
+<p lang="en-GB" class="c5"><span class="c6">fileData =
+struct.pack('&lt;6sfI', b'Fugazi', 3.124, 1000)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myFile.write(fileData)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myFile.close()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># open a
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myFile =
+open("MyFile.bin", "rb")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p class="SWsoftchapter"> </p>
+<p lang="en-GB" class="c5"><span class="c6"># read the data and
+unpack it into a list</span></p>
+<p lang="en-GB" class="c5"><span class="c6">data =
+myFile.read()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">unpacked =
+struct.unpack('&lt;6sfI', data)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(unpacked)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myFile.close()</span></p>
+<h2 lang="en-GB" class="western4">Moving around Files</h2>
+<p lang="en-GB" class="western">Some times when writing to or
+reading from files it is necessary to move the current position in
+the file that is being written to or read from, to move within a
+file the <b class="calibre2">seek</b> method can be used.</p>
+<p lang="en-GB" class="c5"><span class="c6">file.seek (offset [,
+from])</span></p>
+<p lang="en-GB" class="western">The offset specifies how many
+bytes to move within the file this can be a positive number to move
+forward or a negative value to move backwards in the file. The
+<b class="calibre2">from</b> argument gives a position for the <b class="calibre2">seek</b> method to
+index from, 0 causes it to be referenced from the beginning of the
+file, 1 is the current position and 2 is the end of the file. The
+following code will position the file pointer to 5 bytes in from
+the start of the file.</p>
+<p lang="en-GB" class="c5"><span class="c6">file.seek(5,
+0)</span></p>
+<p lang="en-GB" class="western">The <b class="calibre2">tell</b> method can be
+used to find the position of the file pointer. The following code
+shows <b class="calibre2">seek</b> and <b class="calibre2">tell</b> in action.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+filePosition.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># open a
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile =
+open('MyFile.txt', 'w')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># write some
+data</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.write('Line
+1\n')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.write('Line
+2\n')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.write('Line
+3\n')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.write('Line
+4\n')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.close()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># open the file for
+reading</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile =
+open('MyFile.txt', 'r')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">mystr =
+myfile.read()</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># print the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(mystr)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># iterate though the
+file printing the last character of each line</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for i in range(5,
+len(mystr) + 2, 8):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.seek(i)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Index: ',
+myfile.tell(), ' = ', myfile.read(1))</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.close()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="western">In the example a file is created
+<b class="calibre2">seek</b> is then used to display the last character of each line
+of the file.</p>
+<p lang="en-GB" class="western">The <b class="calibre2">for</b> loop starts with
+the value 5 which is the index of the last character of the first
+line, it then increases the index by the line length which is 7
+this is the number of characters in the string plus the null
+terminator, it does this until the end of the file.</p>
+<h2 lang="en-GB" class="western4">File Attributes</h2>
+<p lang="en-GB" class="western">When a file is open you can get
+information about the file with the following</p>
+<p lang="en-GB" class="list-indent-western">file.close Returns True
+if the file is closed.</p>
+<p lang="en-GB" class="list-indent-western">file.mode Returns the
+access mode that was used to open the file.</p>
+<p lang="en-GB" class="list-indent-western">file.name Returns the
+file name.</p>
+<p lang="en-GB" class="western">The following code shows an
+example of the file attributes.</p>
+<p lang="en-GB" class="c5"><span class="c6"># file:
+FileAttributes.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># open a
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile =
+open('MyFile.txt', 'w')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Closed:',
+myfile.closed)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Mode:',
+myfile.mode)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Name:',
+myfile.name)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.close()</span></p>
+<h2 lang="en-GB" class="western4">Managing Files and
+Directories</h2>
+<p lang="en-GB" class="western">Python includes functions for
+working with files and directories these methods are part of the os
+module.</p>
+<p lang="en-GB" class="western">The <b class="calibre2">rename</b> method is used
+to rename files, this takes the arguments of the current name of
+the file to be changed and the new filename that it is to be
+renamed to.</p>
+<p lang="en-GB" class="c5"><span class="c6">os.rename(currentfilename, newfilename)</span></p>
+<p lang="en-GB" class="western">To delete a file the
+<b class="calibre2">remove</b> method can be used this takes a single argument which
+is the name of the file to delete</p>
+<p lang="en-GB" class="c5"><span class="c6">os.remove(filename)</span></p>
+<p lang="en-GB" class="western">If you want to create a new
+directory the <b class="calibre2">mkdir</b> method can be used this takes a single
+argument which is the name of the directory to create</p>
+<p lang="en-GB" class="c5"><span class="c6">os.mkdir(directoryname)</span></p>
+<p lang="en-GB" class="western">To delete a directory the
+<b class="calibre2">rmdir</b> method is used this takes a single argument which is
+the name of the directory to remove. The directory needs to empty
+before the method is called.</p>
+<p lang="en-GB" class="c5"><span class="c6">os.rmdir(directoryname)</span></p>
+<p lang="en-GB" class="western">The current directory can be
+changed using the <b class="calibre2">chdir</b> method this takes the directory to
+move to as its argument.</p>
+<p lang="en-GB" class="c5"><span class="c6">os.chdir(directoryname)</span></p>
+<p lang="en-GB" class="western">To get the path of the current
+directory the <b class="calibre2">getcwd</b> method is used this does not require
+any arguments.</p>
+<p lang="en-GB" class="c5"><span class="c6">os.getcwd()</span></p>
+<p lang="en-GB" class="western">The following example shows
+these functions in action it creates a new directory, changes to
+the directory, creates a file and then displays the directory to
+show the file name has been created.</p>
+<p lang="en-GB" class="western">It then deletes the file,
+changes the current directory to the one above deletes the
+directory it created and then displays the current directory to
+show the file has been deleted.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+filesDirectories.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">import os</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># create a
+directory</span></p>
+<p lang="en-GB" class="c5"><span class="c6">os.mkdir('test')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Current Dir: ',
+os.getcwd())</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># change to new
+directory</span></p>
+<p lang="en-GB" class="c5"><span class="c6">os.chdir('test')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># create a
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile =
+open('MyFile.txt', 'w')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.write('Python')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># close the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myfile.close()</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># get current
+directory</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Current Dir: ',
+os.getcwd())</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># delete the
+file</span></p>
+<p lang="en-GB" class="c5"><span class="c6">os.remove('MyFile.txt')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># change
+directory</span></p>
+<p lang="en-GB" class="c5"><span class="c6">os.chdir('..')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># delete
+directory</span></p>
+<p lang="en-GB" class="c5"><span class="c6">os.rmdir('test')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># get current
+directory</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Current Dir: ',
+os.getcwd())</span></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+</body>
+</html>

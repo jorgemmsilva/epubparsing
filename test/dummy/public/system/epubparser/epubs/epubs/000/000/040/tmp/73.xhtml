@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Minimum Initial Points to Reach Destination</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="minimum-initial-points-to-reach-destination" class="section level1">
+<h1>Minimum Initial Points to Reach Destination</h1>
+<p>Given a grid with each cell consisting of positive, negative or no points i.e, zero points. We can move across a cell only if we have positive points ( &gt; 0 ). <span id="more-135345"></span>Whenever we pass through a cell, points in that cell are added to our overall points. We need to find minimum initial points to reach cell (m-1, n-1) from (0, 0).</p>
+<p>Constraints :</p>
+<ul>
+<li>From a cell (i, j) we can move to (i+1, j) or (i, j+1).</li>
+<li>We cannot move from (i, j) if your overall points at (i, j) is</li>
+<li>We have to reach at (n-1, m-1) with minimum positive points i.e., &gt; 0.</li>
+</ul>
+<pre><code> 
+Input: points[m][n] = { {-2, -3,   3}, 
+                        {-5, -10,  1}, 
+                        {10,  30, -5} 
+                      };
+Output: 7
+Explanation: 
+7 is the minimum value to reach destination with 
+positive throughout the path. Below is the path.
+
+(0,0) -&gt; (0,1) -&gt; (0,2) -&gt; (1, 2) -&gt; (2, 2)
+
+We start from (0, 0) with 7, we reach(0, 1) 
+with 5, (0, 2) with 2, (1, 2) with 5, (2, 2)
+with and finally we have 1 point (we needed 
+greater than 0 points at the end).  </code></pre>
+<p><strong>We strongly recommend you to minimize your browser and try this yourself first.</strong></p>
+<p>At the first look, this problem looks similar <a href="http://www.geeksforgeeks.org/dynamic-programming-set-6-min-cost-path/">Max/Min Cost Path</a>, but maximum overall points gained will not guarantee the minimum initial points. Also, it is compulsory in the current problem that the points never drops to zero or below. For instance, Suppose following two paths exists from source to destination cell.</p>
+<p>We can solve this problem through bottom-up table filling dynamic programing technique.</p>
+<ul>
+<li>To begin with, we should maintain a 2D array dp of the same size as the grid, where dp[i][j] represents the minimum points that guarantees the continuation of the journey to destination before entering the cell (i, j). It’s but obvious that dp[0][0] is our final solution. Hence, for this problem, we need to fill the table from the bottom right corner to left top.</li>
+<li>Now, let us decide minimum points needed to leave cell (i, j) (remember we are moving from bottom to up). There are only two paths to choose: (i+1, j) and (i, j+1). Of course we will choose the cell that the player can finish the rest of his journey with a smaller initial points. Therefore we have: <strong>min_Points_on_exit = min(dp[i+1][j], dp[i][j+1])</strong></li>
+</ul>
+<p>Now we know how to compute min_Points_on_exit, but we need to fill the table dp[][] to get the solution in dp[0][0].</p>
+<p><strong>How to compute dp[i][j]?</strong><br />      The value of dp[i][j] can be written as below.<br /> <strong></strong></p>
+<p>dp[i][j] = max(min_Points_on_exit – points[i][j], 1)</p>
+<p></p>
+<p>Let us see how above expression covers all cases.</p>
+<ul>
+<li>If points[i][j] == 0, then nothing is gained in this cell; the player can leave the cell with the same points as he enters the room with, i.e. dp[i][j] = min_Points_on_exit.</li>
+<li>If dp[i][j] If dp[i][j] &gt; 0, then the player could enter (i, j) with points as little as min_Points_on_exit – points[i][j]. since he could gain “points[i][j]” points in this cell. However, the value of min_Points_on_exit – points[i][j] might drop to 0 or below in this situation. When this happens, we must clip the value to 1 in order to make sure dp[i][j] stays positive:<br /> dp[i][j] = max(min_Points_on_exit – points[i][j], 1).</li>
+</ul>
+<p>Finally return dp[0][0] which is our answer.</p>
+<p>Below is C++ implementation of above algorithm.</p>
+<pre><code> 
+// C++ program to find minimum initial points to reach destination
+#include&lt;bits/stdc++.h&gt;
+#define R 3
+#define C 3
+using namespace std;
+
+int minInitialPoints(int points[][C])
+{
+    // dp[i][j] represents the minimum initial points player
+    // should have so that when starts with cell(i, j) successfully
+    // reaches the destination cell(m-1, n-1)
+    int dp[R][C];
+    int m = R, n = C;
+
+    // Base case
+    dp[m-1][n-1] = points[m-1][n-1] &gt; 0? 1:
+                   abs(points[m-1][n-1]) + 1;
+
+    // Fill last row and last column as base to fill
+    // entire table
+    for (int i = m-2; i &gt;= 0; i--)
+         dp[i][n-1] = max(dp[i+1][n-1] - points[i][n-1], 1);
+    for (int j = n-2; j &gt;= 0; j--)
+         dp[m-1][j] = max(dp[m-1][j+1] - points[m-1][j], 1);
+
+    // fill the table in bottom-up fashion
+    for (int i=m-2; i&gt;=0; i--)
+    {
+        for (int j=n-2; j&gt;=0; j--)
+        {
+            int min_points_on_exit = min(dp[i+1][j], dp[i][j+1]);
+            dp[i][j] = max(min_points_on_exit - points[i][j], 1);
+        }
+     }
+
+     return dp[0][0];
+}
+
+// Driver Program
+int main()
+{
+
+    int points[R][C] = { {-2,-3,3},
+                      {-5,-10,1},
+                      {10,30,-5}
+                    };
+    cout &lt;&lt; &quot;Minimum Initial Points Required: &quot;
+         &lt;&lt; minInitialPoints(points);
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> Minimum Initial Points Required: 7 </code></pre>
+<p>This article is contributed by <a href="http://sudo%20aptitude%20install%20build-essential">Gaurav Ahirwar</a>. Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above</p>
+<p><br /></p>
+<div id="source-69" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/minimum-positive-points-to-reach-destination/" class="uri">http://www.geeksforgeeks.org/minimum-positive-points-to-reach-destination/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-arrays/">Arrays</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a>, <a href="http://www.geeksforgeeks.org/tag/matrix/">Matrix</a></span></p>
+<p><br /></p>
+<p>Post navigation</p>
+<p><span class="nav-previous"><a href="http://www.geeksforgeeks.org/amazon-interview-experience-set-227-on-campus-for-internship-and-full-time/"><span class="meta-nav">←</span> Amazon Interview Experience | Set 227 (On-Campus for Internship and Full-Time)</a></span> <span class="nav-next"><a href="http://www.geeksforgeeks.org/count-of-n-digit-numbers-whose-sum-of-digits-equals-to-given-sum/">Count of n digit numbers whose sum of digits equals to given sum <span class="meta-nav">→</span></a></span></p>
+<p>Writing code in comment? Please use <a href="http://code.geeksforgeeks.org/">code.geeksforgeeks.org</a>, generate link and share the link here.</p>
+</div>
+</div>
+</body>
+</html>
+

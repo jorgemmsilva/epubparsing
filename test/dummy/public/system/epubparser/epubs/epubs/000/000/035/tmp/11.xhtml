@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Dynamic Programming | Set 3 (Longest Increasing Subsequence)</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="dynamic-programming-set-3-longest-increasing-subsequence" class="section level1">
+<h1>Dynamic Programming | Set 3 (Longest Increasing Subsequence)</h1>
+<p>We have discussed Overlapping Subproblems and Optimal Substructure properties in <a href="http://geeksforgeeks.org/?p=12635">Set 1</a> and <a href="http://geeksforgeeks.org/?p=12819">Set 2</a> respectively. <span id="more-12832"></span></p>
+<p>Let us discuss Longest Increasing Subsequence (LIS) problem as an example problem that can be solved using Dynamic Programming.<br /> The longest Increasing Subsequence (LIS) problem is to find the length of the longest subsequence of a given sequence such that all elements of the subsequence are sorted in increasing order. For example, length of LIS for { 10, 22, 9, 33, 21, 50, 41, 60, 80 } is 6 and LIS is {10, 22, 33, 50, 60, 80}.</p>
+<p><strong>Optimal Substructure:</strong><br /> Let arr[0..n-1] be the input array and L(i) be the length of the LIS till index i such that arr[i] is part of LIS and arr[i] is the last element in LIS, then L(i) can be recursively written as.<br /> <em>L(i) = { 1 + Max ( L(j) ) } where j<br /> To get LIS of a given array, we need to return max(L(i)) where 0 Overlapping Subproblems:<br /> Following is simple recursive implementation of the LIS problem. The implementation simply follows the recursive structure mentioned above. The value of lis ending with every element is returned using max_ending_here. The overall lis is returned using pointer to a variable max.</em></p>
+<pre><code> 
+/* A Naive recursive implementation of LIS problem */
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+
+/* To make use of recursive calls, this function must return two things:
+   1) Length of LIS ending with element arr[n-1]. We use max_ending_here 
+      for this purpose
+   2) Overall maximum as the LIS may end with an element before arr[n-1] 
+      max_ref is used this purpose.
+The value of LIS of full array of size n is stored in *max_ref which is our final result
+*/
+int _lis( int arr[], int n, int *max_ref)
+{
+    /* Base case */
+    if(n == 1)
+        return 1;
+
+    int res, max_ending_here = 1; // length of LIS ending with arr[n-1]
+
+    /* Recursively get all LIS ending with arr[0], arr[1] ... ar[n-2]. If 
+       arr[i-1] is smaller than arr[n-1], and max ending with arr[n-1] needs
+       to be updated, then update it */
+    for(int i = 1; i &lt; n; i++)
+    {
+        res = _lis(arr, i, max_ref);
+        if (arr[i-1] &lt; arr[n-1] &amp;&amp; res + 1 &gt; max_ending_here)
+            max_ending_here = res + 1;
+    }
+
+    // Compare max_ending_here with the overall max. And update the
+    // overall max if needed
+    if (*max_ref &lt; max_ending_here)
+       *max_ref = max_ending_here;
+
+    // Return length of LIS ending with arr[n-1]
+    return max_ending_here;
+}
+
+// The wrapper function for _lis()
+int lis(int arr[], int n)
+{
+    // The max variable holds the result
+    int max = 1;
+
+    // The function _lis() stores its result in max
+    _lis( arr, n, &amp;max );
+
+    // returns max
+    return max;
+}
+
+/* Driver program to test above function */
+int main()
+{
+    int arr[] = { 10, 22, 9, 33, 21, 50, 41, 60 };
+    int n = sizeof(arr)/sizeof(arr[0]);
+    printf(&quot;Length of LIS is %d\n&quot;,  lis( arr, n ));
+    getchar();
+    return 0;
+}
+ </code></pre>
+<p>Considering the above implementation, following is recursion tree for an array of size 4. lis(n) gives us the length of LIS for arr[].</p>
+<pre><code>     
+                     lis(4)           
+                 /       |      \
+         lis(3)      lis(2)    lis(1)  
+        /     \        /         
+  lis(2)  lis(1)   lis(1) 
+  /    
+lis(1) 
+ </code></pre>
+<p>We can see that there are many subproblems which are solved again and again. So this problem has Overlapping Substructure property and recomputation of same subproblems can be avoided by either using Memoization or Tabulation. Following is a tabluated implementation for the LIS problem.</p>
+<pre><code> 
+/* Dynamic Programming implementation of LIS problem */
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+
+/* lis() returns the length of the longest increasing subsequence in 
+    arr[] of size n */
+int lis( int arr[], int n )
+{
+   int *lis, i, j, max = 0;
+   lis = (int*) malloc ( sizeof( int ) * n );
+
+   /* Initialize LIS values for all indexes */
+   for ( i = 0; i &lt; n; i++ )
+      lis[i] = 1;
+   
+   /* Compute optimized LIS values in bottom up manner */
+   for ( i = 1; i &lt; n; i++ )
+      for ( j = 0; j &lt; i; j++ )
+         if ( arr[i] &gt; arr[j] &amp;&amp; lis[i] &lt; lis[j] + 1)
+            lis[i] = lis[j] + 1;
+   
+   /* Pick maximum of all LIS values */
+   for ( i = 0; i &lt; n; i++ )
+      if ( max &lt; lis[i] )
+         max = lis[i];
+
+   /* Free memory to avoid memory leak */
+   free( lis );
+
+   return max;
+}
+
+/* Driver program to test above function */
+int main()
+{
+  int arr[] = { 10, 22, 9, 33, 21, 50, 41, 60 };
+  int n = sizeof(arr)/sizeof(arr[0]);
+  printf(&quot;Length of LIS is %d\n&quot;, lis( arr, n ) );
+
+  getchar();
+  return 0;
+}
+ </code></pre>
+<p>Note that the time complexity of the above Dynamic Programmig (DP) solution is O(n^2) and there is a O(nLogn) solution for the LIS problem (see <a href="http://en.wikipedia.org/wiki/Longest_increasing_subsequence#Efficient_algorithms">this</a>). We have not discussed the nLogn solution here as the purpose of this post is to explain Dynamic Programmig with a simple example.</p>
+<p>Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above.</p>
+<p><br /></p>
+<div id="source-6" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/dynamic-programming-set-3-longest-increasing-subsequence/" class="uri">http://www.geeksforgeeks.org/dynamic-programming-set-3-longest-increasing-subsequence/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-programs/">Misc</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+<p><br /></p>
+<p>Post navigation</p>
+<p><span class="nav-previous"><a href="http://www.geeksforgeeks.org/dynamic-programming-set-2-optimal-substructure-property/"><span class="meta-nav">←</span> Dynamic Programming | Set 2 (Optimal Substructure Property)</a></span> <span class="nav-next"><a href="http://www.geeksforgeeks.org/a-boolean-array-puzzle/">A Boolean Array Puzzle <span class="meta-nav">→</span></a></span></p>
+<p>Writing code in comment? Please use <a href="http://code.geeksforgeeks.org/">code.geeksforgeeks.org</a>, generate link and share the link here.</p>
+</div>
+</div>
+</body>
+</html>
+

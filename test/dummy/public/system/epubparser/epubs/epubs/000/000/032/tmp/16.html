@@ -1,0 +1,801 @@
+<?xml version='1.0' encoding='utf-8'?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy for Linux (vers 7 December 2008), see www.w3.org"/>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8"/>
+
+<meta name="GENERATOR" content="OpenOffice.org 3.0 (Unix)"/>
+<meta name="CREATED" content="20151109;11564100"/>
+<meta name="CHANGED" content="20151129;1342700"/>
+<meta name="Info_1" content=""/>
+<meta name="Info_2" content=""/>
+<meta name="Info_3" content=""/>
+<meta name="Info_4" content=""/>
+<title>Essential Python</title>
+<meta content="http://www.w3.org/1999/xhtml; charset=utf-8" http-equiv="Content-Type"/><link href="stylesheet.css" type="text/css" rel="stylesheet"/><style type="text/css">
+		@page { margin-bottom: 5.000000pt; margin-top: 5.000000pt; }</style></head>
+<body dir="ltr" class="calibre">
+<h1 lang="en-GB" class="western3" id="calibre_pb_13"><a id="Classes_and_Objects"></a> 15. Classes and Objects</h1>
+<p lang="en-GB" class="western">Python is an object orientated
+language, so far all the examples in this book have been written
+without using classes. In case you haven't come across classes in
+other programming languages we'll start by explaining some of the
+terms used.</p>
+<p lang="en-GB" class="western">A class is a user defined
+prototype of an object and contains a set of attributes and methods
+that characterise an object of the class. A method is a function
+that can be used by an instance of a class where an instance is a
+single object of the class.</p>
+<p lang="en-GB" class="western">A class variable is a variable
+shared by all instances of a class and is defined within the class
+but not in the class methods. Instant variables are defined in a
+class and are only accessible by the current instance of the class.
+A data member is an instance or class variable that contains data
+associated with a class and its objects.</p>
+<p lang="en-GB" class="western">Function overloading is the
+ability to change the behaviour of a function so the same name can
+be used for different implementations of a function, operator
+overloading is similar to function overloading but allows the
+programmer to change what an operator does.</p>
+<p lang="en-GB" class="western">The term inheritance is used to
+describe when one class inherits another class when it does this it
+inherits the methods and variables associated with that class.</p>
+<h2 lang="en-GB" class="western4">Class Definition</h2>
+<p lang="en-GB" class="western">Classes are defined using the
+class statement followed by the name of the class.</p>
+<p lang="en-GB" class="c5"><span class="c6">class
+classname:</span></p>
+<p lang="en-GB" class="c7">“<span class="c8">documentation
+string”</span></p>
+<p lang="en-GB" class="c5"><span class="c6">class_suite</span></p>
+<p lang="en-GB" class="western">The class definition can have an
+optional document string. The class definition consists of the
+instance variables, methods and functions for the class.</p>
+<p lang="en-GB" class="western">The following is the class
+definition for a rectangle.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+rectangleClass.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># create a rectangle
+class</span></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+Rectangle:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">"""This class defines
+a rectangle"""</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># member
+variables</span></p>
+<p lang="en-GB" class="c5"><span class="c6">rectanglesDefined =
+0</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#
+constructor</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def __init__(self,
+width, height):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.width =
+width</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.height =
+height</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Rectangle.rectanglesDefined += 1</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#
+deconstructor</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+__del__(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Rectangle.rectanglesDefined -= 1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Deconstructor
+called")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># method to get the
+number of rectangles</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+display_num_rectangles(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Number
+Rectangles: ", Rectangle.rectanglesDefined)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># method to display
+the rectangle information</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+display_rectangle(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Width: ",
+self.width, "Height: ", self.height)</span></p>
+<p lang="en-GB" class="western">The first line of the class
+definition defines the class Rectangle in Python class names start
+with a capital letter. The next line of the class definition is the
+document text describing the class this is optional. The document
+text is followed by a class variable definition for
+<b class="calibre2">rectanglesDefined</b> this will be shared by all instances of
+the class and in this case keeps track of the number of rectangles
+which have been defined.</p>
+<p lang="en-GB" class="western">The first method to be defined
+has the name <b class="calibre2">__init__</b> this is a special method called the
+constructor. The constructor is called when an instance of the
+class is created and instantiates the class. In the Rectangle class
+the constructor has three arguments the first is a special argument
+<b class="calibre2">self</b> that shows this function is a method, the other two
+arguments which are assigned to two instance variables within the
+constructor set the size of the rectangle. The instance variables
+are prefixed with <b class="calibre2">self</b> to show they are instance
+variables.</p>
+<p lang="en-GB" class="western">The next function has the
+special name <b class="calibre2">__del__</b> this is the deconstructor and gets
+called when the instance of the class is deleted (see garbage
+collection). In the case of this example it decrements the number
+of rectangles defined and prints a message, usually it would be
+used to tidy up anything that the class was doing for example it
+could check that a file was closed.</p>
+<p lang="en-GB" class="western">There are two more functions
+defined in the class definition the first
+<b class="calibre2">displayNumberRectangles</b> prints the number of rectangles that
+have been defined this prints the data variable and is prefixed
+with the class name. The final function <b class="calibre2">displayRectangle</b>
+prints the values of the instance variables.</p>
+<p lang="en-GB" class="western">To use the class add the
+following lines of code</p>
+<p lang="en-GB" class="c5"><span class="c6"># define two
+rectangles</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Rect1 = Rectangle(2,
+5)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Rect2 = Rectangle(6,
+7)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># display the
+rectangle information</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Rect1.display_rectangle()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Rect2.display_rectangle()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># display the number
+of rectangles</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Rect2.display_num_rectangles()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(Rectangle.rectanglesDefined)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># change a value of an
+instance of the class</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Rect1.height =
+4</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Rect1.display_rectangle()</span></p>
+<p lang="en-GB" class="western">When the code is run it creates
+two instances of the class, the values for these two instances are
+then displayed. The next two lines show different ways of accessing
+the <b class="calibre2">rectanglesDefined</b> data variable, the first is using the
+<b class="calibre2">displayNumberRectangles</b> method and the second demonstrates
+accessing the variable directly as this is a data variable it is
+prefixed with the class name.</p>
+<p lang="en-GB" class="western">The final two lines show
+accessing the instance variable <b class="calibre2">height</b> of <b class="calibre2">Rect1</b>
+directly and then printing <b class="calibre2">Rect1</b> to show that it has
+changed. When you run this script you should see the following.</p>
+<p lang="en-GB" class="c5"><span class="c6">Width: 2 Height:
+5</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Width: 6 Height:
+7</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Number Rectangles:
+2</span></p>
+<p lang="en-GB" class="c5"><span class="c6">2</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Width: 2 Height:
+4</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Deconstructor
+Called</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Deconstructor
+Called</span></p>
+<p lang="en-GB" class="western">The last two lines of the output
+show that the deconstructor was called when each instance of the
+class was deleted from memory.</p>
+<p lang="en-GB" class="western">Classes are usually defined in
+individual files and are imported in the same way as a module.</p>
+<p lang="en-GB" class="western">If you have used OOP in other
+languages such as C++ or Java you will probably be wandering how
+you define private instance variables, in Python there is no such
+thing as a private attributes however there is a convention as with
+modules which is to use an underscore to show other programmers
+that the instance variable is private and should not be accessed
+directly.</p>
+<p lang="en-GB" class="western">If you want to hide an object
+attributes then you can use a double underscore to make the
+attribute invisible to the outside.</p>
+<h2 lang="en-GB" class="western4">Static methods</h2>
+<p lang="en-GB" class="western">Sometimes it is useful to have a
+method in a class that can be accessed without instantiating a
+instance of the class. In the rectangle class such a method could
+be used for reading the rectanglesDefined variable.</p>
+<p lang="en-GB" class="c5"><span class="c6">@staticmethod</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+getreactanglesdefined():</span></p>
+<p lang="en-GB" class="c5"><span class="c6">return
+rectanglesDefined</span></p>
+<p lang="en-GB" class="western">The <b class="calibre2">@staticmethod</b>
+decorator is used to show that the method is static, the method can
+be called as follows without the need to create an instance of the
+class.</p>
+<p lang="en-GB" class="c5"><span class="c6">Rectangle.getreactanglesdefined()</span></p>
+<h2 lang="en-GB" class="western4">Inheritance</h2>
+<p lang="en-GB" class="western">The powerful thing about classes
+is they can inherit properties from another class this helps with
+code reuse and can make maintenance simpler. To understand
+inheritance it is easiest to use an example. If project is has to
+store information on road vehicles then the vehicles will have some
+information that they share so the base class might contain the
+following data.</p>
+<p lang="en-GB" class="western7">class Vehicle</p>
+<p lang="en-GB" class="c5"><span class="c6">number_wheels</span></p>
+<p lang="en-GB" class="c5"><span class="c6">colour</span></p>
+<p lang="en-GB" class="c5"><span class="c6">number_doors</span></p>
+<p lang="en-GB" class="western">The types of vehicle need to be
+defined, if the vehicle classes are car class, lorry class and a
+crane class, then these classes might contain the additional member
+variables shown below.</p>
+<p lang="en-GB" class="western7">class Car</p>
+<p lang="en-GB" class="c5"><span class="c6">is_estate</span></p>
+<p lang="en-GB" class="list-indent-western1">class Lorry</p>
+<p lang="en-GB" class="c5"><span class="c6">maximum_axle_weight</span></p>
+<p lang="en-GB" class="c5"><span class="c6">is_articulated</span></p>
+<p lang="en-GB" class="western7">class Crane</p>
+<p lang="en-GB" class="c5"><span class="c6">jib_length</span></p>
+<p lang="en-GB" class="c5"><span class="c6">maximum_lift_weight</span></p>
+<p lang="en-GB" class="western">So the car class would inherit
+the vehicle class, the lorry class would inherit the vehicle class
+and the crane class would inherit both the lorry and vehicle
+classes.</p>
+<p lang="en-GB" class="western">So with this inheritance crane
+ends up with the following attributes.</p>
+<p lang="en-GB" class="c5"><span class="c6">number_wheels</span></p>
+<p lang="en-GB" class="c5"><span class="c6">colour</span></p>
+<p lang="en-GB" class="c5"><span class="c6">number_doors</span></p>
+<p lang="en-GB" class="c5"><span class="c6">max_axle_weight</span></p>
+<p lang="en-GB" class="c5"><span class="c6">is_articulated</span></p>
+<p lang="en-GB" class="c5"><span class="c6">jib_length</span></p>
+<p lang="en-GB" class="c5"><span class="c6">maximum_lift_weight</span></p>
+<p lang="en-GB" class="western">As well as the attributes crane
+will also have any methods defined in the class that it has
+inherited. The following script demonstrates the class structure
+defined above, usually you would define each class in a separate
+file but for clarity all the classes have been defined in one
+file.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+classInheritance.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># create a Vehicle
+class</span></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+Vehicle:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">"""This class defines
+a vehicle"""</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># data
+variable</span></p>
+<p lang="en-GB" class="c5"><span class="c6">VehiclesDefined =
+0</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#
+constructor</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def __init__(self,
+numberwheels, colour):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.numberwheels =
+numberwheels</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.colour =
+colour</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Vehicle.VehiclesDefined += 1</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#
+deconstructor</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+__del__(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Vehicle
+deconstructor called")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+print_vehicle(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(self.numberwheels, ", ", self.colour)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+Car(Vehicle):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">"""This class defines
+a car"""</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># data
+variable</span></p>
+<p lang="en-GB" class="c5"><span class="c6">CarsDefined =
+0</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#
+constructor</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def __init__(self,
+numberwheels, colour, isestate):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.isestate =
+isestate</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.numberwheels =
+numberwheels</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.colour =
+colour</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Car.CarsDefined +=
+1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Vehicle.VehiclesDefined += 1</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#
+deconstructor</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+__del__(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Car
+deconstructor called")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+print_car(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(self.numberwheels, ", ", self.colour, ", ",
+self.isestate)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+Lorry(Vehicle):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">"""This class defines
+a lorry"""</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># data
+variable</span></p>
+<p lang="en-GB" class="c5"><span class="c6">LorriesDefined =
+0</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#
+constructor</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def __init__(self,
+numberwheels, colour, maxaxleweight, isarticulated):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.maxaxleweight =
+maxaxleweight</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.isarticulated =
+isarticulated</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.numberwheels =
+numberwheels</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.colour =
+colour</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Lorry.LorriesDefined
++= 1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Vehicle.VehiclesDefined += 1</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#
+deconstructor</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+__del__(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Lorry
+deconstructor called")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+print_lorry(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(self.numberwheels, ", ", self.colour, ", ",
+self.maxaxleweight, ", ", self.isarticulated)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+Crane(Lorry):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">"""This class defines
+a crane"""</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># data
+variable</span></p>
+<p lang="en-GB" class="c5"><span class="c6">CranesDefined =
+0</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#
+constructor</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def __init__(self,
+numberwheels, colour, jiblength, maxliftweight, maxaxleweight,
+isarticulated):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.jiblength =
+jiblength</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.maxliftweight =
+maxliftweight</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.maxaxleweight =
+maxaxleweight</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.isarticulated =
+isarticulated</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.numberwheels =
+numberwheels</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.colour =
+colour</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Crane.CranesDefined +=
+1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Vehicle.VehiclesDefined += 1</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#
+deconstructor</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+__del__(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Crane
+deconstructor called")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+print_crane(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(self.numberwheels, ", ", self.colour, ", ",
+self.maxaxleweight, ", ",</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.isarticulated, ",
+", self.jiblength, ", ", self.maxliftweight)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># define a crane and
+use the functions from the inherited classes to print the separate
+class information</span></p>
+<p lang="en-GB" class="c5"><span class="c6">crane1 = Crane(8,
+"Red", 2.5, "Yes", 5, 1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">crane1.print_crane()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">crane1.print_lorry()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">crane1.print_vehicle()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># define 2 cars and
+use the functions from the inherited classes to print the separate
+class information</span></p>
+<p lang="en-GB" class="c5"><span class="c6">car1 = Car(4, "Blue",
+"Estate")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">car1.print_car()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">car1.print_vehicle()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># display the data
+variables</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Number of
+cranes: ", Crane.CranesDefined)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Number of cars:
+", Car.CarsDefined)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Number of
+vehicles: ", Vehicle.VehiclesDefined)</span></p>
+<p lang="en-GB" class="western">We define the classes so that
+each one inherits the classes above them in the hierarchy. This is
+done by placing the classes that will be inherited in parenthesis
+after the class name.</p>
+<p lang="en-GB" class="c5"><span class="c6">class
+Lorry(Vehicle):</span></p>
+<p lang="en-GB" class="western">After the class definitions an
+instance of <b class="calibre2">Crane</b> called <b class="calibre2">crane1</b> is created. Using
+this instance we then call the print methods for each of the
+classes this shows that we have extended the initial class and all
+the methods have been inherited by the <b class="calibre2">crane</b> class.</p>
+<p lang="en-GB" class="western">We then define an instance of
+the <b class="calibre2">Car</b> class called <b class="calibre2">car1</b> and again show that it
+inherited the properties of the <b class="calibre2">Vehicle</b> <span class="c9">class</span>. Finally we print out the number of cars, cranes
+and vehicles defined.</p>
+<p lang="en-GB" class="western">Note that the constructor for
+car sets the number of wheels and colour in the inherited class by
+explicit calls to the inherited class variables.</p>
+<p lang="en-GB" class="c5"><span class="c6">#
+constructor</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def __init__(self,
+numberwheels, colour, isestate):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.isestate =
+isestate</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.numberwheels =
+numberwheels</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.colour =
+colour</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Car.CarsDefined +=
+1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Vehicle.VehiclesDefined += 1</span></p>
+<p lang="en-GB" class="western">While this is acceptable in most
+cases it would be better to call the super classes constructor.</p>
+<p lang="en-GB" class="c5"><span class="c6">def __init__(self,
+number_wheels, colour,is_estate):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">#Call the inherited
+class constructor</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Vehicle.__init__(self,
+number_wheels, colour)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.is_estate =
+is_estate</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Car.cars_defined +=
+1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Vehicle.vehicles_defined += 1</span></p>
+<p lang="en-GB" class="western">The reason this is a better
+method is that sometimes a constructor might do more than simply
+initialise variables it also makes the code simpler to read.</p>
+<h2 lang="en-GB" class="western4">Function Overloading</h2>
+<p lang="en-GB" class="western">Function overloading is the
+ability to change a function of an inherited class. This means that
+you can change the functionality to fit your new class, if you
+don't overload the method then the one in the super class will be
+called. The following example shows inheritance in action.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+classFunctionOverloading.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># create some
+classes</span></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+Class1:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+write_class(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(Class1.__name__)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+Class2:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+write_class_ok(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(Class2.__name__,
+" OK")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">class Class3(Class1,
+Class2):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+write_class(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(Class3.__name__)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+Class4(Class1):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+write_class_ok(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(Class4.__name__,
+" OK")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># create some
+instances</span></p>
+<p lang="en-GB" class="c5"><span class="c6">C1 =
+Class1()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">C3 =
+Class3()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">C4 =
+Class4()</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># call some
+methods</span></p>
+<p lang="en-GB" class="c5"><span class="c6">C1.write_class()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">C3.write_class()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">C3.write_class_ok()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">C4.write_class()</span></p>
+<p lang="en-GB" class="western">In the above code three classes
+are defined, each class has a method <b class="calibre2">writeClass</b> which prints
+the class name to the screen. <b class="calibre2">Class3</b> inherits <b class="calibre2">Class1</b>
+and <b class="calibre2">Class2</b>, instances are then created of <b class="calibre2">Class1</b> and
+<b class="calibre2">Class2</b>. When you run the code you should get the following
+result.</p>
+<p lang="en-GB" class="c5"><span class="c6">Class1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Class3</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Class2 OK</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Class1</span></p>
+<p lang="en-GB" class="western">So when <b class="calibre2">writeClass</b> method
+is called for <b class="calibre2">C1</b> the <b class="calibre2">Class1</b> version of
+<b class="calibre2">writeClass</b> is called and when the <b class="calibre2">writeClass</b> method
+is called for <b class="calibre2">C3</b> the <b class="calibre2">Class3</b> version of
+<b class="calibre2">writeClass</b> is called.</p>
+<p lang="en-GB" class="western">The next call is to the
+<b class="calibre2">writeClassOK</b> method of <b class="calibre2">C3</b>, <b class="calibre2">C3</b> hasn't got this
+method defined but since it has inherited <b class="calibre2">Class2</b> version of
+this method this gets called.</p>
+<p lang="en-GB" class="western">The final call is for the
+<b class="calibre2">writeClass</b> method of <b class="calibre2">C4</b>, this has not been defined in
+Class4 so the inherited method from <b class="calibre2">Class1</b> is used.</p>
+<h2 lang="en-GB" class="western4">Overloading Operators</h2>
+<p lang="en-GB" class="western">Python allows you to change how
+operators work by overloading them. For example if you want to
+compare two instances of the Rectangle class then you need to check
+that the length and width are the same</p>
+<p lang="en-GB" class="western">Python defines methods that
+start and end with two underscores as hooks, so if you use
+<b class="calibre2">==</b> in your code Python will call the operator defined by
+<b class="calibre2">__eq__</b> in class instances. The following code shows an
+example of overloading the <b class="calibre2">+, !=, ==</b> operators and the
+<b class="calibre2">print</b> statement.</p>
+<p lang="en-GB" class="western">The follow example shows the
+Rectangle class expanded to show these attributes in operation.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+classFunctionOverloading.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">class
+Rectangle:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def __init__(self,
+width, height):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.width =
+width</span></p>
+<p lang="en-GB" class="c5"><span class="c6">self.height =
+height</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># overload
+print()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+__repr__(self):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">return 'Width: %d
+Height: %d' % (self.height, self.width)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># overload
+!=</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def __neq__(self,
+other):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if (self.width ==
+other.width) and (self.height == other.height):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">return True</span></p>
+<p lang="en-GB" class="c5"><span class="c6">return
+False</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># overload
++</span></p>
+<p lang="en-GB" class="c5"><span class="c6">def __add__(self,
+other):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">return
+Rectangle(self.width + other.width, self.height +
+other.height)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># create 2 instances
+of rectangle</span></p>
+<p lang="en-GB" class="c5"><span class="c6">R1 = Rectangle(2,
+5)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">R2 = Rectangle(10,
+15)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># print the first
+instance</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(R1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># check neq
+works</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if R1 !=
+R2:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Rectangles are
+different')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">else:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Rectangles are
+the same')</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># add the two
+rectangles</span></p>
+<p lang="en-GB" class="c5"><span class="c6">R3 = R1 +
+R2</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># print the
+result</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(R3)</span></p>
+<p lang="en-GB" class="western">For the <b class="calibre2">__str__</b> to
+overload the print attribute it is simply a case of building a
+string with the data from the class and returning it.</p>
+<p lang="en-GB" class="western">The <b class="calibre2">__add__</b> attribute has
+two instances of the class passed to it <b class="calibre2">self</b> and
+<b class="calibre2">other</b>, in this example the width and height of both
+instances are added together to give a new rectangle of the
+combined size.</p>
+<p lang="en-GB" class="western">Similarly to <b class="calibre2">__add__ the
+__eq__ and __neq__</b> methods have has two instances of the class
+passed into them. In the example the result is found by comparing
+the height and width of the two instances.</p>
+<p lang="en-GB" class="western">The example above shows a small
+number of the operators that can be overloaded other commonly
+overloaded operators are shown below.</p>
+<p lang="en-GB" class="list-indent-western">__init__ Constructor X
+= Class(args)</p>
+<p lang="en-GB" class="list-indent-western">__del__ Destructor</p>
+<p lang="en-GB" class="list-indent-western">__add__ + operator X +
+Y</p>
+<p lang="en-GB" class="list-indent-western">__sub__ - operator X –
+Y</p>
+<p lang="en-GB" class="list-indent-western">__mul__ * operator X *
+Y</p>
+<p lang="en-GB" class="list-indent-western">__or__ | operator X |
+Y</p>
+<p lang="en-GB" class="list-indent-western">__and__ &amp; operator
+X &amp; Y</p>
+<p lang="en-GB" class="list-indent-western">__call__ Function calls
+X(*args, **kargs)</p>
+<p lang="en-GB" class="list-indent-western">__getattr__ Attribute
+fetch X.undefined</p>
+<p lang="en-GB" class="list-indent-western">__setattr__ Attribute
+assignment X.value = value</p>
+<p lang="en-GB" class="list-indent-western">__delattr__ Attribute
+delete del X.value</p>
+<p lang="en-GB" class="list-indent-western">__getattr__ Attribute
+get X.any</p>
+<p lang="en-GB" class="list-indent-western">__len__ Length
+len(X)</p>
+<p lang="en-GB" class="list-indent-western">__lt__ &lt; comparison
+X &lt; Y</p>
+<p lang="en-GB" class="list-indent-western">__gt__ &gt; comparison
+X &gt; Y</p>
+<p lang="en-GB" class="list-indent-western">__le__ &lt;= comparison
+X &lt;= Y</p>
+<p lang="en-GB" class="list-indent-western">__ge__ &gt;= comparison
+X &gt;= Y</p>
+<p lang="en-GB" class="list-indent-western">__eq__ == comparison X
+== Y</p>
+<p lang="en-GB" class="list-indent-western">__ne__ != comparison X
+!= Y</p>
+<h2 lang="en-GB" class="western4">Class attributes</h2>
+<p lang="en-GB" class="western">Python has built in functions to
+handle class attributes this can be used so a script can find out
+information about the modules that it has imported.</p>
+<p lang="en-GB" class="western">The <b class="calibre2">getattr</b> can be used
+to get the value of an attribute from the class it takes two
+arguments the object and the name of the attribute to get.</p>
+<p lang="en-GB" class="c5"><span class="c6">getattr(Rect1,
+'width')</span></p>
+<p lang="en-GB" class="western">If it is required to check that
+an object has a attribute the the <b class="calibre2">hassttr</b> function can be
+used this takes the object name and the required attribute and
+returns true if the attribute exists. This can be useful if a
+library has had extra attributes added as it lets you main module
+check if the library has been updated and if it has not it can
+revert to a compatible mode.</p>
+<p lang="en-GB" class="c5"><span class="c6">hasattr(Rect1,
+'width')</span></p>
+<p lang="en-GB" class="western">To set the value of an attribute
+<b class="calibre2">setattr</b> can be used this takes the object the attributes
+name and the value to set the attribute is to be set to.</p>
+<p lang="en-GB" class="c5"><span class="c6">setattr(Rect1,
+'width', 99)</span></p>
+<p lang="en-GB" class="western">To delete an attribute the
+<b class="calibre2">delattr</b> function can be used this takes the function name
+and attribute as arguments.</p>
+<p lang="en-GB" class="western">delattr(Rect1, 'width')</p>
+<p lang="en-GB" class="western">To see these attribute functions
+add the following code to the bottom of
+<b class="calibre2">RectangleClass.py</b>.</p>
+<p lang="en-GB" class="c5"><span class="c6">print("Rect1.width =
+", getattr(Rect1, 'width'))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">setattr(Rect1,
+'width', 99)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Rect1.width =
+", getattr(Rect1, 'width'))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if hasattr(Rect1,
+'width'):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print ("Got
+Attribute")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">delattr(Rect1,
+'width')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if not hasattr(Rect1,
+'width'):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print ("Not Got
+Attribute")</span></p>
+<p lang="en-GB" class="western">As well as the attributes that
+you define in your classes Python also has built in attributes.</p>
+<p lang="en-GB" class="list-indent-western">__dict__ Dictionary
+displaying the classes name space.</p>
+<p lang="en-GB" class="list-indent-western">__doc__ Class
+documentation string if one has been defined.</p>
+<p lang="en-GB" class="list-indent-western">__name__ Class
+name.</p>
+<p lang="en-GB" class="list-indent-western">__module__ The name of
+the module in which the class is defined, this is the same as
+__main__ in interactive mode.</p>
+<p lang="en-GB" class="list-indent-western">__bases__ Gives a tuple
+containing the base classes.</p>
+<p lang="en-GB" class="western">If you add the following code
+after the class definition of Rectangle.</p>
+<p lang="en-GB" class="c5"><span class="c6">#inbuilt
+attributes</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("\n__dict__ = ",
+Rectangle.__dict__)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("\n__doc__ = ",
+Rectangle.__doc__)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("\n__name__ = ",
+Rectangle.__name__)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("\n__module__ =
+", Rectangle.__module__)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("\n__bases__ =
+", Rectangle.__bases__)</span></p>
+<p lang="en-GB" class="western">You should see the following
+details displayed when you run the script</p>
+<p lang="en-GB" class="c5"><span class="c6">__dict__ =
+{'__dict__': &lt;attribute '__dict__' of 'Rectangle' objects&gt;,
+'__module__': '__main__', 'displayNumberRectangles': &lt;function
+displayNumberRectangles at 0x02119420&gt;, 'rectanglesDefined': 2,
+'__weakref__': &lt;attribute '__weakref__' of 'Rectangle'
+objects&gt;, 'displayRectangle': &lt;function displayRectangle at
+0x021192B8&gt;, '__init__': &lt;function</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">__init__ at
+0x021193D8&gt;, '__doc__': 'This class defines a
+rectangle'}</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">__doc__ = This class
+defines a rectangle</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">__name__ =
+Rectangle</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">__module__ =
+__main__</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">__bases__ = (&lt;class
+'object'&gt;,)</span></p>
+<h2 lang="en-GB" class="western4">Garbage Collection</h2>
+<p lang="en-GB" class="western">Python monitors objects and
+automatically deletes them if they are no longer required. This
+garbage collection uses the objects reference count to determine
+when it can delete an object. The reference count increases when it
+is assigned a new name or placed in a tuple, list or dictionary.
+The reference count is decreased when the reference goes out of
+scope, gets deleted or its reference is reassigned, when the object
+count reaches zero the object gets removed.</p>
+<p lang="en-GB" class="western">In most cases you don't have to
+worry about deleting objects but if you do need to delete them then
+you can use the <b class="calibre2">del</b> statement. For example you might have a
+class where the constructor opens a file and you want to make sure
+it gets deleted at a specific point in the script so deleting the
+object would close the file.</p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+</body>
+</html>

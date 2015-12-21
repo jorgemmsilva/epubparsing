@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Total number of non-decreasing numbers with n digits</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="total-number-of-non-decreasing-numbers-with-n-digits" class="section level1">
+<h1>Total number of non-decreasing numbers with n digits</h1>
+<p>A number is non-decreasing if every digit (except the first one) is greater than or equal to previous digit. For example, 223, 4455567, 899, are non-decreasing numbers.<span id="more-135315"></span></p>
+<p>So, given the number of digits n, you are required to find the count of total non-decreasing numbers with n digits.</p>
+<p>Examples:</p>
+<pre><code> 
+Input:  n = 1
+Output: count  = 10
+
+Input:  n = 2
+Output: count  = 55
+
+Input:  n = 3
+Output: count  = 220 </code></pre>
+<p><strong>We strongly recommend you to minimize your browser and try this yourself first.</strong></p>
+<p>One way to look at the problem is, count of numbers is equal to count n digit number ending with 9 plus count of ending with digit 8 plus count for 7 and so on. How to get count ending with a particular digit? We can recur for n-1 length and digits smaller than or equal to the last digit. So below is recursive formula.</p>
+<pre><code> 
+Count of n digit numbers = (Count of (n-1) digit numbers Ending with digit 9) +
+                           (Count of (n-1) digit numbers Ending with digit 8) +
+                           .............................................+ 
+                           .............................................+
+                           (Count of (n-1) digit numbers Ending with digit 0)  </code></pre>
+<p>Let count ending with digit ‘d’ and length n be count(n, d)</p>
+<pre><code> 
+count(n, d) = ∑ (count(n-1, i)) where i varies from 0 to d
+
+Total count = ∑ count(n-1, d) where d varies from 0 to n-1 </code></pre>
+<p>The above recursive solution is going to have many overlapping subproblems. Therefore, we can use Dynamic Programming to build a table in bottom up manner. Below is Dynamic programming based C++ program.</p>
+<pre><code> 
+// C++ program to count non-decreasing number with n digits
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+long long int countNonDecreasing(int n)
+{
+    // dp[i][j] contains total count of non decreasing
+    // numbers ending with digit i and of length j
+    long long int dp[10][n+1];
+    memset(dp, 0, sizeof dp);
+
+    // Fill table for non decreasing numbers of length 1
+    // Base cases 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+    for (int i = 0; i &lt; 10; i++)
+        dp[i][1] = 1;
+
+    // Fill the table in bottom-up manner
+    for (int digit = 0; digit &lt;= 9; digit++)
+    {
+        // Compute total numbers of non decreasing
+        // numbers of length &#39;len&#39;
+        for (int len = 2; len &lt;= n; len++)
+        {
+            // sum of all numbers of length of len-1
+            // in which last digit x is &lt;= &#39;digit&#39;
+            for (int x = 0; x &lt;= digit; x++)
+                dp[digit][len] += dp[x][len-1];
+        }
+    }
+
+    long long int count = 0;
+
+    // There total nondecreasing numbers of length n
+    // wiint be dp[0][n] +  dp[1][n] ..+ dp[9][n]
+    for (int i = 0; i &lt; 10; i++)
+        count += dp[i][n];
+
+    return count;
+}
+
+// Driver program
+int main()
+{
+    int n = 3;
+    cout &lt;&lt; countNonDecreasing(n);
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> 220 </code></pre>
+<p>Thanks to <a href="http://qa.geeksforgeeks.org/user/Mr.Lazy">Gaurav Ahirwar</a> for suggesting above method.</p>
+<p><strong>Another method is based on below direct formula</strong></p>
+<pre><code> 
+Count of non-decreasing numbers with n digits = 
+                                N*(N+1)/2*(N+2)/3* ....*(N+n-1)/n
+Where N = 10 </code></pre>
+<p>Below is a C++ program to compute count using above formula.</p>
+<pre><code> 
+// C++ program to count non-decreasing numner with n digits
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+long long int countNonDecreasing(int n)
+{
+    int N = 10;
+
+    // Compute value of N*(N+1)/2*(N+2)/3* ....*(N+n-1)/n
+    long long count = 1;
+    for (int i=1; i&lt;=n; i++)
+    {
+        count *= (N+i-1);
+        count /= i;
+    }
+
+    return count;
+}
+
+// Driver program
+int main()
+{
+    int n = 3;
+    cout &lt;&lt; countNonDecreasing(n);
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> 220 </code></pre>
+<p>Thanks to <a href="http://qa.geeksforgeeks.org/user/Abhishek+Somani">Abhishek Somani</a> for suggesting this method.</p>
+<p><strong>How does this formula work?</strong></p>
+<pre><code> N * (N+1)/2 * (N+2)/3 * .... * (N+n-1)/n
+Where N = 10  </code></pre>
+<p>Let us try for different values of n.</p>
+<pre><code> 
+For n = 1, the value is N from formula.
+Which is true as for n = 1, we have all single digit
+numbers, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9.
+
+For n = 2, the value is N(N+1)/2 from formula
+We can have N numbers beginning with 0, (N-1) numbers 
+beginning with 1, and so on.
+So sum is N + (N-1) + .... + 1 = N(N+1)/2
+
+For n = 3, the value is N(N+1)/2(N+2)/3 from formula
+We can have N(N+1)/2 numbers beginning with 0, (N-1)N/2 
+numbers beginning with 1 (Note that when we begin with 1, 
+we have N-1 digits left to consider for remaining places),
+(N-2)(N-1)/2 beginning with 2, and so on.
+Count = N(N+1)/2 + (N-1)N/2 + (N-2)(N-1)/2 + 
+                               (N-3)(N-2)/2 .... 3 + 1 
+     [Combining first 2 terms, next 2 terms and so on]
+     = 1/2[N2 + (N-2)2 + .... 4]
+     = N*(N+1)*(N+2)/6  [Refer this , putting n=N/2 in the 
+                         even sum formula] </code></pre>
+<p>For general n digit case, we can apply Mathematical Induction. The count would be equal to count n-1 digit beginning with 0, i.e., N*(N+1)/2*(N+2)/3* ….*(N+n-1-1)/(n-1). Plus count of n-1 digit numbers beginning with 1, i.e., (N-1)*(N)/2*(N+1)/3* ….*(N-1+n-1-1)/(n-1) (Note that N is replaced by N-1) and so on.</p>
+<p>Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above</p>
+<p><br /></p>
+<div id="source-68" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/total-number-of-non-decreasing-numbers-with-n-digits/" class="uri">http://www.geeksforgeeks.org/total-number-of-non-decreasing-numbers-with-n-digits/</a></p>
+</div>
+</div>
+</body>
+</html>
+

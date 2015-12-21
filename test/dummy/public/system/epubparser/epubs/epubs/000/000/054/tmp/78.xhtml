@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Longest Repeating Subsequence</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="longest-repeating-subsequence" class="section level1">
+<h1>Longest Repeating Subsequence</h1>
+<p>Given a string, find length of the longest repeating subseequence such that the two subsequence don’t have same string character at same position, i.e., any i’th character in the two subsequences shouldn’t have the same index in the original string.<span id="more-135597"></span></p>
+<p>Examples:</p>
+<pre><code> 
+Input: str = &quot;abc&quot;
+Output: 0
+There is no repeating subsequence
+
+Input: str = &quot;aab&quot;
+Output: 1
+The two subssequence are &#39;a&#39;(first) and &#39;a&#39;(second). 
+Note that &#39;b&#39; cannot be considered as part of subsequence 
+as it would be at same index in bot.
+
+Input: str = &quot;aabb&quot;
+Output: 2
+
+Input: str = &quot;axxxy&quot;
+Output: 2
+ </code></pre>
+<p><strong>We strongly recommend you to minimize your browser and try this yourself first.</strong><br /> This problem is just the modification of <a href="http://www.geeksforgeeks.org/dynamic-programming-set-4-longest-common-subsequence/">Longest Common Subsequence problem</a>. The idea is to find the LCS(str, str) where str is the input string with the restriction that when both the characters are same, they shouldn’t be on the same index in the two strings.</p>
+<p>Below is C++ implementation of the idea.</p>
+<pre><code> 
+// C++ program to find the longest repeating
+// subsequence
+#include &lt;iostream&gt;
+#include&lt;string&gt;
+using namespace std;
+
+int findLongestRepeatingSubSeq(string str)
+{
+    int n = str.length();
+
+    // Create and initialize DP table
+    int dp[n+1][n+1];
+    for (int i=0; i&lt;=n; i++)
+        for (int j=0; j&lt;=n; j++)
+            dp[i][j] = 0;
+
+    // Fill dp table (similar to LCS loops)
+    for (int i=1; i&lt;=n; i++)
+    {
+        for (int j=1; j&lt;=n; j++)
+        {
+            // If characters match and indexes are not same
+            if (str[i-1] == str[j-1] &amp;&amp; i!=j)
+                dp[i][j] =  1 + dp[i-1][j-1];                               
+            // If characters do not match
+            else
+                dp[i][j] = max(dp[i][j-1], dp[i-1][j]);
+        }
+    }
+    return dp[n][n];
+}
+
+// Driver Program
+int main()
+{
+    string str = &quot;aabb&quot;;
+    cout &lt;&lt; &quot;The length of the largest subsequence that&quot;
+            &quot; repeats itself is : &quot;
+        &lt;&lt; findLongestRepeatingSubSeq(str);
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> The length of the largest subsequence that repeats itself is : 2 </code></pre>
+<p>This article is contributed by <a href="https://www.linkedin.com/pub/ekta-goel/75/12a/3a6">Ekta Goel</a>. Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above.</p>
+<p><br /></p>
+<div id="source-74" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/longest-repeating-subsequence/" class="uri">http://www.geeksforgeeks.org/longest-repeating-subsequence/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-strings/">Strings</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+</div>
+</div>
+</body>
+</html>
+

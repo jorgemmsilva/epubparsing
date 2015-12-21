@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Maximum profit by buying and selling a share at most twice</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="maximum-profit-by-buying-and-selling-a-share-at-most-twice" class="section level1">
+<h1>Maximum profit by buying and selling a share at most twice</h1>
+<p>In a daily share trading, a buyer buys shares in the morning and sells it on same day. If the trader is allowed to make at most 2 transactions in a day, where as second transaction can only start after first one is complete (Sell-&gt;buy-&gt;sell-&gt;buy). <span id="more-134714"></span> Given stock prices throughout day, find out maximum profit that a share trader could have made.</p>
+<p>Examples:</p>
+<pre><code> 
+Input:   price[] = {10, 22, 5, 75, 65, 80}
+Output:  87
+Trader earns 87 as sum of 12 and 75
+Buy at price 10, sell at 22, buy at 5 and sell at 80
+
+Input:   price[] = {2, 30, 15, 10, 8, 25, 80}
+Output:  100
+Trader earns 100 as sum of 28 and 72
+Buy at price 2, sell at 30, buy at 8 and sell at 80
+
+Input:   price[] = {100, 30, 15, 10, 8, 25, 80};
+Output:  72
+Buy at price 8 and sell at 80.
+
+Input:   price[] = {90, 80, 70, 60, 50}
+Output:  0
+Not possible to earn. </code></pre>
+<p><strong>We strongly recommend to minimize your browser and try this yourself first.</strong></p>
+<p>A <strong>Simple Solution</strong> is to to consider every index ‘i’ and do following</p>
+<pre><code> 
+Max profit with at most two transactions =
+       MAX {max profit with one transaction and subarray price[0..i] +
+            max profit with one transaction and aubarray price[i+1..n-1]  }
+i varies from 0 to n-1.  </code></pre>
+<p>Maximum possible using one transaction can be calculated using following O(n) algorithm<br /> <a href="http://www.geeksforgeeks.org/maximum-difference-between-two-elements/"><br /> Maximum difference between two elements such that larger element appears after the smaller number</a></p>
+<p>Time complexity of above simple solution is O(n<sup>2</sup>).</p>
+<p>We can do this O(n) using following <strong>Efficient Solution</strong>. The idea is to store maximum possible profit of every subarray and solve the problem in following two phases.</p>
+<p><strong>1)</strong> Create a table profit[0..n-1] and initialize all values in it 0.</p>
+<p><strong>2)</strong> Traverse price[] from right to left and update profit[i] such that profit[i] stores maximum profit achievable from one transaction in subarray price[i..n-1]</p>
+<p><strong>3)</strong> Traverse price[] from left to right and update profit[i] such that profit[i] stores maximum profit such that profit[i] contains maximum achievable profit from two transactions in subarray price[0..i].</p>
+<p><strong>4)</strong> Return profit[n-1]</p>
+<p>To do step 1, we need to keep track of maximum price from right to left side and to do step 2, we need to keep track of minimum price from left to right. Why we traverse in reverse directions? The idea is to save space, in second step, we use same array for both purposes, maximum with 1 transaction and maximum with 2 transactions. After an iteration i, the array profit[0..i] contains maximum profit with 2 transactions and profit[i+1..n-1] contains profit with two transactions.</p>
+<p>Below is C++ implementation of above idea.</p>
+<pre><code> 
+// C++ program to find maximum possible profit with at most
+// two transactions
+#include&lt;iostream&gt;
+using namespace std;
+
+// Returns maximum profit with two transactions on a given
+// list of stock prices, price[0..n-1]
+int maxProfit(int price[], int n)
+{
+    // Create profit array and initialize it as 0
+    int *profit = new int[n];
+    for (int i=0; i&lt;n; i++)
+        profit[i] = 0;
+
+    /* Get the maximum profit with only one transaction
+       allowed. After this loop, profit[i] contains maximum
+       profit from price[i..n-1] using at most one trans. */
+    int max_price = price[n-1];
+    for (int i=n-2;i&gt;=0;i--)
+    {
+        // max_price has maximum of price[i..n-1]
+        if (price[i] &gt; max_price)
+            max_price = price[i];
+
+        // we can get profit[i] by taking maximum of:
+        // a) previous maximum, i.e., profit[i+1]
+        // b) profit by buying at price[i] and selling at
+        //    max_price
+        profit[i] = max(profit[i+1], max_price-price[i]);
+    }
+
+    /* Get the maximum profit with two transactions allowed
+       After this loop, profit[n-1] contains the result */
+    int min_price = price[0];
+    for (int i=1; i&lt;n; i++)
+    {
+        // min_price is minimum price in price[0..i]
+        if (price[i] &lt; min_price)
+            min_price = price[i];
+
+        // Maximum profit is maximum of:
+        // a) previous maximum, i.e., profit[i-1]
+        // b) (Buy, Sell) at (min_price, price[i]) and add
+        //    profit of other trans. stored in profit[i]
+        profit[i] = max(profit[i-1], profit[i] +
+                                    (price[i]-min_price) );
+    }
+    int result = profit[n-1];
+
+    delete [] profit; // To avoid memory leak
+
+    return result;
+}
+
+// Drive program
+int main()
+{
+    int price[] = {2, 30, 15, 10, 8, 25, 80};
+    int n = sizeof(price)/sizeof(price[0]);
+    cout &lt;&lt; &quot;Maximum Profit = &quot; &lt;&lt; maxProfit(price, n);
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> Maximum Profit = 100 </code></pre>
+<p>Time complexity of the above solution is O(n).</p>
+<p>Algorithmic Paradigm: Dynamic Programming</p>
+<p>This article is contributed by <strong>Amit Jaiswal</strong>. Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above.</p>
+<p><br /></p>
+<div id="source-59" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/maximum-profit-by-buying-and-selling-a-share-at-most-twice/" class="uri">http://www.geeksforgeeks.org/maximum-profit-by-buying-and-selling-a-share-at-most-twice/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-arrays/">Arrays</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+<p><br /></p>
+<p>Post navigation</p>
+<p><span class="nav-previous"><a href="http://www.geeksforgeeks.org/handshaking-lemma-and-interesting-tree-properties/"><span class="meta-nav">←</span> Handshaking Lemma and Interesting Tree Properties</a></span> <span class="nav-next"><a href="http://www.geeksforgeeks.org/flipkart-interview-experience-set-21/">Flipkart Interview Experience | Set 21 <span class="meta-nav">→</span></a></span></p>
+<p>Writing code in comment? Please use <a href="http://code.geeksforgeeks.org/">code.geeksforgeeks.org</a>, generate link and share the link here.</p>
+</div>
+</div>
+</body>
+</html>
+

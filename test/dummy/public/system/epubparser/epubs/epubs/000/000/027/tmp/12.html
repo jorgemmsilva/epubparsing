@@ -1,0 +1,307 @@
+<?xml version='1.0' encoding='utf-8'?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy for Linux (vers 7 December 2008), see www.w3.org"/>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8"/>
+
+<meta name="GENERATOR" content="OpenOffice.org 3.0 (Unix)"/>
+<meta name="CREATED" content="20151109;11564100"/>
+<meta name="CHANGED" content="20151129;1342700"/>
+<meta name="Info_1" content=""/>
+<meta name="Info_2" content=""/>
+<meta name="Info_3" content=""/>
+<meta name="Info_4" content=""/>
+<title>Essential Python</title>
+<meta content="http://www.w3.org/1999/xhtml; charset=utf-8" http-equiv="Content-Type"/><link href="stylesheet.css" type="text/css" rel="stylesheet"/><style type="text/css">
+		@page { margin-bottom: 5.000000pt; margin-top: 5.000000pt; }</style></head>
+<body dir="ltr" class="calibre">
+<h1 lang="en-GB" class="western3" id="calibre_pb_9"><a id="Operators"></a> 11.
+Operators</h1>
+<p lang="en-GB" class="western">An operator is something that
+acts on other values take the following example.</p>
+<p lang="en-GB" class="c5"><span class="c6">x = 4 + 2</span></p>
+<p lang="en-GB" class="western">The numbers 4 and 2 are the
+operands and the + is the operator. Python supports the following
+types of operators, which are similar to those in most other
+programming languages.</p>
+<h2 lang="en-GB" class="western4">Arithmetic Operators</h2>
+<p lang="en-GB" class="western">These carry out mathematical
+functions.</p>
+<p lang="en-GB" class="western">Addition, adds 2 values
+together</p>
+<p lang="en-GB" class="c5"><span class="c6">a = 3 + 4 # a will
+equal 7</span></p>
+<p lang="en-GB" class="western">Subtraction, subtracts one
+number from another</p>
+<p lang="en-GB" class="c5"><span class="c6">b = 4 – 5 # b will
+equal -1</span></p>
+<p lang="en-GB" class="western">Multiplication, multiplies one
+number by another</p>
+<p lang="en-GB" class="c5"><span class="c6">c = 7 * 2 # c will
+equal 14</span></p>
+<p lang="en-GB" class="western">Division, divides one number by
+another</p>
+<p lang="en-GB" class="c5"><span class="c6">d = 8 / 2 # d will
+equal 4</span></p>
+<p lang="en-GB" class="western">Exponent, raises one number to
+the power of another.</p>
+<p lang="en-GB" class="c5"><span class="c6">E = 2 ** 10 # e will
+equal 1024</span></p>
+<p lang="en-GB" class="western">Modulus, returns the remainder
+when one value is divided by another</p>
+<p lang="en-GB" class="c5"><span class="c6">f = 11 % 5 # f will
+equal 1</span></p>
+<p lang="en-GB" class="western">Floor Division, the fractional
+value is removed after the division</p>
+<p lang="en-GB" class="c5"><span class="c6">g = 11.0 // 5.0 # g
+will equal 2.0</span></p>
+<h2 lang="en-GB" class="western4">Comparison Operators</h2>
+<p lang="en-GB" class="western">Comparison operators allow your
+programs to make decisions.</p>
+<p lang="en-GB" class="western">Equal evaluates to True if the
+operands are equal.</p>
+<p lang="en-GB" class="c5"><span class="c6">a = 2 == 2 # a will
+equal True</span></p>
+<p lang="en-GB" class="western">Not equal evaluates to True if
+the operands are not equal</p>
+<p lang="en-GB" class="c5"><span class="c6">b = 2 != 2 # b a will
+equal False</span></p>
+<p lang="en-GB" class="western">Less than evaluates to True if
+the value on the right is larger than the value on the left.</p>
+<p lang="en-GB" class="c5"><span class="c6">c = 2 &lt; 3 # c will
+equal True</span></p>
+<p lang="en-GB" class="western">Greater than evaluates to True
+if the value on the left is larger than the value on the right.</p>
+<p lang="en-GB" class="c5"><span class="c6">d = 4.6 &gt; 4.1 # d
+will equal True</span></p>
+<p lang="en-GB" class="western">Less than or equal evaluates to
+True if the value on the right is larger than or equal to the value
+on the left.</p>
+<p lang="en-GB" class="c5"><span class="c6">e = 4.1 &lt;= 4.1 # e
+will equal True</span></p>
+<p lang="en-GB" class="western">Larger than or equal evaluates
+to True if the value on the left is larger than or equal to the
+value on the right.</p>
+<p lang="en-GB" class="c5"><span class="c6">f = 4.6 &gt;= 4.1 # f
+will equal True</span></p>
+<h2 lang="en-GB" class="western4">Assignment Operators</h2>
+<p lang="en-GB" class="western">These operators assign values to
+a variable.</p>
+<p lang="en-GB" class="western">Simple assignment the operand on
+the right to the variable on the left.</p>
+<p lang="en-GB" class="c5"><span class="c6">a = 9</span></p>
+<p lang="en-GB" class="western">Add and assigns the right
+operand to the variable on the left and assigns the value to the
+variable.</p>
+<p lang="en-GB" class="c5"><span class="c6">b += 3</span></p>
+<p lang="en-GB" class="western">Subtracts and assigns the right
+operand from the variable on the left and assigns the value to the
+variable.</p>
+<p lang="en-GB" class="c5"><span class="c6">c -= 3</span></p>
+<p lang="en-GB" class="western">Multiplies and assigns the right
+operand by the variable on the left and assigns the value to the
+variable.</p>
+<p lang="en-GB" class="c5"><span class="c6">d -= 3</span></p>
+<p lang="en-GB" class="western">Divides and assigns the variable
+on the left by the right operand and assigns the value to the
+variable.</p>
+<p lang="en-GB" class="c5"><span class="c6">e /= 3</span></p>
+<p lang="en-GB" class="western">Modulus and assign takes the
+modulus of the variable on the left with the operand on the right
+and assigns the value to the variable.</p>
+<p lang="en-GB" class="c5"><span class="c6">f %= 10</span></p>
+<p lang="en-GB" class="western">Exponential and assign performs
+exponential calculation modulus of the variable on the left with
+the operand on the right and assigns the value to the variable.</p>
+<p lang="en-GB" class="c5"><span class="c6">g **= 10</span></p>
+<p lang="en-GB" class="western">Floor and assign performs a
+floor division of the variable on the left by the right operand and
+assigns the value to the variable.</p>
+<p lang="en-GB" class="c5"><span class="c6">h //= 3</span></p>
+<h2 lang="en-GB" class="western4">Bitwise Operators</h2>
+<p lang="en-GB" class="western">Bitwise operators operate on
+bits within a variable on a bit by bit basis.</p>
+<p lang="en-GB" class="western">AND operator if the
+corresponding bits in both operands are set then the result for
+that bit will be that it is set.</p>
+<p lang="en-GB" class="c5"><span class="c6">a = 6 &amp; 2 # a will
+equal 2</span></p>
+<p lang="en-GB" class="western">OR operator if the corresponding
+bit in either operand is set then the result for that bit will be
+that it is set</p>
+<p lang="en-GB" class="c5"><span class="c6">b = 6 | 3 # b will
+equal 7</span></p>
+<p lang="en-GB" class="western">XOR operator if the
+corresponding bit is set in one but not both of the operands then
+the result for that bit will be that it is set.</p>
+<p lang="en-GB" class="c5"><span class="c6">c = 6 ^ 3 # c will
+equal 5</span></p>
+<p lang="en-GB" class="western">Ones Complement Operator inverts
+all the bits in the operand.</p>
+<p lang="en-GB" class="c5"><span class="c6">d = ~170 # d will
+equal 85</span></p>
+<p lang="en-GB" class="western">Left shift operator, shifts all
+the bits in the left hand operand to the left by the value of the
+right hand operator.</p>
+<p lang="en-GB" class="c5"><span class="c6">e =6 &lt;&lt; 3 # e
+will equal 48</span></p>
+<p lang="en-GB" class="western">Right shift operator, shifts all
+the bits in the left hand operand to the right by the value of the
+right hand operator.</p>
+<p lang="en-GB" class="c5"><span class="c6">f = 170 &gt;&gt; 1 # f
+will equal 85</span></p>
+<h2 lang="en-GB" class="western4">Logical Operators</h2>
+<p lang="en-GB" class="western">These are usually used to
+combine more than one logical operation.</p>
+<p lang="en-GB" class="western">Logical AND operator if both the
+operands are true then it evaluates to true.</p>
+<p lang="en-GB" class="c5"><span class="c6">(value1 &lt; value2)
+and (value3 &gt; value4)</span></p>
+<p lang="en-GB" class="western">Logical OR operator if either of
+the operands are true then evaluates to true.</p>
+<p lang="en-GB" class="c5"><span class="c6">(value1 == value2) and
+(value3 &gt; value4)</span></p>
+<p lang="en-GB" class="western">Logical NOT operator inverts the
+value, if the value is true then it will evaluate to false.</p>
+<p lang="en-GB" class="c5"><span class="c6">not(value1) =
+false</span></p>
+<h2 lang="en-GB" class="western4">Membership Operators</h2>
+<p lang="en-GB" class="western">Membership operators test for
+membership in a sequence such as list, tuples or strings.</p>
+<p lang="en-GB" class="western">To find if a variable is in the
+specified sequence the <b class="calibre2">in</b> operator is used to find out if a
+variable is not in a specified sequence the <b class="calibre2">not in</b>
+<span class="c9">operator is used</span></p>
+<p lang="en-GB" class="western">The following example shows the
+membership operators in action.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+membershipOperatorExample.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myTuple = ("Jon", 22,
+"Dave", 33, "Sarah", 33, "Mark", 45)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">if "Jon" in
+myTuple:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Jon in
+tuple")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">if 66 not in
+myTuple:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("66 not in
+tuple")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">if 33 in
+myTuple:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("33 in
+tuple")</span></p>
+<h2 lang="en-GB" class="western4">Identity Operators</h2>
+<p lang="en-GB" class="western">Identity operators compare the
+location were two objects are held in memory.</p>
+<p lang="en-GB" class="western">The <b class="calibre2">is</b> <span class="c10">operator</span> <span class="c9">e</span>valuates to true if
+the variables are bound to the same object and the <b class="calibre2">is not</b>
+operator can be used to check two variables are not bound to the
+same object.</p>
+<p lang="en-GB" class="western">The following example creates
+two lists and checks that they are separate objects it then makes
+them the same object.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+identityOperatorsExample.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myList1 = [1, 2,
+3]</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList2 = [1, 2,
+3]</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># The lists hold the
+same values but are different objects</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if myList1 is
+myList2:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Lists are the
+same object 1")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Make list1 point to
+myList2</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList1 =
+myList2</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Check the lists are
+the same object</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if myList1 is
+myList2:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Lists are the
+same object 2")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Prove the lists
+point to the same object</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList2[2] =
+999</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList1[2])</span></p>
+<h2 lang="en-GB" class="western4">Operator Precedence</h2>
+<p lang="en-GB" class="western">The operators have the following
+order of precedence from high to low.</p>
+<p lang="en-GB" class="western">Exponential</p>
+<p lang="en-GB" class="c5"><span class="c6">**</span></p>
+<p lang="en-GB" class="western">Complement, unary plus and
+minus</p>
+<p lang="en-GB" class="c5"><span class="c6">~, +, -</span></p>
+<p lang="en-GB" class="western">Multiplication, division,
+modulus, floor division</p>
+<p lang="en-GB" class="c5"><span class="c6">*, /, %, //</span></p>
+<p lang="en-GB" class="western">Addition and subtraction</p>
+<p lang="en-GB" class="c5"><span class="c6">+, -</span></p>
+<p lang="en-GB" class="western">Bitwise left and right shift</p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;&lt;,
+&gt;&gt;</span></p>
+<p lang="en-GB" class="western">Bitwise</p>
+<p lang="en-GB" class="c5"><span class="c6">AND, OR, XOR, ^, |,
+&amp;</span></p>
+<p lang="en-GB" class="western">Comparison operators</p>
+<p lang="en-GB" class="c5"><span class="c6">&lt;=, &lt;, &gt;,
+&gt;=</span></p>
+<p lang="en-GB" class="western">Equality operators</p>
+<p lang="en-GB" class="c5"><span class="c6">!=, ==</span></p>
+<p lang="en-GB" class="western">Assignment operators</p>
+<p lang="en-GB" class="c5"><span class="c6">=, +=, -=, *=, /=, %=,
+//=, **=</span></p>
+<p lang="en-GB" class="western">Identity operators</p>
+<p lang="en-GB" class="c5"><span class="c6">is not, is</span></p>
+<p lang="en-GB" class="western">Membership operators</p>
+<p lang="en-GB" class="c5"><span class="c6">in not, in</span></p>
+<p lang="en-GB" class="western">Logical Operators</p>
+<p lang="en-GB" class="c5"><span class="c6">and, or,
+not</span></p>
+<p lang="en-GB" class="western">It might not seem immediately
+obvious why this is important but consider the following</p>
+<p lang="en-GB" class="c5"><span class="c6">x = 4 + 5 *
+10</span></p>
+<p lang="en-GB" class="western">according to the order of
+precedence this will equate to 54 where as it might have meant it
+to equal 90. In general unless its immediately obvious what you
+mean then always use brackets.</p>
+<p lang="en-GB" class="c5"><span class="c6">x = (4 + 5) *
+10</span></p>
+<p lang="en-GB" class="c5"><span class="c6">x = 4 + (5 *
+10)</span></p>
+<p lang="en-GB" class="western">Using brackets means that the
+formula will always get interpreted in the way that you want it to
+be. To avoid confusion also use brackets for logic expressions the
+following example should demonstrate why this is important</p>
+<p lang="en-GB" class="c5"><span class="c6">if a &lt; 10 and a
+&gt; 5 or a == 5:</span></p>
+<p lang="en-GB" class="western">In the above expression it is
+unclear what the actual intention is, using brackets will clarify
+the exact intention of the expression.</p>
+<p lang="en-GB" class="c5"><span class="c6">if ((a &lt; 10) and (a
+&gt; 5)) or (a == 5):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if (a &lt; 10) and ((a
+&gt; 5) or (a == 5)):</span></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+</body>
+</html>

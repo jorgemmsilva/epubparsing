@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Dynamic Programming | Set 14 (Maximum Sum Increasing Subsequence)</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="dynamic-programming-set-14-maximum-sum-increasing-subsequence" class="section level1">
+<h1>Dynamic Programming | Set 14 (Maximum Sum Increasing Subsequence)</h1>
+<p>Given an array of n positive integers. Write a program to find the sum of maximum sum subsequence of the given array such that the intgers in the subsequence are sorted in increasing order.<span id="more-19248"></span> For example, if input is {1, 101, 2, 3, 100, 4, 5}, then output should be 106 (1 + 2 + 3 + 100), if the input array is {3, 4, 5, 10}, then output should be 22 (3 + 4 + 5 + 10) and if the input array is {10, 5, 4, 3}, then output should be 10</p>
+<p><strong>Solution</strong><br /> This problem is a variation of standard <a href="http://www.geeksforgeeks.org/archives/12832">Longest Increasing Subsequence (LIS) problem</a>. We need a slight change in the Dynamic Programming solution of <a href="http://www.geeksforgeeks.org/archives/12832">LIS problem</a>. All we need to change is to use sum as a criteria instead of length of increasing subsequence.</p>
+<p>Following is C implementation for Dynamic Programming solution of the problem.</p>
+<pre><code> 
+/* Dynamic Programming implementation of Maximum Sum Increasing 
+   Subsequence (MSIS) problem */
+#include&lt;stdio.h&gt;
+
+/* maxSumIS() returns the maximum sum of increasing subsequence in arr[] of
+   size n */
+int maxSumIS( int arr[], int n )
+{
+   int *msis, i, j, max = 0;
+   msis = (int*) malloc ( sizeof( int ) * n );
+
+   /* Initialize msis values for all indexes */
+   for ( i = 0; i &lt; n; i++ )
+      msis[i] = arr[i];
+
+   /* Compute maximum sum values in bottom up manner */
+   for ( i = 1; i &lt; n; i++ )
+      for ( j = 0; j &lt; i; j++ )
+         if ( arr[i] &gt; arr[j] &amp;&amp; msis[i] &lt; msis[j] + arr[i])
+            msis[i] = msis[j] + arr[i];
+
+   /* Pick maximum of all msis values */
+   for ( i = 0; i &lt; n; i++ )
+      if ( max &lt; msis[i] )
+         max = msis[i];
+
+   /* Free memory to avoid memory leak */
+   free( msis );
+
+   return max;
+}
+
+/* Driver program to test above function */
+int main()
+{
+  int arr[] = {1, 101, 2, 3, 100, 4, 5};
+  int n = sizeof(arr)/sizeof(arr[0]);
+  printf(&quot;Sum of maximum sum increasing subsequence is %d\n&quot;,
+         maxSumIS( arr, n ) );
+
+  getchar();
+  return 0;
+}
+ </code></pre>
+<p>Time Complexity: O(n^2)</p>
+<p>Source: <a href="http://geeksforgeeks.org/forum/topic/algorithm-1">Maximum Sum Increasing Subsequence Problem</a></p>
+<p>Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above.</p>
+<p><br /></p>
+<div id="source-19" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/dynamic-programming-set-14-maximum-sum-increasing-subsequence/" class="uri">http://www.geeksforgeeks.org/dynamic-programming-set-14-maximum-sum-increasing-subsequence/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-arrays/">Arrays</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+</div>
+</div>
+</body>
+</html>
+

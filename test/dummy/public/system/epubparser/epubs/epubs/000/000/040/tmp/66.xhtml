@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Shortest Common Supersequence</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="shortest-common-supersequence" class="section level1">
+<h1>Shortest Common Supersequence</h1>
+<p>Given two strings str1 and str2, find the shortest string that has both str1 and str2 as subsequences.<span id="more-135075"></span></p>
+<p>Examples:</p>
+<pre><code> 
+Input:   str1 = &quot;geek&quot;,  str2 = &quot;eke&quot;
+Output: &quot;geeke&quot;
+
+Input:   str1 = &quot;AGGTAB&quot;,  str2 = &quot;GXTXAYB&quot;
+Output:  &quot;AGXGTXAYB&quot;
+ </code></pre>
+<p><strong>We strongly recommend you to minimize your browser and try this yourself first.</strong></p>
+<p>This problem is closely related to <a href="http://www.geeksforgeeks.org/dynamic-programming-set-4-longest-common-subsequence/">longest common subsequence problem</a>. Below are steps.</p>
+<p><strong>1)</strong> Find Longest Common Subsequence (lcs) of two given strings. For example, lcs of “geek” and “eke” is “ek”.</p>
+<p><strong>2)</strong> Insert non-lcs characters (in their original order in strings) to the lcs found above, and return the result. So “ek” becomes “geeke” which is shortest common supersequence.</p>
+<p>Let us consider another example, str1 = “AGGTAB” and str2 = “GXTXAYB”. LCS of str1 and str2 is “GTAB”. Once we find LCS, we insert characters of both strings in order and we get “AGXGTXAYB”</p>
+<p><strong>How does this work?</strong><br /> We need to find a string that has both strings as subsequences and is shortest such string. If both strings have all characters different, then result is sum of lengths of two given strings. If there are common characters, then we don’t want them multiple times as the task is to minimize length. Therefore, we fist find the longest common subsequence, take one occurrence of this subsequence and add extra characters.</p>
+<pre><code> 
+
+Length of the shortest supersequence  = (Sum of lengths of given two strings) - 
+                                        (Length of LCS of two given strings)  </code></pre>
+<p>Below is C implementation of above idea. The below implementation only finds length of the shortest supersequence.</p>
+<pre><code> 
+/* C program to find length of the shortest supersequence */
+#include&lt;stdio.h&gt;
+#include&lt;string.h&gt;
+
+/* Utility function to get max of 2 integers */
+int max(int a, int b) { return (a &gt; b)? a : b; }
+
+/* Returns length of LCS for X[0..m-1], Y[0..n-1] */
+int lcs( char *X, char *Y, int m, int n);
+
+// Function to find length of the shortest supersequence
+// of X and Y.
+int shortestSuperSequence(char *X, char *Y)
+{
+  int m = strlen(X), n = strlen(Y);
+
+  int l = lcs(X, Y, m, n); // find lcs
+
+  // Result is sum of input string lengths - length of lcs
+  return (m + n - l);
+}
+
+/* Returns length of LCS for X[0..m-1], Y[0..n-1] */
+int lcs( char *X, char *Y, int m, int n)
+{
+   int L[m+1][n+1];
+   int i, j;
+
+   /* Following steps build L[m+1][n+1] in bottom up fashion.
+      Note that L[i][j] contains length of LCS of X[0..i-1]
+      and Y[0..j-1] */
+   for (i=0; i&lt;=m; i++)
+   {
+     for (j=0; j&lt;=n; j++)
+     {
+       if (i == 0 || j == 0)
+         L[i][j] = 0;
+
+       else if (X[i-1] == Y[j-1])
+         L[i][j] = L[i-1][j-1] + 1;
+
+       else
+         L[i][j] = max(L[i-1][j], L[i][j-1]);
+     }
+   }
+
+   /* L[m][n] contains length of LCS for X[0..n-1] and
+      Y[0..m-1] */
+   return L[m][n];
+}
+
+/* Driver program to test above function */
+int main()
+{
+  char X[] = &quot;AGGTAB&quot;;
+  char Y[] = &quot;GXTXAYB&quot;;
+  printf(&quot;Length of the shortest supersequence is %d\n&quot;,
+         shortestSuperSequence(X, Y));
+  return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> Length of the shortest supersequence is 9 </code></pre>
+<p><br /> Below is <strong>Another Method</strong> to solve the above problem.<br /> A simple analysis yields below simple recursive solution.</p>
+<pre><code> 
+Let X[0..m-1] and Y[0..n-1] be two strings and m and be respective 
+lengths.
+
+  if (m == 0) return n;
+  if (n == 0) return m;
+
+  // If last characters are same, then add 1 to result and
+  // recur for X[]
+  if (X[m-1] == Y[n-1]) 
+     return 1 + SCS(X, Y, m-1, n-1);
+
+  // Else find shortest of following two
+  //  a) Remove last character from X and recur
+  //  b) Remove last character from Y and recur
+  else return 1 + min( SCS(X, Y, m-1, n), SCS(X, Y, m, n-1) );
+ </code></pre>
+<p>Below is simple naive recursive solution based on above recursive formula.</p>
+<pre><code> 
+/* A Naive recursive C++ program to find length
+   of the shortest supersequence */
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+int superSeq(char* X, char* Y, int m, int n)
+{
+    if (!m) return n;
+    if (!n) return m;
+
+    if (X[m-1] == Y[n-1])
+        return 1 + superSeq(X, Y, m-1, n-1);
+
+    return 1 + min(superSeq(X, Y, m-1, n),
+                   superSeq(X, Y, m, n-1));
+}
+
+// Driver program to test above function
+int main()
+{
+    char X[] = &quot;AGGTAB&quot;;
+    char Y[] = &quot;GXTXAYB&quot;;
+    cout &lt;&lt; &quot;Length of the shortest supersequence is &quot;
+         &lt;&lt; superSeq(X, Y, strlen(X), strlen(Y));
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> Length of the shortest supersequence is 9 </code></pre>
+<p>Time complexity of the above solution exponential O(2<sup>min(m, n)</sup>). Since there are <a href="http://www.geeksforgeeks.org/dynamic-programming-set-1/">overlapping subproblems</a>, we can efficiently solve this recursive problem using Dynamic Programming. Below is Dynamic Programming based implementation. Time complexity of this solution is O(mn).</p>
+<pre><code> 
+/* A dynamic programming based C program to find length
+   of the shortest supersequence */
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Returns length of the shortest supersequence of X and Y
+int superSeq(char* X, char* Y, int m, int n)
+{
+    int dp[m+1][n+1];
+
+    // Fill table in bottom up manner
+    for (int i = 0; i &lt;= m; i++)
+    {
+        for (int j = 0; j &lt;= n; j++)
+        {
+           // Below steps follow above recurrence
+           if (!i)
+               dp[i][j] = j;
+           else if (!j)
+               dp[i][j] = i;
+           else if (X[i-1] == Y[j-1])
+                dp[i][j] = 1 + dp[i-1][j-1];
+           else
+                dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1]);
+        }
+    }
+
+    return dp[m][n];
+}
+
+// Driver program to test above function
+int main()
+{
+    char X[] = &quot;AGGTAB&quot;;
+    char Y[] = &quot;GXTXAYB&quot;;
+    cout &lt;&lt; &quot;Length of the shortest supersequence is &quot;
+         &lt;&lt; superSeq(X, Y, strlen(X), strlen(Y));
+    return 0;
+} </code></pre>
+<p>Output:</p>
+<pre><code> Length of the shortest supersequence is 9 </code></pre>
+<p>Thanks to <a href="https://www.facebook.com/COOL.DUDE.BORN.NUD3?fref=ts">Gaurav Ahirwar</a> for suggesting this solution.</p>
+<p><strong>Exercise:</strong><br /> Extend the above program to print shortest supersequence also using <a href="http://www.geeksforgeeks.org/printing-longest-common-subsequence/">function to print LCS</a>.</p>
+<p><strong>References:</strong><br /> <a href="https://en.wikipedia.org/wiki/Shortest_common_supersequence" class="uri">https://en.wikipedia.org/wiki/Shortest_common_supersequence</a></p>
+<p>Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above</p>
+<p><br /></p>
+<div id="source-62" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/shortest-common-supersequence/" class="uri">http://www.geeksforgeeks.org/shortest-common-supersequence/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-strings/">Strings</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+<p><br /></p>
+<p>Post navigation</p>
+<p><span class="nav-previous"><a href="http://www.geeksforgeeks.org/count-bst-subtrees-that-lie-in-given-range/"><span class="meta-nav">←</span> Count BST subtrees that lie in given range</a></span> <span class="nav-next"><a href="http://www.geeksforgeeks.org/shortest-superstring-problem/">Shortest Superstring Problem <span class="meta-nav">→</span></a></span></p>
+<p>Writing code in comment? Please use <a href="http://code.geeksforgeeks.org/">code.geeksforgeeks.org</a>, generate link and share the link here.</p>
+</div>
+</div>
+</body>
+</html>
+

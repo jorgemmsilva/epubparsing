@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Ugly Numbers</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="ugly-numbers" class="section level1">
+<h1>Ugly Numbers</h1>
+<p>Ugly numbers are numbers whose only prime factors are 2, 3 or 5. The sequence<br /> 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, …<br /> shows the first 11 ugly numbers. By convention, 1 is included.<br /> Write a program to find and print the 150’th ugly number.<br /> <span id="more-753"></span></p>
+<p><strong><br /> METHOD 1 (Simple)</strong><br /> Thanks to <a href="http://geeksforgeeks.org/?p=753#comment-195">Nedylko Draganov</a> for suggesting this solution.</p>
+<p><strong>Algorithm:</strong><br /> Loop for all positive integers until ugly number count is smaller than n, if an integer is ugly than increment ugly number count.</p>
+<p>To check if a number is ugly, divide the number by greatest divisible powers of 2, 3 and 5, if the number becomes 1 then it is an ugly number otherwise not.</p>
+<p>For example, let us see how to check for 300 is ugly or not. Greatest divisible power of 2 is 4, after dividing 300 by 4 we get 75. Greatest divisible power of 3 is 3, after dividing 75 by 3 we get 25. Greatest divisible power of 5 is 25, after dividing 25 by 25 we get 1. Since we get 1 finally, 300 is ugly number.</p>
+<p><strong>Implementation:</strong></p>
+<pre><code> 
+# include&lt;stdio.h&gt;
+# include&lt;stdlib.h&gt;
+
+/*This function divides a by greatest divisible 
+  power of b*/
+int maxDivide(int a, int b)
+{
+  while (a%b == 0)
+   a = a/b; 
+  return a;
+}   
+
+/* Function to check if a number is ugly or not */
+int isUgly(int no)
+{
+  no = maxDivide(no, 2);
+  no = maxDivide(no, 3);
+  no = maxDivide(no, 5);
+  
+  return (no == 1)? 1 : 0;
+}    
+
+/* Function to get the nth ugly number*/
+int getNthUglyNo(int n)
+{
+  int i = 1; 
+  int count = 1;   /* ugly number count */ 
+
+  /*Check for all integers untill ugly count 
+    becomes n*/ 
+  while (n &gt; count)
+  {
+    i++;      
+    if (isUgly(i))
+      count++; 
+  }
+  return i;
+}
+
+/* Driver program to test above functions */
+int main()
+{
+    unsigned no = getNthUglyNo(150);
+    printf(&quot;150th ugly no. is %d &quot;,  no);
+    getchar();
+    return 0;
+}
+ </code></pre>
+<p>This method is not time efficient as it checks for all integers until ugly number count becomes n, but space complexity of this method is O(1)</p>
+<p><strong><br /> METHOD 2 (Use Dynamic Programming)</strong><br /> Here is a time efficient solution with O(n) extra space. The ugly-number sequence is 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, …<br />      because every number can only be divided by 2, 3, 5, one way to look at the sequence is to split the sequence to three groups as below:<br />      (1) 1×2, 2×2, 3×2, 4×2, 5×2, …<br />      (2) 1×3, 2×3, 3×3, 4×3, 5×3, …<br />      (3) 1×5, 2×5, 3×5, 4×5, 5×5, …</p>
+<p>     We can find that every subsequence is the ugly-sequence itself (1, 2, 3, 4, 5, …) multiply 2, 3, 5. Then we use similar merge method as merge sort, to get every ugly number from the three subsequence. Every step we choose the smallest one, and move one step after.</p>
+<p><strong>Algorithm:</strong></p>
+<pre><code> 
+1 Declare an array for ugly numbers:  ugly[150]
+2 Initialize first ugly no:  ugly[0] = 1
+3 Initialize three array index variables i2, i3, i5 to point to 
+   1st element of the ugly array: 
+        i2 = i3 = i5 =0; 
+4 Initialize 3 choices for the next ugly no:
+         next_mulitple_of_2 = ugly[i2]*2;
+         next_mulitple_of_3 = ugly[i3]*3
+         next_mulitple_of_5 = ugly[i5]*5;
+5 Now go in a loop to fill all ugly numbers till 150:
+For (i = 1; i 
+Example:
+
+Let us see how it works 
+ 
+initialize
+   ugly[] =  | 1 |
+   i2 =  i3 = i5 = 0;
+
+First iteration
+   ugly[1] = Min(ugly[i2]*2, ugly[i3]*3, ugly[i5]*5)
+            = Min(2, 3, 5)
+            = 2
+   ugly[] =  | 1 | 2 |
+   i2 = 1,  i3 = i5 = 0  (i2 got incremented ) 
+
+Second iteration
+    ugly[2] = Min(ugly[i2]*2, ugly[i3]*3, ugly[i5]*5)
+             = Min(4, 3, 5)
+             = 3
+    ugly[] =  | 1 | 2 | 3 |
+    i2 = 1,  i3 =  1, i5 = 0  (i3 got incremented ) 
+
+Third iteration
+    ugly[3] = Min(ugly[i2]*2, ugly[i3]*3, ugly[i5]*5)
+             = Min(4, 6, 5)
+             = 4
+    ugly[] =  | 1 | 2 | 3 |  4 |
+    i2 = 2,  i3 =  1, i5 = 0  (i2 got incremented )
+
+Fourth iteration
+    ugly[4] = Min(ugly[i2]*2, ugly[i3]*3, ugly[i5]*5)
+              = Min(6, 6, 5)
+              = 5
+    ugly[] =  | 1 | 2 | 3 |  4 | 5 |
+    i2 = 2,  i3 =  1, i5 = 1  (i5 got incremented )
+
+Fifth iteration
+    ugly[4] = Min(ugly[i2]*2, ugly[i3]*3, ugly[i5]*5)
+              = Min(6, 6, 10)
+              = 6
+    ugly[] =  | 1 | 2 | 3 |  4 | 5 | 6 |
+    i2 = 3,  i3 =  2, i5 = 1  (i2 and i3 got incremented )
+
+Will continue same way till I 
+Program:
+ 
+# include&lt;stdio.h&gt;
+# include&lt;stdlib.h&gt;
+# define bool int
+
+/* Function to find minimum of 3 numbers */
+unsigned min(unsigned , unsigned , unsigned );
+
+/* Function to get the nth ugly number*/
+unsigned getNthUglyNo(unsigned n)
+{
+    unsigned *ugly =
+             (unsigned *)(malloc (sizeof(unsigned)*n));
+    unsigned i2 = 0, i3 = 0, i5 = 0;
+    unsigned i;
+    unsigned next_multiple_of_2 = 2;
+    unsigned next_multiple_of_3 = 3;
+    unsigned next_multiple_of_5 = 5;
+    unsigned next_ugly_no = 1;
+    *(ugly+0) = 1;
+
+    for(i=1; i&lt;n; i++)
+    {
+       next_ugly_no = min(next_multiple_of_2,
+                           next_multiple_of_3,
+                           next_multiple_of_5);
+       *(ugly+i) = next_ugly_no;                    
+       if(next_ugly_no == next_multiple_of_2)
+       {
+           i2 = i2+1;       
+           next_multiple_of_2 = *(ugly+i2)*2;
+       }
+       if(next_ugly_no == next_multiple_of_3)
+       {
+           i3 = i3+1;
+           next_multiple_of_3 = *(ugly+i3)*3;
+       }
+       if(next_ugly_no == next_multiple_of_5)
+       {
+           i5 = i5+1;
+           next_multiple_of_5 = *(ugly+i5)*5;
+       }
+    } /*End of for loop (i=1; i&lt;n; i++) */
+    return next_ugly_no;
+}
+
+/* Function to find minimum of 3 numbers */
+unsigned min(unsigned a, unsigned b, unsigned c)
+{
+    if(a &lt;= b)
+    {
+      if(a &lt;= c)
+        return a;
+      else
+        return c;
+    }
+    if(b &lt;= c)
+      return b;
+    else
+      return c;
+}
+
+/* Driver program to test above functions */
+int main()
+{
+    unsigned no = getNthUglyNo(150);
+    printf(&quot;%dth ugly no. is %d &quot;, 150, no);
+    getchar();
+    return 0;
+}
+ </code></pre>
+<p><strong>Algorithmic Paradigm:</strong> Dynamic Programming<br /> <strong>Time Complexity:</strong> O(n)<br /> <strong>Storage Complexity:</strong> O(n)</p>
+<p>Please write comments if you find any bug in the above program or other ways to solve the same problem.</p>
+<p><br /></p>
+<div id="source-1" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/ugly-numbers/" class="uri">http://www.geeksforgeeks.org/ugly-numbers/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-programs/">Misc</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+<p><br /></p>
+<p>Post navigation</p>
+<p><span class="nav-previous"><a href="http://www.geeksforgeeks.org/output-of-programs-set-4/"><span class="meta-nav">←</span> Output of C Programs | Set 4</a></span> <span class="nav-next"><a href="http://www.geeksforgeeks.org/little-and-big-endian-mystery/">Little and Big Endian Mystery <span class="meta-nav">→</span></a></span></p>
+<p>Writing code in comment? Please use <a href="http://code.geeksforgeeks.org/">code.geeksforgeeks.org</a>, generate link and share the link here.</p>
+</div>
+</div>
+</body>
+</html>
+

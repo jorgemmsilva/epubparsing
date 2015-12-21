@@ -1,0 +1,415 @@
+<?xml version='1.0' encoding='utf-8'?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy for Linux (vers 7 December 2008), see www.w3.org"/>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8"/>
+
+<meta name="GENERATOR" content="OpenOffice.org 3.0 (Unix)"/>
+<meta name="CREATED" content="20151109;11564100"/>
+<meta name="CHANGED" content="20151129;1342700"/>
+<meta name="Info_1" content=""/>
+<meta name="Info_2" content=""/>
+<meta name="Info_3" content=""/>
+<meta name="Info_4" content=""/>
+<title>Essential Python</title>
+<meta content="http://www.w3.org/1999/xhtml; charset=utf-8" http-equiv="Content-Type"/><link href="stylesheet.css" type="text/css" rel="stylesheet"/><style type="text/css">
+		@page { margin-bottom: 5.000000pt; margin-top: 5.000000pt; }</style></head>
+<body dir="ltr" class="calibre">
+<h1 lang="en-GB" class="western3" id="calibre_pb_10"><a id="Program_Flow_Control"></a> 12. Program Flow Control</h1>
+<p lang="en-GB" class="western">This section covers flow control
+there are two methods of flow control one is a way to control the
+way a program is looped and the other type of control allows the
+program to make decisions. Python provides implementations of
+<b class="calibre2">while</b> and <b class="calibre2">for</b> loops which are similar to those found
+in other programming languages for creating loops and the <b class="calibre2">if</b>
+statement for decision making.</p>
+<h2 lang="en-GB" class="western4">While Loop</h2>
+<p lang="en-GB" class="western">A <b class="calibre2">while</b> loop repeats as
+long as an expression remains true. When the expression evaluates
+to false then the program skips the loop and the next statement
+after the loop is processed.</p>
+<p lang="en-GB" class="c5"><span class="c6">while
+expression:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">suite</span></p>
+<p lang="en-GB" class="western">The example below shows how a
+<b class="calibre2">while</b> loop can be used to count from 0 to 10.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+whileExample.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">count = 0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">while count &lt;=
+10:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(count)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">count += 1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Count
+Finished")</span></p>
+<p lang="en-GB" class="western">In the above example
+<b class="calibre2">count</b> is set to 0, the <b class="calibre2">while</b> statement checks that
+count &lt;= 10 if it is then the block of code after the
+<b class="calibre2">while</b> statement is processed in the above example the
+current count value is printed and then it gets incremented. The
+program then jumps back to the <b class="calibre2">while</b> statement and
+<b class="calibre2">count</b> is evaluated again.</p>
+<p lang="en-GB" class="western">When <b class="calibre2">count</b> is no longer
+less than or equal to 10 then the code in the block is skipped and
+the code to print 'Count Finished' is run.</p>
+<p lang="en-GB" class="western">When constructing <b class="calibre2">while</b>
+loops you need to make sure that the expression will eventually
+evaluate to False, if it doesn't the the loop will never exit. If
+this is the case then you can exit the program using CTRL + C.</p>
+<p lang="en-GB" class="western">If there is only one line of
+code in the block then the <b class="calibre2">while</b> statement and the line of
+code can be on the same line.</p>
+<p lang="en-GB" class="c5"><span class="c6">while expression:
+statements</span></p>
+<h2 lang="en-GB" class="western4">For Loop</h2>
+<p lang="en-GB" class="western">The <b class="calibre2">for</b> loop allows you
+to run a block of code multiple times while a condition remains
+True. In Python the operator iterates through the items of a
+sequence.</p>
+<p lang="en-GB" class="c5"><span class="c6">for iter in
+sequence:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">suite</span></p>
+<p lang="en-GB" class="western">When the <b class="calibre2">for</b> loop is
+first run the value of the iterator will be given the first value
+in the sequence, when the statements in the suite have been run
+then the program will jump back to the <b class="calibre2">for</b> statement and the
+iterator variable will be given the next value in the sequence. If
+there are no values left in the sequence then the suite will be
+skipped and the next line after the suite will be run. The various
+ways a loop can be controlled are shown below.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+forExample.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myList = ["Susan",
+"Dave", "Jane", "Mark"]</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Loop through a
+list</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for loopIter in
+myList:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(iter)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Loop1
+Finished")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Loop through a
+string</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for character in "Test
+Loop":</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(character)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Loop2
+Finished")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># loop through a
+range</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for count in range(4,
+7):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(count)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Loop3
+Finished")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># loop through a range
+defaulting from 0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for count in
+range(5):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(count)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Loop4
+Finished")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># loop through a range
+with a differnt step value</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for count in range(0,
+10, 2):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(count)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Loop5
+Finished")</span></p>
+<p lang="en-GB" class="western">In the first <b class="calibre2">for</b> loop the
+program iterates through all the values in the list. The second
+example shows the <b class="calibre2">for</b> loop iterating through the characters
+in a string. The last three loops use the <b class="calibre2">range</b> statement to
+control the loop. The first of these displays the values in the
+range between the values 4 and 7. In the second example the numbers
+0 to 4 will be displayed and in the final example of using the
+<b class="calibre2">range</b> statement 0 to 8 in steps of 2 will be displayed.</p>
+<p lang="en-GB" class="western">Note the <b class="calibre2">for</b> loop
+terminates when it reaches the last value in the <b class="calibre2">range</b>
+statement, so in the following example the values 4, 5, 6 will be
+displayed.</p>
+<p lang="en-GB" class="c5"><span class="c6">for count in range(4,
+7):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print
+(count)</span></p>
+<p lang="en-GB" class="western">The <b class="calibre2">range</b> statement is
+mainly used in <b class="calibre2">for</b> loops but it can be used if there is a
+requirement to produce a list of integers.</p>
+<p lang="en-GB" class="c5"><span class="c6">myList =
+list(range(5:10))</span></p>
+<p lang="en-GB" class="western">is the equivalent of</p>
+<p lang="en-GB" class="c5"><span class="c6">myList = (5, 6, 7, 8,
+9)</span></p>
+<h2 lang="en-GB" class="western4">Offsets and Items</h2>
+<p lang="en-GB" class="western">The <b class="calibre2">enumerate</b> function
+can be used with the <b class="calibre2">for</b> loop to give the index of an object
+that is being iterated through.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+enumerate.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myText =
+"Gronk"</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">for (index, value) in
+enumerate(myText):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(index,
+value)</span></p>
+<p lang="en-GB" class="western">The above code would produce the
+following output.</p>
+<p lang="en-GB" class="c5"><span class="c6">0 G</span></p>
+<p lang="en-GB" class="c5"><span class="c6">1 r</span></p>
+<p lang="en-GB" class="c5"><span class="c6">2 o</span></p>
+<p lang="en-GB" class="c5"><span class="c6">3 n</span></p>
+<p lang="en-GB" class="c5"><span class="c6">4 k</span></p>
+<h2 lang="en-GB" class="western4">Continue Statement</h2>
+<p lang="en-GB" class="western">The <b class="calibre2">continue</b> statement is
+used within loops and causes the program to jump back to the start
+of the loop, it can be used in <b class="calibre2">for</b> or <b class="calibre2">while</b>
+loops.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+continueExample.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myList = ["Jon",
+"Alison", "Dave", "Kate"]</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Loop through a list
+don't print Dave</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for loopIter in
+myList:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if loopIter ==
+"Dave":</span></p>
+<p lang="en-GB" class="c5"><span class="c6">continue</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(loopIter)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Loop while i is less
+than ten ignore 3</span></p>
+<p lang="en-GB" class="c5"><span class="c6">i = 0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">while i &lt;
+10:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">i += 1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if i == 3:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">continue</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(i)</span></p>
+<p lang="en-GB" class="western">The output from the above script
+is shown below not that Dave and the number 3 have been
+skipped.</p>
+<p lang="en-GB" class="c5"><span class="c6">Jon</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Alison</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Richard</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Kate</span></p>
+<p lang="en-GB" class="c5"><span class="c6">1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">2</span></p>
+<p lang="en-GB" class="c5"><span class="c6">4</span></p>
+<p lang="en-GB" class="c5"><span class="c6">5</span></p>
+<p lang="en-GB" class="c5"><span class="c6">6</span></p>
+<p lang="en-GB" class="c5"><span class="c6">7</span></p>
+<p lang="en-GB" class="c5"><span class="c6">8</span></p>
+<p lang="en-GB" class="c5"><span class="c6">9</span></p>
+<p lang="en-GB" class="c5"><span class="c6">10</span></p>
+<h2 lang="en-GB" class="western4">Break Statement</h2>
+<p lang="en-GB" class="western">The <b class="calibre2">break</b> statement
+terminates the current loop, none of the commands after the
+<b class="calibre2">break</b> statement in the loop will be called.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+breakExample.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myList = ["Sarah",
+"Dave", "Jane", "Mark"]</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Loop through a list
+don't print Dave</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for loopIter in
+myList:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if loopIter ==
+"Dave":</span></p>
+<p lang="en-GB" class="c5"><span class="c6">break</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(loopIter)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Exit")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Loop while i is less
+than ten ignore 3</span></p>
+<p lang="en-GB" class="c5"><span class="c6">i = 0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">while i &lt;
+10:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">i += 1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if i == 3:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">break</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(i)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Exit")</span></p>
+<p lang="en-GB" class="western">The output from the above script
+is shown below note that in this case when <b class="calibre2">break</b> statement
+gets called the loops stop running.</p>
+<p lang="en-GB" class="c5"><span class="c6">Sarah</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Exit</span></p>
+<p lang="en-GB" class="c5"><span class="c6">1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">2</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Exit</span></p>
+<h2 lang="en-GB" class="western4">Loop Statements and Else</h2>
+<p lang="en-GB" class="western">The <b class="calibre2">else</b> statement can be
+used with both <b class="calibre2">for</b> and <b class="calibre2">while</b> loops. With the
+<b class="calibre2">for</b> statement the <b class="calibre2">else</b> statement gets executed when
+the loop has finished iteration. With the <b class="calibre2">while</b> statement
+the <b class="calibre2">else</b> statement is called when the <b class="calibre2">while</b>
+expression evaluates to <b class="calibre2">false</b>.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+loopElseExample.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Loop with a for
+statement</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for count1 in range(0,
+5):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(count1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">else:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("For
+End1")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># loop again exit with
+break</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for count1 in range(0,
+5):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if count1 ==
+2:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">break</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(count1)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">else:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("For
+End2")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Loop with a while
+statement</span></p>
+<p lang="en-GB" class="c5"><span class="c6">count2 = 0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">while count2 &lt;
+4:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(count2)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">count2 += 1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">else:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("While
+End1")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># loop again exit with
+break</span></p>
+<p lang="en-GB" class="c5"><span class="c6">count2 = 0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">while count2 &lt;
+4:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(count2)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if count2 ==
+2:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">break</span></p>
+<p lang="en-GB" class="c5"><span class="c6">count2 += 1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">else:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("While
+End2")</span></p>
+<p lang="en-GB" class="western">The above code will give the
+following output.</p>
+<p lang="en-GB" class="c5"><span class="c6">0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">2</span></p>
+<p lang="en-GB" class="c5"><span class="c6">3</span></p>
+<p lang="en-GB" class="c5"><span class="c6">4</span></p>
+<p lang="en-GB" class="c5"><span class="c6">For End1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">2</span></p>
+<p lang="en-GB" class="c5"><span class="c6">3</span></p>
+<p lang="en-GB" class="c5"><span class="c6">While End1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">2</span></p>
+<p lang="en-GB" class="western">In the above output it can seen
+that the <b class="calibre2">else</b> statement only gets called when the number of
+iterations is completed and not simply when the loop is exited due
+to the <b class="calibre2">break</b> statement.</p>
+<h2 lang="en-GB" class="western4">If Statement</h2>
+<p lang="en-GB" class="western">The <b class="calibre2">if</b> statement allows
+your program to make decisions. The general format of an <b class="calibre2">if</b>
+statement is</p>
+<p lang="en-GB" class="c5"><span class="c6">if
+expression1:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">suite1</span></p>
+<p lang="en-GB" class="c5"><span class="c6">elif
+expression2:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">suite2</span></p>
+<p lang="en-GB" class="c5"><span class="c6">else:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">suite3</span></p>
+<p lang="en-GB" class="western">When an <b class="calibre2">if</b> statement is
+run the suite associated with the first expression which evaluates
+to true will be run if none of the expressions evaluate to true
+then the suite in the <b class="calibre2">else</b> statement will run, the
+<b class="calibre2">elif</b> and <b class="calibre2">else</b> statements are optional. The following
+code contains two nested loops, <b class="calibre2">if</b> statements are used to
+print different messages dependant on the values of the two
+loops.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+ifExample.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">for j in
+range(5):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for i in
+range(10):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if i == 2:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Two")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">elif i == 3 and j ==
+4:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Three and
+Four")</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Check if j is
+even</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if j == 2 or j ==
+4:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Even")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">else:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Odd")</span></p>
+<p lang="en-GB" class="western">The output from the script is
+shown below it shows how the <b class="calibre2">if</b> statement makes decisions on
+what to print depending on the values of i and j.</p>
+<p lang="en-GB" class="c5"><span class="c6">Two</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Odd</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Two</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Odd</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Two</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Even</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Two</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Odd</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Two</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Three and
+Four</span></p>
+<p lang="en-GB" class="c5"><span class="c6">Even</span></p>
+<h2 lang="en-GB" class="western4">if / else Ternary Expression</h2>
+<p lang="en-GB" class="western">The ternary expression can be
+used in place of a simple <b class="calibre2">if</b> statement where the value of a
+variable needs to be set dependant on an expression for example
+using the <b class="calibre2">if</b> statement the code might be as follows.</p>
+<p lang="en-GB" class="c5"><span class="c6">number = 2</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if number ==
+2:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">result = 10</span></p>
+<p lang="en-GB" class="c5"><span class="c6">else:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">result = 20</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print
+(result)</span></p>
+<p lang="en-GB" class="western">The equivalent ternary
+expression would be.</p>
+<p lang="en-GB" class="c5"><span class="c6">number = 2</span></p>
+<p lang="en-GB" class="c5"><span class="c6">result = 10 if number
+== 2 else 20</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print
+(result)</span></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+</body>
+</html>

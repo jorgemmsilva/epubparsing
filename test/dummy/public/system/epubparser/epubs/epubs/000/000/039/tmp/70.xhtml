@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Tiling Problem</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="tiling-problem" class="section level1">
+<h1>Tiling Problem</h1>
+<p>Given a “2 x n” board and tiles of size “2 x 1″, count the number of ways to tile the given board using the 2 x 1 tiles. A tile can either be placed horizontally i.e., as a 1 x 2 tile or vertically i.e., as 2 x 1 tile. <span id="more-135221"></span></p>
+<p>Examples:</p>
+<pre><code> 
+Input n = 3
+Output: 3
+Explanation:
+We need 3 tiles to tile the board of size  2 x 3. 
+We can tile the board using following ways
+1) Place all 3 tiles vertically. 
+2) Place first tile vertically and remaining 2 tiles horizontally.
+3) Place first 2 tiles horizontally and remaining tiles vertically
+
+Input n = 4
+Output: 5
+Explanation:
+For a 2 x 4 board, there are 5 ways
+1) All 4 vertical
+2) All 4 horizontal
+3) First 2 vertical, remaining 2 horizontal
+4) First 2 horizontal, remaining 2 vertical
+5) Corner 2 vertical, middle 2 horizontal </code></pre>
+<p><a href="http://d2hc1qfcrygj4j.cloudfront.net//wp-content/uploads/tilingproblem.png"><img src="media/file37.png" alt="tilingproblem" /></a></p>
+<p><strong>We strongly recommend you to minimize your browser and try this yourself first.</strong><br /> Let “count(n)” be the count of ways to place tiles on a “2 x n” grid, we have following two ways to place first tile.<br /> 1) If we place first tile vertically, the problem reduces to “count(n-1)”<br /> 2) If we place first tile horizontally, we have to place second tile also horizontally. So the problem reduces to “count(n-2)”</p>
+<p>Therefore, count(n) can be written as below.</p>
+<pre><code> 
+   count(n) = n if n = 1 or n = 2
+   count(n) = count(n-1) + count(n-2) 
+ </code></pre>
+<p>The above recurrence is noting but <a href="http://www.geeksforgeeks.org/program-for-nth-fibonacci-number/">Fibonacci Number</a> expression. We can find n’th Fibonacci number in O(Log n) time, see below for all method to find n’th Fibonacci Number.</p>
+<p><a href="http://www.geeksforgeeks.org/program-for-nth-fibonacci-number/">Different methods for n’th Fibonacci Number</a>.</p>
+<p>This article is contributed by Saurabh Jain. Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above</p>
+<p><br /></p>
+<div id="source-66" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/tiling-problem/" class="uri">http://www.geeksforgeeks.org/tiling-problem/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-programs/">Misc</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a>, <a href="http://www.geeksforgeeks.org/tag/mathematicalalgo/">MathematicalAlgo</a></span></p>
+</div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Maximum weight transformation of a given string</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="maximum-weight-transformation-of-a-given-string" class="section level1">
+<h1>Maximum weight transformation of a given string</h1>
+<p>Given a string consisting of only A’s and B’s. We can transform the given string to another string by toggling any character. Thus many transformations of the given string are possible. The task is to find Weight of the maximum weight transformation. <span id="more-135545"></span></p>
+<p>Weight of a sting is calculated using below formula.</p>
+<pre><code> 
+
+Weight of string = Weight of total pairs + 
+                   weight of single characters - 
+                   Total number of toggles.
+
+Two consecutive characters are considered as pair only if they 
+are different. 
+Weight of a single pair (both character are different) = 4
+Weight of a single character = 1  </code></pre>
+<p>Examples:</p>
+<pre><code> 
+Input: str = &quot;AA&quot;
+Output: 3
+Transformations of given string are &quot;AA&quot;, &quot;AB&quot;, &quot;BA&quot; and &quot;BB&quot;. 
+Maximum weight transformation is &quot;AB&quot; or &quot;BA&quot;.  And weight
+is &quot;One Pair - One Toggle&quot; = 4-1 = 3.
+
+Input: str = &quot;ABB&quot;
+Output: 5
+Transformations are &quot;ABB&quot;, &quot;ABA&quot;, &quot;AAB&quot;, &quot;AAA&quot;, &quot;BBB&quot;, 
+&quot;BBA&quot;, &quot;BAB&quot; and &quot;BAA&quot;
+Maximum weight is of original string 4+1 (One Pair + 1
+character)
+ </code></pre>
+<p><strong>We strongly recommend you to minimize your browser and try this yourself first.</strong><br /> We can recursively find maximum weight using below formula.</p>
+<pre><code> 
+If (n == 1)
+   maxWeight(str[0..n-1]) = 1
+
+Else If str[0] != str[1]
+// Max of two cases: First character considered separately
+//                   First pair considered separately 
+maxWeight(str[0..n-1]) = Max (1 + maxWeight(str[1..n-1]),
+                              4 + getMaxRec(str[2..n-1])
+Else
+// Max of two cases: First character considered separately
+//                   First pair considered separately 
+// Since first two characters are same and a toggle is 
+// required to form a pair, 3 is added for pair instead 
+// of 4         
+maxWeight(str[0..n-1]) = Max (1 + maxWeight(str[1..n-1]),
+                              3 + getMaxRec(str[2..n-1])
+ </code></pre>
+<p>If we draw the complete recursion tree, we can observer that many subproblems are solved again and again. Since same suproblems are called again, this problem has Overlapping Subprolems property. So min square sum problem has both properties (see <a href="http://www.geeksforgeeks.org/archives/12635">this</a>and <a href="http://www.geeksforgeeks.org/archives/12819">this</a>) of a dynamic programming problem. Like other typical <a href="http://www.geeksforgeeks.org/archives/tag/dynamic-programming">Dynamic Programming(DP) problems</a>.</p>
+<p>Below is a memoization based solution. A lookup table is used to see if a problem is already computed.</p>
+<pre><code> 
+// C++ program to find maximum weight transformation
+// of a given string
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Returns wieght of the maximum weight
+// transformation
+int getMaxRec(string &amp;str, int i, int n, int lookup[])
+{
+    // Base case
+    if (i &gt;= n) return 0;
+
+    //If this subproblem is already solved
+    if (lookup[i] != -1) return lookup[i];
+
+    // Don&#39;t make pair, so weight gained is 1
+    int ans = 1 + getMaxRec(str, i+1, n, lookup);
+
+    // If we can make pair
+    if (i+1 &lt; n)
+    {
+      // If elements are dissmilar, weight gained is 4
+      if (str[i] != str[i+1])
+        ans = max(4 + getMaxRec(str, i+2, n, lookup),
+                  ans);
+
+      // if elements are similar so for making a pair
+      // we toggle any of them. Since toggle cost is
+      // 1 so overall weight gain becomes 3
+      else ans = max(3 + getMaxRec(str, i+2, n, lookup),
+                    ans);
+    }
+
+    // save and return maximum of above cases
+    return lookup[i] = ans;
+}
+
+// Initializes lookup table and calls getMaxRec()
+int getMaxWeight(string str)
+{
+    int n = str.length();
+
+    // Create and initialize lookup table
+    int lookup[n];
+    memset(lookup, -1, sizeof lookup);
+
+    // Call recursive function
+    return getMaxRec(str, 0, str.length(), lookup);
+}
+
+// Driver program
+int main()
+{
+    string str = &quot;AAAAABB&quot;;
+    cout &lt;&lt; &quot;Maximum weight of a transformation of &quot;
+         &lt;&lt; str &lt;&lt; &quot; is &quot; &lt;&lt; getMaxWeight(str);
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> 
+Maximum weight of a transformation of AAAAABB is 11  </code></pre>
+<p>Thanks to <a href="http://qa.geeksforgeeks.org/user/Mr.Lazy">Gaurav Ahirwar</a> for providing above solution.</p>
+<p>Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above</p>
+<p><br /></p>
+<div id="source-72" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/maximum-weight-transformation-of-a-given-string/" class="uri">http://www.geeksforgeeks.org/maximum-weight-transformation-of-a-given-string/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-strings/">Strings</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+<p><br /></p>
+<p>Post navigation</p>
+<p><span class="nav-previous"><a href="http://www.geeksforgeeks.org/sap-labs-interview-experience-set-11-on-campus/"><span class="meta-nav">←</span> SAP Labs Interview Experience | Set 11 (On-Campus)</a></span> <span class="nav-next"><a href="http://www.geeksforgeeks.org/bitmasking-and-dynamic-programming-set-1-count-ways-to-assign-unique-cap-to-every-person/">Bitmasking and Dynamic Programming | Set 1 (Count ways to assign unique cap to every person) <span class="meta-nav">→</span></a></span></p>
+<p>Writing code in comment? Please use <a href="http://code.geeksforgeeks.org/">code.geeksforgeeks.org</a>, generate link and share the link here.</p>
+</div>
+</div>
+</body>
+</html>
+

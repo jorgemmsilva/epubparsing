@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Dynamic Programming | Set 15 (Longest Bitonic Subsequence)</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="dynamic-programming-set-15-longest-bitonic-subsequence" class="section level1">
+<h1>Dynamic Programming | Set 15 (Longest Bitonic Subsequence)</h1>
+<p>Given an array arr[0 … n-1] containing n positive integers, a <a href="http://en.wikipedia.org/wiki/Subsequence">subsequence</a>of arr[] is called Bitonic if it is first increasing, then decreasing. Write a function that takes an array as argument and returns the length of the longest bitonic subsequence.<span id="more-19729"></span><br /> A sequence, sorted in increasing order is considered Bitonic with the decreasing part as empty. Similarly, decreasing order sequence is considered Bitonic with the increasing part as empty.</p>
+<p><strong>Examples:</strong></p>
+<pre><code> 
+Input arr[] = {1, 11, 2, 10, 4, 5, 2, 1};
+Output: 6 (A Longest Bitonic Subsequence of length 6 is 1, 2, 10, 4, 2, 1)
+
+Input arr[] = {12, 11, 40, 5, 3, 1}
+Output: 5 (A Longest Bitonic Subsequence of length 5 is 12, 11, 5, 3, 1)
+
+Input arr[] = {80, 60, 30, 40, 20, 10}
+Output: 5 (A Longest Bitonic Subsequence of length 5 is 80, 60, 30, 20, 10)
+ </code></pre>
+<p>Source:<a href="http://geeksforgeeks.org/forum/topic/ms-interview-ques">Microsoft Interview Question</a></p>
+<p><strong>Solution</strong><br /> This problem is a variation of standard <a href="http://www.geeksforgeeks.org/archives/12832">Longest Increasing Subsequence (LIS) problem</a>. Let the input array be arr[] of length n. We need to construct two arrays lis[] and lds[] using Dynamic Programming solution of <a href="http://www.geeksforgeeks.org/archives/12832">LIS problem</a>. lis[i] stores the length of the Longest Increasing subsequence ending with arr[i]. lds[i] stores the length of the longest Decreasing subsequence starting from arr[i]. Finally, we need to return the max value of lis[i] + lds[i] – 1 where i is from 0 to n-1.</p>
+<p>Following is C++ implementation of the above Dynamic Programming solution.</p>
+<pre><code> 
+/* Dynamic Programming implementation of longest bitonic subsequence problem */
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+
+/* lbs() returns the length of the Longest Bitonic Subsequence in
+    arr[] of size n. The function mainly creates two temporary arrays
+    lis[] and lds[] and returns the maximum lis[i] + lds[i] - 1.
+
+    lis[i] ==&gt; Longest Increasing subsequence ending with arr[i]
+    lds[i] ==&gt; Longest decreasing subsequence starting with arr[i]
+*/
+int lbs( int arr[], int n )
+{
+   int i, j;
+
+   /* Allocate memory for LIS[] and initialize LIS values as 1 for
+      all indexes */
+   int *lis = new int[n];
+   for ( i = 0; i &lt; n; i++ )
+      lis[i] = 1;
+
+   /* Compute LIS values from left to right */
+   for ( i = 1; i &lt; n; i++ )
+      for ( j = 0; j &lt; i; j++ )
+         if ( arr[i] &gt; arr[j] &amp;&amp; lis[i] &lt; lis[j] + 1)
+            lis[i] = lis[j] + 1;
+
+   /* Allocate memory for lds and initialize LDS values for
+      all indexes */
+   int *lds = new int [n];
+   for ( i = 0; i &lt; n; i++ )
+      lds[i] = 1;
+
+   /* Compute LDS values from right to left */
+   for ( i = n-2; i &gt;= 0; i-- )
+      for ( j = n-1; j &gt; i; j-- )
+         if ( arr[i] &gt; arr[j] &amp;&amp; lds[i] &lt; lds[j] + 1)
+            lds[i] = lds[j] + 1;
+
+
+   /* Return the maximum value of lis[i] + lds[i] - 1*/
+   int max = lis[0] + lds[0] - 1;
+   for (i = 1; i &lt; n; i++)
+     if (lis[i] + lds[i] - 1 &gt; max)
+         max = lis[i] + lds[i] - 1;
+   return max;
+}
+
+/* Driver program to test above function */
+int main()
+{
+  int arr[] = {0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15};
+  int n = sizeof(arr)/sizeof(arr[0]);
+  printf(&quot;Length of LBS is %d\n&quot;, lbs( arr, n ) );
+
+  getchar();
+  return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code>  Length of LBS is 7
+ </code></pre>
+<p>Time Complexity: O(n^2)<br /> Auxiliary Space: O(n)</p>
+<p>Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above</p>
+<p><br /></p>
+<div id="source-20" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/dynamic-programming-set-15-longest-bitonic-subsequence/" class="uri">http://www.geeksforgeeks.org/dynamic-programming-set-15-longest-bitonic-subsequence/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-arrays/">Arrays</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+<p><br /></p>
+<p>Post navigation</p>
+<p><span class="nav-previous"><a href="http://www.geeksforgeeks.org/g-fact-93/"><span class="meta-nav">←</span> Use of explicit keyword in C++</a></span> <span class="nav-next"><a href="http://www.geeksforgeeks.org/dynamic-programming-set-16-floyd-warshall-algorithm/">Dynamic Programming | Set 16 (Floyd Warshall Algorithm) <span class="meta-nav">→</span></a></span></p>
+<p>Writing code in comment? Please use <a href="http://code.geeksforgeeks.org/">code.geeksforgeeks.org</a>, generate link and share the link here.</p>
+</div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='utf-8'?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy for Linux (vers 7 December 2008), see www.w3.org"/>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8"/>
+
+<meta name="GENERATOR" content="OpenOffice.org 3.0 (Unix)"/>
+<meta name="CREATED" content="20151109;11564100"/>
+<meta name="CHANGED" content="20151129;1342700"/>
+<meta name="Info_1" content=""/>
+<meta name="Info_2" content=""/>
+<meta name="Info_3" content=""/>
+<meta name="Info_4" content=""/>
+<title>Essential Python</title>
+<meta content="http://www.w3.org/1999/xhtml; charset=utf-8" http-equiv="Content-Type"/><link href="stylesheet.css" type="text/css" rel="stylesheet"/><style type="text/css">
+		@page { margin-bottom: 5.000000pt; margin-top: 5.000000pt; }</style></head>
+<body dir="ltr" class="calibre">
+<h1 lang="en-GB" class="western3" id="calibre_pb_12"><a id="Modules"></a> 14.
+Modules</h1>
+<p lang="en-GB" class="western">A module allows you to break a
+Python program into multiple files this has the advantage that a
+large program can be split up into functional modules. For example
+if a program needs to do some statistical calculations then this
+code could be put into one module and the main application code in
+a separate module. This separation of functionality means that if
+the statistical calculations module is then required in another
+project you can use the same module for both projects.</p>
+<p lang="en-GB" class="western">The follow example shows two
+files <b class="calibre2">statistics.py</b> and <b class="calibre2">module.py</b>. The first file
+<b class="calibre2">statistics.py</b> has two functions to analysis the passed data.
+For this example to work both files should be stored in the same
+directory.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+statistics.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+average(data1):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">"""function for
+finding an average"""</span></p>
+<p lang="en-GB" class="c5"><span class="c6">avsum = 0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for i in
+data1:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">avsum += i</span></p>
+<p lang="en-GB" class="c5"><span class="c6">return avsum /
+len(data1)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+max_val(data1):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">""" function for
+finding the max value"""</span></p>
+<p lang="en-GB" class="c5"><span class="c6">maxvalue =
+0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for i in
+data1:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if maxvalue &lt;
+i:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">maxvalue =
+i</span></p>
+<p lang="en-GB" class="c5"><span class="c6">return
+maxvalue</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+module.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># import statistics
+module</span></p>
+<p lang="en-GB" class="c5"><span class="c6">import
+statistics</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myData = list(range(1,
+10))</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">print(statistics.average(myData))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(statistics.max_val(myData))</span></p>
+<p lang="en-GB" class="western"><span class="c9">The
+file</span> <b class="calibre2">statistics.py</b> looks like a standard Python file
+with 2 functions defined. The file <b class="calibre2">module.py</b> imports the
+<b class="calibre2">statistics</b> module using the import statement.</p>
+<p lang="en-GB" class="c5"><span class="c6">import
+statistics</span></p>
+<p lang="en-GB" class="western">The functions in the module are
+now called using the modules <b class="calibre2">statistics.py</b> namespace which
+is the function name prefixed with the namespace.</p>
+<p lang="en-GB" class="c5"><span class="c6">statistics.average(indata)</span></p>
+<p lang="en-GB" class="western">A module is loaded only once
+regardless of how many times it is imported. If you don't want to
+import the complete module then you can import specific attributes
+into the current namespace from the module using the
+<b class="calibre2">from...import</b> statement.</p>
+<p lang="en-GB" class="western">If you change the import
+statement in module.py to and then rerun the code you will get an
+error.</p>
+<p lang="en-GB" class="c5"><span class="c6">from statistics import
+average maxVal</span></p>
+<p lang="en-GB" class="western">This is because the functions
+average and maxVal are now in the namespace of module.py. To get
+the program to run again update module.py to the following.</p>
+<p lang="en-GB" class="c5"><span class="c6">#File:
+module.py</span></p>
+<p lang="en-GB" class="c5"><span class="c6">import
+statistics</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myData = list(range(1,
+10))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print
+(average(myData))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print
+(maxVal(myData))</span></p>
+<p lang="en-GB" class="western">If you want to import all the
+functions into another modules namespace you can use the wild card
+*.</p>
+<p lang="en-GB" class="c5"><span class="c6">from statistics import
+*</span></p>
+<p lang="en-GB" class="western">The above import statement would
+import <b class="calibre2">average</b> and <b class="calibre2">maxVal</b> into the local
+namespace.</p>
+<p lang="en-GB" class="western">If you want to load a module but
+use it with a different name in the module you are importing it
+into then you can use the <b class="calibre2">as</b> function, so in the following
+example <b class="calibre2">statistics</b> is imported but used as <b class="calibre2">maths</b>.</p>
+<p lang="en-GB" class="c5"><span class="c6">#File:
+module.py</span></p>
+<p lang="en-GB" class="c5"><span class="c6">#import statistics
+module and change its name to maths</span></p>
+<p lang="en-GB" class="c5"><span class="c6">import statistics as
+maths</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myData = list(range(1,
+10))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print
+(maths.average(myData))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print
+(maths.maxVal(myData))</span></p>
+<h2 lang="en-GB" class="western4">Module Reloads</h2>
+<p lang="en-GB" class="western">When a file is imported the code
+within it which is not within a function will run, change to see
+this in action change <b class="calibre2">statistics.py</b> to the following.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+statistics.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+average(data1):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">"""function for
+finding an average"""</span></p>
+<p lang="en-GB" class="c5"><span class="c6">avsum = 0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for i in
+data1:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">avsum += i</span></p>
+<p lang="en-GB" class="c5"><span class="c6">return avsum /
+len(data1)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+max_val(data1):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">""" function for
+finding the max value"""</span></p>
+<p lang="en-GB" class="c5"><span class="c6">maxvalue =
+0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for i in
+data1:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">if maxvalue &lt;
+i:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">maxvalue =
+i</span></p>
+<p lang="en-GB" class="c5"><span class="c6">return
+maxvalue</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#Code that will be run
+when module imported</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Hello
+world')</span></p>
+<p lang="en-GB" class="western">If you run <b class="calibre2">module.py</b>
+you'll find that 'hello world' gets printed on the screen this
+shows that the code was run. The code will only get run once even
+if the file is imported in multiple files. If you want to rerun the
+code in an imported module then you can you use the <b class="calibre2">reload</b>
+function. Change <b class="calibre2">module.py</b> to the following</p>
+<p lang="en-GB" class="c5"><span class="c6">#File:
+module.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#import the reload
+function</span></p>
+<p lang="en-GB" class="c5"><span class="c6">from imp import
+reload</span></p>
+<p lang="en-GB" class="c5"><span class="c6">#import statistics
+module</span></p>
+<p lang="en-GB" class="c5"><span class="c6">import
+statistics</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myData = list(range(1,
+10))</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">print
+(statistics.average(myData))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print
+(statistics.maxVal(myData))</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#reload the statistics
+module</span></p>
+<p lang="en-GB" class="c5"><span class="c6">reload(statistics)</span></p>
+<p lang="en-GB" class="western">When the code is run you will
+find that hello world now gets printed out twice.</p>
+<h2 lang="en-GB" class="western4">Locating Module Files</h2>
+<p lang="en-GB" class="western">When importing files the Python
+interpreter needs to be able to find the files, the order of where
+it searches for a file is as follows</p>
+<p lang="en-GB" class="list-indent-western">The current
+directory</p>
+<p lang="en-GB" class="list-indent-western">All folders defined in
+PYTHONPATH shell variable</p>
+<p lang="en-GB" class="list-indent-western">The default path.</p>
+<p lang="en-GB" class="list-indent-western">The module search path
+is stored in the sys system module as the sys.path variable. This
+variable contains the current directory, PYTHONPATH and the
+installation dependant default path</p>
+<h2 lang="en-GB" class="western4">Module Data Hiding</h2>
+<p lang="en-GB" class="western">In Python there is no proper way
+of encapsulating data so that its not accessible from other
+modules. Encapsulation relies on the programmer using a single
+under score in front of the data (_myVar) or function. This will
+prevent the names being copied when the file is imported using the
+<b class="calibre2">from *</b> statement, however the names will still be imported
+if other forms of import are used.</p>
+<p lang="en-GB" class="western">To make certain data items are
+visible the <b class="calibre2">__all__</b> variable can be used. Any variables that
+are assigned to it will be imported but others in the module will
+not get imported.</p>
+<p lang="en-GB" class="c5"><span class="c6">__all__ = [“myVar1”,
+“myVar2”]</span></p>
+<p lang="en-GB" class="western">The <b class="calibre2">__all__</b> variable must
+be placed at the top of the file.</p>
+<h2 lang="en-GB" class="western4">__name__ and __main__</h2>
+<p lang="en-GB" class="western">Each module has an automatically
+created attribute called <b class="calibre2">__name__</b>. If the module is being
+run as an imported module then <b class="calibre2">__name __</b> will be the
+filename. If the module has not been imported then <b class="calibre2">__name__</b>
+will be <b class="calibre2">__main__</b> this allows the script to determine how the
+module has been run.</p>
+<p lang="en-GB" class="western">To show this create the
+following files, first run <b class="calibre2">nameExample1.py</b> and you should
+get the message 'Not Imported' then run <b class="calibre2">nameExample2.py</b> and
+you should get 'Imported' displayed on the screen.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+nameExample1.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">if __name__ ==
+'__main__':</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Not
+Imported")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">else:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Imported")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+nameExample2.py</span></p>
+<p lang="en-GB" class="c5"><span class="c6">import
+nameExample1</span></p>
+<p lang="en-GB" class="western">This might seem like an odd
+thing to be able to do, its main advantage is that you can include
+test code in a module that won't get run if the module has been
+imported. Its other use is if you want to have a module that can
+work in a stand alone manner or be imported by another module.</p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+</body>
+</html>

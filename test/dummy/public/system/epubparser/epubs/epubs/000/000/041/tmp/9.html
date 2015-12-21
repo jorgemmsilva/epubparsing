@@ -1,0 +1,430 @@
+<?xml version='1.0' encoding='utf-8'?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy for Linux (vers 7 December 2008), see www.w3.org"/>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8"/>
+
+<meta name="GENERATOR" content="OpenOffice.org 3.0 (Unix)"/>
+<meta name="CREATED" content="20151109;11564100"/>
+<meta name="CHANGED" content="20151129;1342700"/>
+<meta name="Info_1" content=""/>
+<meta name="Info_2" content=""/>
+<meta name="Info_3" content=""/>
+<meta name="Info_4" content=""/>
+<title>Essential Python</title>
+<meta content="http://www.w3.org/1999/xhtml; charset=utf-8" http-equiv="Content-Type"/><link href="stylesheet.css" type="text/css" rel="stylesheet"/><style type="text/css">
+		@page { margin-bottom: 5.000000pt; margin-top: 5.000000pt; }</style></head>
+<body dir="ltr" class="calibre">
+<h1 lang="en-GB" class="western3" id="calibre_pb_6"><a id="Variables"></a> 8.
+Variables</h1>
+<p lang="en-GB" class="western">Variables allow data to be
+stored within a program.</p>
+<p lang="en-GB" class="western">Python supports various data
+types the five standard types are</p>
+<p lang="en-GB" class="list-indent-western">Numbers</p>
+<p lang="en-GB" class="list-indent-western">String</p>
+<p lang="en-GB" class="list-indent-western">List</p>
+<p lang="en-GB" class="list-indent-western">Tuple</p>
+<p lang="en-GB" class="list-indent-western">Dictionary</p>
+<p lang="en-GB" class="western">The type is used to define the
+storage method and operations that can be carried out on the
+variable.</p>
+<h2 lang="en-GB" class="western4">Immutability</h2>
+<p lang="en-GB" class="western">Every object is defined as being
+immutable this means that it is unchangeable. For the core types
+lists and dictionaries can be changed while numeric values, strings
+and tuples are not changeable. In most case this isn't really
+noticeable in you code as you can assign a new value to a variable
+with the same name.</p>
+<h2 lang="en-GB" class="western4">Numeric Variables</h2>
+<p lang="en-GB" class="western">Python supports the numeric
+variable types int, float and complex.</p>
+<p lang="en-GB" class="western">Numeric variables are created
+when a value is assigned to them.</p>
+<p lang="en-GB" class="c5"><span class="c6">var1 = 20</span></p>
+<p lang="en-GB" class="western">The example above will assign
+the value 20 to the variable var1.</p>
+<p lang="en-GB" class="western">If you want to delete a variable
+then this can be done with the <b class="calibre2">del</b> statement, so to delete
+the variable var1 defined above you would use</p>
+<p lang="en-GB" class="c5"><span class="c6">del var1</span></p>
+<p lang="en-GB" class="western">Multiple variables can be
+deleted by separating them with commas.</p>
+<p lang="en-GB" class="c5"><span class="c6">del var1,
+var2</span></p>
+<h2 lang="en-GB" class="western4">int (signed integers)</h2>
+<p lang="en-GB" class="western">Integers or ints are positive or
+negative whole numbers and so are defined without a decimal point.
+Unlike other programming languages in Python there is no limit to
+the value that an integer can represent so they have unlimited
+size.</p>
+<p lang="en-GB" class="c5"><span class="c6">#create integer
+variables</span></p>
+<p lang="en-GB" class="c5"><span class="c6">intVar1 =
+10</span></p>
+<p lang="en-GB" class="c5"><span class="c6">intVar2 =
+-786</span></p>
+<p lang="en-GB" class="c5"><span class="c6">intVar3 =
+0xff</span></p>
+<h2 lang="en-GB" class="western4">float (floating point real
+values)</h2>
+<p lang="en-GB" class="western">Often called floats these are
+floating point or real numbers and so have a real integer and
+fractional part separated by a decimal point. Floats can also be
+defined with scientific notation using e or E.</p>
+<p lang="en-GB" class="c5"><span class="c6">#create float
+variables</span></p>
+<p lang="en-GB" class="c5"><span class="c6">floatVar1 =
+0.0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">floatVar2 =
+-89.5</span></p>
+<p lang="en-GB" class="c5"><span class="c6">floatVar3 =
+89.4-e45</span></p>
+<p lang="en-GB" class="c5"><span class="c6">floatVar3 =
+56.2e10</span></p>
+<h2 lang="en-GB" class="western4">Complex (complex numbers)</h2>
+<p lang="en-GB" class="western">Complex numbers have a real and
+imaginary part and are defined in the form a + bj where a is the
+real part and b the imaginary part. The imaginary part j represents
+the square root of -1.</p>
+<p lang="en-GB" class="c5"><span class="c6">#create complex
+variables</span></p>
+<p lang="en-GB" class="c5"><span class="c6">complexVar1 =
+78.67j</span></p>
+<p lang="en-GB" class="c5"><span class="c6">complexVar2 = 78.23 +
+0j</span></p>
+<p lang="en-GB" class="c5"><span class="c6">complexVar3 = 34.2e-3
++ 23.6e3j</span></p>
+<p lang="en-GB" class="c5"><span class="c6">complexVar4 =
+3.14J</span></p>
+<h2 lang="en-GB" class="western4">Strings</h2>
+<p lang="en-GB" class="western">Strings are defined by assigning
+a set of characters within quotation marks.</p>
+<p lang="en-GB" class="c5"><span class="c6">myString = 'Python
+Programming'</span></p>
+<p lang="en-GB" class="western">If you want to extract part of
+the string this can be done using the slice operator the first
+character in a string is at index 0, the following shows you how to
+get the character at index [1].</p>
+<p lang="en-GB" class="c5"><span class="c6">myString = 'Python
+Programming'</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myNewString =
+myString[1]</span></p>
+<p lang="en-GB" class="western">The variable myNewString will
+now be set to 'y'.</p>
+<p lang="en-GB" class="western">To get a set of characters then
+the syntax of the slice operator is [start index : end Index]</p>
+<p lang="en-GB" class="c5"><span class="c6">myNewString =
+myString[8 : 15]</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myNewString =
+myString[8 : ]</span></p>
+<p lang="en-GB" class="western">In the second case where no
+value is specified after the colon then myNewString will be the
+contain everything from character 8 to the end of the string. Minus
+numbers can also be used in the splice operator these work
+backwards from the end of the string rather than the beginning.</p>
+<p lang="en-GB" class="c5"><span class="c6">myNewString =
+myString[-8 : -3]</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myNewString =
+myString[-1]</span></p>
+<p lang="en-GB" class="western">Strings can be concatenated
+together using the + operator.</p>
+<p lang="en-GB" class="c5"><span class="c6">myNewString = myString
++ 'is cool'</span></p>
+<p lang="en-GB" class="western">Strings also have a repetition
+operator *.</p>
+<p lang="en-GB" class="c5"><span class="c6">myNewString = myString
+* 2</span></p>
+<p lang="en-GB" class="western">The following example code shows
+strings in action</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+stringExample.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myString = 'Essential
+Python 3'</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Copy the 2nd
+character only</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myNewString =
+myString[1]</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print the
+character</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myNewString)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print
+'Program'</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myString[7:
+14])</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print
+'Programming'</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myString[7:])</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print
+'min'</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myString[-4:
+-1])</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Create 'Python
+Programming is cool'</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myNewString = myString
++ 'is cool?'</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print 'Python
+Programming is cool'</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myNewString)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print two copies of
+the string</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myString *
+2)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print the length of
+the string</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(len(myString))</span></p>
+<p lang="en-GB" class="western">The contents of a string cannot
+be changed once it has been defined so the following would create
+an error.</p>
+<p lang="en-GB" class="c5"><span class="c6">myNewString[2] =
+“y”</span></p>
+<p lang="en-GB" class="western">Strings in Python are immutable
+(unchangeable) so when an operation is performed on a string its
+result is a new string.</p>
+<p lang="en-GB" class="western">The [ : ] operators described
+above are all sequence operators which will also work on other
+sequences such as tuples and lists which are described later on in
+this book.</p>
+<h3 lang="en-GB" class="western5">String Methods</h3>
+<p lang="en-GB" class="western">Strings also have additional
+methods which can be used to find, replace and do other operations
+.</p>
+<p lang="en-GB" class="western">The length of a string can be
+found with the <b class="calibre2">len</b> method.</p>
+<p lang="en-GB" class="c5"><span class="c6">length = len('Test
+String')</span></p>
+<p lang="en-GB" class="western">The type of string can be
+determined using the following methods <b class="calibre2">isalpha</b>,
+<b class="calibre2">isdecimal</b>, <b class="calibre2">isdigit</b>, <b class="calibre2">isidentifier</b>,
+<b class="calibre2">islower</b>, <b class="calibre2">isupper</b>, <b class="calibre2">isnumeric</b>,
+<b class="calibre2">isprintable</b>, <b class="calibre2">isspace</b> and <b class="calibre2">istitle</b>.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+stringMethods1.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myString =
+"PythonProgramming"</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myNumberString =
+'1234'</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">if
+myString.isalpha():</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("myString is
+alpha")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">else:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("myString is not
+alpha")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">if
+myNumberString.isnumeric():</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("myNumberString
+is numeric")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">else:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("myNumberString
+is not numeric")</span></p>
+<p lang="en-GB" class="western">To find a string within another
+string the <b class="calibre2">find</b> method can be used the following code will
+find the sub string “Prog” within the string variable myString.</p>
+<p lang="en-GB" class="c5"><span class="c6">myString.find("Prog")</span></p>
+<p lang="en-GB" class="western">The replace method can be used
+to replace part of a string with another string this method
+requires two arguments the sub string to find and the string to
+replace it with.</p>
+<p lang="en-GB" class="c5"><span class="c6">myString.replace("Programming", "Coding")</span></p>
+<p lang="en-GB" class="western">To split up a string the split
+method is used, this results in a list were each item is a sub
+string of the initial string. If split is called without a argument
+then it will split the string up at every space alternatively a
+character can be defined which will be used as a separator to split
+the string.</p>
+<p lang="en-GB" class="c5"><span class="c6">myList =
+myData.split(",")</span></p>
+<p lang="en-GB" class="western">The following code shows some of
+the methods described above in action.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+stringMethods2.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myString = 'Python
+Programming'</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myData =
+'Jon,Simon,Jane,Mark'</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># find the position of
+Prog</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print('Prog is at
+index', myString.find('Prog'))</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># replace a
+sub-string</span></p>
+<p lang="en-GB" class="c5"><span class="c6">replaceString =
+myString.replace('Programming', 'Coding')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(replaceString)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Make string upper
+case</span></p>
+<p lang="en-GB" class="c5"><span class="c6">upperString =
+myString.upper()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(upperString)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># capitalise
+string</span></p>
+<p lang="en-GB" class="c5"><span class="c6">capString =
+upperString.capitalize()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(capString)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Split the string
+into a list</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList =
+myData.split(',')</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for item in
+myList:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(item)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># split using default
+space</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList =
+myString.split()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for item in
+myList:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(item)</span></p>
+<h3 lang="en-GB" class="western5">String Formatting</h3>
+<p lang="en-GB" class="western">The string <b class="calibre2">format</b> method
+allows you to create strings from a template and data.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+stringFormattingMethods1.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># define the
+templates</span></p>
+<p lang="en-GB" class="c5"><span class="c6">stringTemplate1 = "The
+{0} is {1}"</span></p>
+<p lang="en-GB" class="c5"><span class="c6">stringTemplate2 =
+"{action} like an {type}"</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># print formatted
+data</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(stringTemplate1.format('Price', 2.50))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(stringTemplate2.format(action="Walk",
+type="Egyptian"))</span></p>
+<p lang="en-GB" class="western">In the code above the first
+template uses indexes within curly braces these are replaced with
+the data in the call to the <b class="calibre2">format</b> method so
+<b class="calibre2">stringTemplate1</b> will be ' The price is 2.50'. In the second
+template keywords are used to pass the data into the string.</p>
+<p lang="en-GB" class="western">The <b class="calibre2">format</b> method
+supports specific formatting for different data types this allows
+for alignment, padding and formatting of numeric values. The
+formatting information is placed within the curly brackets after
+the field name and is separated from the field name by a colon.</p>
+<p lang="en-GB" class="c5"><span class="c6">stringTemplate1 = "The
+{0:20} is {1:10}"</span></p>
+<p lang="en-GB" class="western">In the above example the
+template will pad field 0 up to twenty characters and field 1 up to
+ten characters. The syntax of the format method is</p>
+<p lang="en-GB" class="c5"><span class="c6">[[fill]align][sign][#][0][width][.precision][typecode]</span></p>
+<p lang="en-GB" class="western">The align flag can be
+<b class="calibre2">&lt;</b> left alignment, <b class="calibre2">&gt;</b> right alignment, <b class="calibre2">^</b>
+centre alignment and <b class="calibre2">=</b> padding after a sign character, a
+padding character can be added before the align flag.</p>
+<p lang="en-GB" class="c5"><span class="c6">stringTemplate1 =
+"{0:&lt;10} like an {1:&gt;15}"</span></p>
+<p lang="en-GB" class="c5"><span class="c6">stringTemplate1 =
+"{0:.&lt;10} like an {1:&gt;15}"</span></p>
+<p lang="en-GB" class="western">So the first line of the code
+above would align the first item to the left and pad it with 10
+spaces and the second item would be padded with 15 spaces and
+aligned to the right. The second line would do the same but the
+first item would be padded to the left with '.'.</p>
+<p lang="en-GB" class="western">Numbers can be formatted within
+the format template, to format a floating point number to be
+displayed with three decimal places the following code would be
+used.</p>
+<p lang="en-GB" class="c5"><span class="c6">stringTemplat3 =
+'Floating Point {0:.3f}'</span></p>
+<p lang="en-GB" class="western">Floating point numbers can also
+be formatted using e for exponential formatting and g for default
+floating point.</p>
+<p lang="en-GB" class="western">Integers can be formatted by
+using b for binary, X hex or o for octal values.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+stringFormattingMethods2.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># template pad the
+first field to the left with 10 spaces</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># and pad the second
+field to the right with 15 spaces</span></p>
+<p lang="en-GB" class="c5"><span class="c6">stringTemplate1 =
+"{0:&lt;10} like an {1:&gt;15}"</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># template pad the
+first field to the left with 10 exclamation marks</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># and center the
+second field with 15 question marks</span></p>
+<p lang="en-GB" class="c5"><span class="c6">stringTemplate2 =
+"{0:!&lt;10} like an {1:?^15}"</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># template display 3
+floats first one to 3 decimal places</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># second one as
+standard float and the third in exponential</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># format aligned right
+padded with zeros</span></p>
+<p lang="en-GB" class="c5"><span class="c6">stringTemplate3 =
+"Floats {0:.3f} {1:g} {2:0&gt;20e}"</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># template display 3
+integers first one in octal padded to the left with 5
+spaces</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># second one as hex
+value the third in binary</span></p>
+<p lang="en-GB" class="c5"><span class="c6">stringTemplate4 =
+"Integer {0:&lt;5o} {1:X} {2:b}"</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">print(stringTemplate1.format("Walk", "Egyptian"))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(stringTemplate2.format("Walk", "Egyptian"))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(stringTemplate3.format(2.5687, 2.5687,
+2.5687))</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(stringTemplate4.format(125, 125, 125))</span></p>
+<h2 lang="en-GB" class="western4">Variable Scope and Namespaces</h2>
+<p lang="en-GB" class="western">Variables are identifiers that
+map to objects. A name space is a dictionary of variable names and
+their values.</p>
+<p lang="en-GB" class="western">Python can access variables that
+are in the global and local namespace. If there is a global and
+local variable in scope with the same name then Python will use the
+local variable. Every function and class method has its own name
+space. Python assumes that any variable within a function is local
+to that function. If you want to use global variables in a function
+then you need to use the global statement.</p>
+<p lang="en-GB" class="western">In the following code
+<b class="calibre2">total</b> is defined as being global in the function
+<b class="calibre2">addtototal</b>, if it was not defined as global then the
+interpreter would give an error as total would not have been
+defined before it was used.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+variablenamespace.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">total = 0</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">def
+addtototal(a):</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># tell python that
+total is the global variable</span></p>
+<p lang="en-GB" class="c5"><span class="c6">global
+total</span></p>
+<p lang="en-GB" class="c5"><span class="c6">total = total +
+a</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">for i in range(0,
+10):</span></p>
+<p lang="en-GB" class="c5"><span class="c6">addtototal(i)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(total)</span></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+</body>
+</html>

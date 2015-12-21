@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Remove minimum elements from either side such that 2*min becomes more than max</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="remove-minimum-elements-from-either-side-such-that-2min-becomes-more-than-max" class="section level1">
+<h1>Remove minimum elements from either side such that 2*min becomes more than max</h1>
+<p>Given an unsorted array, trim the array such that twice of minimum is greater than maximum in the trimmed array. Elements should be removed either end of the array.<span id="more-127861"></span></p>
+<p>Number of removals should be minimum.</p>
+<p>Examples:</p>
+<pre><code> 
+arr[] = {4, 5, 100, 9, 10, 11, 12, 15, 200}
+Output: 4
+We need to remove 4 elements (4, 5, 100, 200)
+so that 2*min becomes more than max.
+
+
+arr[] = {4, 7, 5, 6}
+Output: 0
+We don&#39;t need to remove any element as 
+4*2 &gt; 7 (Note that min = 4, max = 8)
+
+arr[] = {20, 7, 5, 6}
+Output: 1
+We need to remove 20 so that 2*min becomes
+more than max
+
+arr[] = {20, 4, 1, 3}
+Output: 3
+We need to remove any three elements from ends
+like 20, 4, 1 or 4, 1, 3 or 20, 3, 1 or 20, 4, 1 </code></pre>
+<p><strong>Naive Solution:</strong><br /> A naive solution is to try every possible case using recurrence. Following is the naive recursive algorithm. Note that the algorithm only returns minimum numbers of removals to be made, it doesn’t print the trimmed array. It can be easily modified to print the trimmed array as well.</p>
+<pre><code> 
+// Returns minimum number of removals to be made in
+// arr[l..h]
+minRemovals(int arr[], int l, int h)
+1) Find min and max in arr[l..h]
+2) If 2*min &gt; max, then return 0.
+3) Else return minimum of &quot;minRemovals(arr, l+1, h) + 1&quot;
+   and &quot;minRemovals(arr, l, h-1) + 1&quot;
+ </code></pre>
+<p>Following is C++ implementation of above algorithm.</p>
+<pre><code> 
+#include &lt;iostream&gt;
+using namespace std;
+
+// A utility function to find minimum of two numbers
+int min(int a, int b) {return (a &lt; b)? a : b;}
+
+// A utility function to find minimum in arr[l..h]
+int min(int arr[], int l, int h)
+{
+    int mn = arr[l];
+    for (int i=l+1; i&lt;=h; i++)
+       if (mn &gt; arr[i])
+         mn = arr[i];
+    return mn;
+}
+
+// A utility function to find maximum in arr[l..h]
+int max(int arr[], int l, int h)
+{
+    int mx = arr[l];
+    for (int i=l+1; i&lt;=h; i++)
+       if (mx &lt; arr[i])
+         mx = arr[i];
+    return mx;
+}
+
+// Returns the minimum number of removals from either end
+// in arr[l..h] so that 2*min becomes greater than max.
+int minRemovals(int arr[], int l, int h)
+{
+    // If there is 1 or less elements, return 0
+    // For a single element, 2*min &gt; max 
+    // (Assumption: All elements are positive in arr[])
+    if (l &gt;= h) return 0;
+
+    // 1) Find minimum and maximum in arr[l..h]
+    int mn = min(arr, l, h);
+    int mx = max(arr, l, h);
+
+    //If the property is followed, no removals needed
+    if (2*mn &gt; mx)
+       return 0;
+
+    // Otherwise remove a character from left end and recur,
+    // then remove a character from right end and recur, take
+    // the minimum of two is returned
+    return min(minRemovals(arr, l+1, h),
+               minRemovals(arr, l, h-1)) + 1;
+}
+
+// Driver program to test above functions
+int main()
+{
+  int arr[] = {4, 5, 100, 9, 10, 11, 12, 15, 200};
+  int n = sizeof(arr)/sizeof(arr[0]);
+  cout &lt;&lt; minRemovals(arr, 0, n-1);
+  return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code>  4  </code></pre>
+<p>Time complexity: Time complexity of the above function can be written as following</p>
+<pre><code>   T(n) = 2T(n-1) + O(n)  </code></pre>
+<p>An upper bound on solution of above recurrence would be O(n x 2<sup>n</sup>).</p>
+<p><strong>Dynamic Programming:</strong><br /> The above recursive code exhibits many overlapping subproblems. For example minRemovals(arr, l+1, h-1) is evaluated twice. So Dynamic Programming is the choice to optimize the solution. Following is Dynamic Programming based solution.</p>
+<pre><code> 
+#include &lt;iostream&gt;
+using namespace std;
+
+// A utility function to find minimum of two numbers
+int min(int a, int b) {return (a &lt; b)? a : b;}
+
+// A utility function to find minimum in arr[l..h]
+int min(int arr[], int l, int h)
+{
+    int mn = arr[l];
+    for (int i=l+1; i&lt;=h; i++)
+       if (mn &gt; arr[i])
+         mn = arr[i];
+    return mn;
+}
+
+// A utility function to find maximum in arr[l..h]
+int max(int arr[], int l, int h)
+{
+    int mx = arr[l];
+    for (int i=l+1; i&lt;=h; i++)
+       if (mx &lt; arr[i])
+         mx = arr[i];
+    return mx;
+}
+
+// Returns the minimum number of removals from either end
+// in arr[l..h] so that 2*min becomes greater than max.
+int minRemovalsDP(int arr[], int n)
+{
+    // Create a table to store solutions of subproblems
+    int table[n][n], gap, i, j, mn, mx;
+
+    // Fill table using above recursive formula. Note that the table
+    // is filled in diagonal fashion (similar to http://goo.gl/PQqoS),
+    // from diagonal elements to table[0][n-1] which is the result.
+    for (gap = 0; gap &lt; n; ++gap)
+    {
+        for (i = 0, j = gap; j &lt; n; ++i, ++j)
+        {
+            mn = min(arr, i, j);
+            mx = max(arr, i, j);
+            table[i][j] = (2*mn &gt; mx)? 0: min(table[i][j-1]+1,
+                                              table[i+1][j]+1);
+        }
+    }
+    return table[0][n-1];
+}
+
+// Driver program to test above functions
+int main()
+{
+  int arr[] = {20, 4, 1, 3};
+  int n = sizeof(arr)/sizeof(arr[0]);
+  cout &lt;&lt; minRemovalsDP(arr, n);
+  return 0;
+}
+ </code></pre>
+<p>Time Complexity: O(n<sup>3</sup>) where n is the number of elements in arr[].</p>
+<p>Further Optimizations:<br /> The above code can be optimized in many ways.<br /> <strong>1)</strong> We can avoid calculation of min() and/or max() when min and/or max is/are not changed by removing corner elements.</p>
+<p><strong>2)</strong> We can pre-process the array and build <a href="http://www.geeksforgeeks.org/segment-tree-set-1-sum-of-given-range/">segment tree</a>in O(n) time. After the segment tree is built, we can query range minimum and maximum in O(Logn) time. The overall time complexity is reduced to O(n<sup>2</sup>Logn) time.</p>
+<p><strong>A O(n^2) Solution</strong><br /> The idea is to find the maximum sized subarray such that 2*min &gt; max. We run two nested loops, the outer loop chooses a starting point and the inner loop chooses ending point for the current starting point. We keep track of longest subarray with the given property.</p>
+<p>Following is C++ implementation of the above approach. Thanks to Richard Zhang for suggesting this solution.</p>
+<pre><code> 
+// A O(n*n) solution to find the minimum of elements to
+// be removed
+#include &lt;iostream&gt;
+#include &lt;climits&gt;
+using namespace std;
+
+// Returns the minimum number of removals from either end
+// in arr[l..h] so that 2*min becomes greater than max.
+int minRemovalsDP(int arr[], int n)
+{
+    // Initialize starting and ending indexes of the maximum
+    // sized subarray with property 2*min &gt; max
+    int longest_start = -1, longest_end = 0;
+
+    // Choose different elements as starting point
+    for (int start=0; start&lt;n; start++)
+    {
+        // Initialize min and max for the current start
+        int min = INT_MAX, max = INT_MIN;
+
+        // Choose different ending points for current start
+        for (int end = start; end &lt; n; end ++)
+        {
+            // Update min and max if necessary
+            int val = arr[end];
+            if (val &lt; min) min = val;
+            if (val &gt; max) max = val;
+
+            // If the property is violated, then no
+            // point to continue for a bigger array
+            if (2 * min &lt;= max) break;
+
+            // Update longest_start and longest_end if needed
+            if (end - start &gt; longest_end - longest_start ||
+                longest_start == -1)
+            {
+                longest_start = start;
+                longest_end = end;
+            }
+        }
+    }
+
+    // If not even a single element follow the property,
+    // then return n
+    if (longest_start == -1) return n;
+
+    // Return the number of elements to be removed
+    return (n - (longest_end - longest_start + 1));
+}
+
+// Driver program to test above functions
+int main()
+{
+    int arr[] = {4, 5, 100, 9, 10, 11, 12, 15, 200};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    cout &lt;&lt; minRemovalsDP(arr, n);
+    return 0;
+} </code></pre>
+<p>This article is contributed by <strong>Rahul Jain</strong>. Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above</p>
+<p><br /></p>
+<div id="source-45" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/remove-minimum-elements-either-side-2min-max/" class="uri">http://www.geeksforgeeks.org/remove-minimum-elements-either-side-2min-max/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-arrays/">Arrays</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+<p><br /></p>
+<p>Post navigation</p>
+<p><span class="nav-previous"><a href="http://www.geeksforgeeks.org/fab-com-pune-interview-set-2/"><span class="meta-nav">←</span> Fab.com Pune Interview | Set 2</a></span> <span class="nav-next"><a href="http://www.geeksforgeeks.org/amazon-interview-set-80/">Amazon Interview | Set 80 <span class="meta-nav">→</span></a></span></p>
+<p>Writing code in comment? Please use <a href="http://code.geeksforgeeks.org/">code.geeksforgeeks.org</a>, generate link and share the link here.</p>
+</div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Dynamic Programming | Set 30 (Dice Throw)</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="dynamic-programming-set-30-dice-throw" class="section level1">
+<h1>Dynamic Programming | Set 30 (Dice Throw)</h1>
+<p>Given n dice each with m faces, numbered from 1 to m, find the number of ways to get sum X. X is the summation of values on each face when all the dice are thrown.<span id="more-117526"></span></p>
+<p>The <strong>Naive approach</strong> is to find all the possible combinations of values from n dice and keep on counting the results that sum to X.</p>
+<p>This problem can be efficiently solved using <strong>Dynamic Programming (DP)</strong>.</p>
+<pre><code> Let the function to find X from n dice is: Sum(m, n, X)
+The function can be represented as:
+Sum(m, n, X) = Finding Sum (X - 1) from (n - 1) dice plus 1 from nth dice
+               + Finding Sum (X - 2) from (n - 1) dice plus 2 from nth dice
+               + Finding Sum (X - 3) from (n - 1) dice plus 3 from nth dice
+                  ...................................................
+                  ...................................................
+                  ...................................................
+              + Finding Sum (X - m) from (n - 1) dice plus m from nth dice
+
+So we can recursively write Sum(m, n, x) as following
+Sum(m, n, X) = Sum(m, n - 1, X - 1) + 
+               Sum(m, n - 1, X - 2) +
+               .................... + 
+               Sum(m, n - 1, X - m) </code></pre>
+<p><strong>Why DP approach?</strong><br /> The above problem exhibits overlapping subproblems. See the below diagram. Also, see <a href="http://codepad.org/ffppgOdK">this</a>recursive implementation. Let there be 3 dice, each with 6 faces and we need to find the number of ways to get sum 8:</p>
+<p><a href="http://d2hc1qfcrygj4j.cloudfront.net//wp-content/uploads/diceThrow2.png"><img src="media/file18.png" alt="diceThrow2" /></a></p>
+<pre><code> Sum(6, 3, 8) = Sum(6, 2, 7) + Sum(6, 2, 6) + Sum(6, 2, 5) + 
+               Sum(6, 2, 4) + Sum(6, 2, 3) + Sum(6, 2, 2)
+
+To evaluate Sum(6, 3, 8), we need to evaluate Sum(6, 2, 7) which can 
+recursively written as following:
+Sum(6, 2, 7) = Sum(6, 1, 6) + Sum(6, 1, 5) + Sum(6, 1, 4) + 
+               Sum(6, 1, 3) + Sum(6, 1, 2) + Sum(6, 1, 1)
+
+We also need to evaluate Sum(6, 2, 6) which can recursively written
+as following:
+Sum(6, 2, 6) = Sum(6, 1, 5) + Sum(6, 1, 4) + Sum(6, 1, 3) +
+               Sum(6, 1, 2) + Sum(6, 1, 1)
+..............................................
+..............................................
+Sum(6, 2, 2) = Sum(6, 1, 1) </code></pre>
+<p>Please take a closer look at the above recursion. The sub-problems in <span>RED</span> are solved first time and sub-problems in <span>BLUE</span> are solved again (exhibit overlapping sub-problems). Hence, storing the results of the solved sub-problems saves time.</p>
+<p>Following is C++ implementation of Dynamic Programming approach.</p>
+<pre><code> 
+// C++ program to find number of ways to get sum &#39;x&#39; with &#39;n&#39;
+// dice where every dice has &#39;m&#39; faces
+#include &lt;iostream&gt;
+#include &lt;string.h&gt;
+using namespace std;
+
+// The main function that returns number of ways to get sum &#39;x&#39;
+// with &#39;n&#39; dice and &#39;m&#39; with m faces.
+int findWays(int m, int n, int x)
+{
+    // Create a table to store results of subproblems.  One extra 
+    // row and column are used for simpilicity (Number of dice
+    // is directly used as row index and sum is directly used
+    // as column index).  The entries in 0th row and 0th column
+    // are never used.
+    int table[n + 1][x + 1];
+    memset(table, 0, sizeof(table)); // Initialize all entries as 0
+
+    // Table entries for only one dice
+    for (int j = 1; j &lt;= m &amp;&amp; j &lt;= x; j++)
+        table[1][j] = 1;
+
+    // Fill rest of the entries in table using recursive relation
+    // i: number of dice, j: sum
+    for (int i = 2; i &lt;= n; i++)
+        for (int j = 1; j &lt;= x; j++)
+            for (int k = 1; k &lt;= m &amp;&amp; k &lt; j; k++)
+                table[i][j] += table[i-1][j-k];
+
+    /* Uncomment these lines to see content of table
+    for (int i = 0; i &lt;= n; i++)
+    {
+      for (int j = 0; j &lt;= x; j++)
+        cout &lt;&lt; table[i][j] &lt;&lt; &quot; &quot;;
+      cout &lt;&lt; endl;
+    } */
+    return table[n][x];
+}
+
+// Driver program to test above functions
+int main()
+{
+    cout &lt;&lt; findWays(4, 2, 1) &lt;&lt; endl;
+    cout &lt;&lt; findWays(2, 2, 3) &lt;&lt; endl;
+    cout &lt;&lt; findWays(6, 3, 8) &lt;&lt; endl;
+    cout &lt;&lt; findWays(4, 2, 5) &lt;&lt; endl;
+    cout &lt;&lt; findWays(4, 3, 5) &lt;&lt; endl;
+
+    return 0;
+}
+ </code></pre>
+<p>Output:</p>
+<pre><code> 
+0
+2
+21
+4
+6 </code></pre>
+<p><strong>Time Complexity:</strong> O(m * n * x) where m is number of faces, n is number of dice and x is given sum.</p>
+<p>We can add following two conditions at the beginning of findWays() to improve performance of program for extreme cases (x is too high or x is too low)</p>
+<pre><code>     
+    // When x is so high that sum can not go beyond x even when we 
+    // get maximum value in every dice throw. 
+    if (m*n &lt;= x)
+        return (m*n == x);
+ 
+    // When x is too low
+    if (n &gt;= x)
+        return (n == x);
+ </code></pre>
+<p>With above conditions added, time complexity becomes O(1) when x &gt;= m*n or when x Exercise:<br /> Extend the above algorithm to find the probability to get Sum &gt; X.</p>
+<p>This article is compiled by <a href="https://www.facebook.com/barnwal.aashish">Aashish Barnwal</a>. Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above</p>
+<p><br /></p>
+<div id="source-36" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/dice-throw-problem/" class="uri">http://www.geeksforgeeks.org/dice-throw-problem/</a></p>
+<p><span>Category: <a href="http://www.geeksforgeeks.org/category/c-programs/">Misc</a></span> <span>Tags: <a href="http://www.geeksforgeeks.org/tag/dynamic-programming/">Dynamic Programming</a></span></p>
+<p><br /></p>
+<p>Post navigation</p>
+<p><span class="nav-previous"><a href="http://www.geeksforgeeks.org/biconnectivity-in-a-graph/"><span class="meta-nav">←</span> Biconnected graph</a></span> <span class="nav-next"><a href="http://www.geeksforgeeks.org/toptalent-in-interview-with-nandini-from-vnit-who-bagged-an-off-campus-job-in-microsoft/">[TopTalent.in] Interview With Nandini from VNIT Who Bagged an Off Campus Job in Microsoft <span class="meta-nav">→</span></a></span></p>
+<p>Writing code in comment? Please use <a href="http://code.geeksforgeeks.org/">code.geeksforgeeks.org</a>, generate link and share the link here.</p>
+</div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,416 @@
+<?xml version='1.0' encoding='utf-8'?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy for Linux (vers 7 December 2008), see www.w3.org"/>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8"/>
+
+<meta name="GENERATOR" content="OpenOffice.org 3.0 (Unix)"/>
+<meta name="CREATED" content="20151109;11564100"/>
+<meta name="CHANGED" content="20151129;1342700"/>
+<meta name="Info_1" content=""/>
+<meta name="Info_2" content=""/>
+<meta name="Info_3" content=""/>
+<meta name="Info_4" content=""/>
+<title>Essential Python</title>
+<meta content="http://www.w3.org/1999/xhtml; charset=utf-8" http-equiv="Content-Type"/><link href="stylesheet.css" type="text/css" rel="stylesheet"/><style type="text/css">
+		@page { margin-bottom: 5.000000pt; margin-top: 5.000000pt; }</style></head>
+<body dir="ltr" class="calibre">
+<h1 lang="en-GB" class="western3" id="calibre_pb_7"><a id="Data_Types"></a> 9.
+Data Types</h1>
+<h2 lang="en-GB" class="western4">Lists</h2>
+<p lang="en-GB" class="western">Lists are a compound data type
+that allow storage of different data types. The size of a list can
+be change after its been defined and the values stored within it
+can also be changed.</p>
+<p lang="en-GB" class="western">The values stored in a list can
+be accessed using the slice operator the first item in the list is
+at index zero.</p>
+<p lang="en-GB" class="western">Lists are defined by specifying
+the values within square brackets.</p>
+<p lang="en-GB" class="c5"><span class="c6">#create a list with
+some names and ages</span></p>
+<p lang="en-GB" class="c5"><span class="c6">mylist = [“Jon”, 22,
+“Dave”, 33]</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">#create an empty
+list</span></p>
+<p lang="en-GB" class="c5"><span class="c6">mylist2 =
+[]</span></p>
+<p lang="en-GB" class="western">Similarly to strings lists
+support the concatenation and repetition operators. The following
+code demonstrates the use of lists.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+listExample.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myList = ["Jon", 22,
+"Dave", 33]</span></p>
+<p lang="en-GB" class="c5"><span class="c6">anotherList =
+["Simon", 33, "Mark", 45]</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># display the
+mylist</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># display the last 2
+items in myList</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList[2:4])</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Create new list from
+2 items from anotherList and myList</span></p>
+<p lang="en-GB" class="c5"><span class="c6">newList = myList[0:2]
++ anotherList[2:4]</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># display the
+newList</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(newList)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Change the first 2
+items in myList</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList[0] =
+"Tan"</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList[1] =
+"Unknown"</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># display the
+mylist</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># iterate through the
+list</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for x in
+myList:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(x)</span></p>
+<p lang="en-GB" class="western">The list can be increased in
+size using the methods <b class="calibre2">append</b>, <b class="calibre2">extend</b> and
+<b class="calibre2">insert</b>. The <b class="calibre2">append</b> method adds a new item to the end
+of the list where as the <b class="calibre2">extend</b> method adds multiple items
+to the end of the list.</p>
+<p lang="en-GB" class="c5"><span class="c6">myList.append("Jane")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList.extend(["28",
+"James", "12"])</span></p>
+<p lang="en-GB" class="western">The <b class="calibre2">insert</b> method is used
+to insert an object into the list at a particular index.</p>
+<p lang="en-GB" class="c5"><span class="c6">myList.insert(5,
+"Steve")</span></p>
+<p lang="en-GB" class="western">The list can have objects
+removed with the <b class="calibre2">del</b>, <b class="calibre2">pop</b> and <b class="calibre2">remove</b> methods.
+The <b class="calibre2">del</b> method is used to delete either a single or multiple
+items using the slice operator from the list where as <b class="calibre2">pop</b>
+will remove the last item on the list or an item at a particular
+index.</p>
+<p lang="en-GB" class="c5"><span class="c6">del
+myList[1:3]</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList.pop()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList.pop(1)</span></p>
+<p lang="en-GB" class="western">The <b class="calibre2">remove</b> method removes
+items using the items value so the following will remove all the
+items with the value 'Mark'.</p>
+<p lang="en-GB" class="c5"><span class="c6">myList.remove("Mark")</span></p>
+<p lang="en-GB" class="western">If the number of items in the
+list is required then this is done in the same way as with strings
+using <b class="calibre2">len</b>. The <b class="calibre2">count</b> method returns the number of
+times a particular value is in the list.</p>
+<p lang="en-GB" class="c5"><span class="c6">listlen =
+len(mylist)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">numberofelevens =
+myList.count("11")</span></p>
+<p lang="en-GB" class="western">To search and find an index
+holding a particular value the <b class="calibre2">index</b> method can be used.</p>
+<p lang="en-GB" class="c5"><span class="c6">dataindex =
+myList.index("Tan")</span></p>
+<p lang="en-GB" class="western">To sort a list or reverse the
+order of a list the <b class="calibre2">sort</b> and <b class="calibre2">reverse</b> methods can be
+used.</p>
+<p lang="en-GB" class="c5"><span class="c6">myList.sort()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList.reverse()</span></p>
+<p lang="en-GB" class="western">The following example shows the
+methods described above in action.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+listExample2.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myList = ["Jon", "22",
+"Dave", "11", "Janet", "11", "Mark", "45"]</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># append an object to
+the end</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList.append("Izzy")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(len(myList))</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># extend with multiple
+objects</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList.extend(["28",
+"James", "12"])</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(len(myList))</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># insert an object at
+position 0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList.insert(0,
+"Susan")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># delete object at
+0</span></p>
+<p lang="en-GB" class="c5"><span class="c6">del
+myList[1]</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># delete objects at
+pos 1 and 2</span></p>
+<p lang="en-GB" class="c5"><span class="c6">del
+myList[1:3]</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># pop object of
+list</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList.pop()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># remove Mark from
+list</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList.remove("Mark")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># count the number of
+elevens</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Number of
+11's")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList.count("11"))</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># find the index of
+Izzy</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print("Get Index of
+Izzy")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList.index("Izzy"))</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Add another
+Izzy</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList.append("Izzy")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList.index("Izzy"))</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># sort the
+list</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList.sort()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># reverse the
+list</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList.reverse()</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList)</span></p>
+<p lang="en-GB" class="western">Since lists can contain any
+object it is possible to have a list containing other lists. In the
+following script myList contains another list containing the value
+22, 23 and 24.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+listExample3.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myList = ["Jon", [22,
+23, 24], "Dave", 11, "Sarah", "11", "Mark", "45"]</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Display the
+list</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># change the value in
+the list in the list</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList[1][2] =
+999</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># change a list
+item</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myList[5] =
+"Test"</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myList)</span></p>
+<p lang="en-GB" class="western">In the above example an item
+within the second list is accessed this is done using two slice
+operators.</p>
+<h2 lang="en-GB" class="western4">Tuple</h2>
+<p lang="en-GB" class="western">Tuples are similar to lists the
+main difference is while the values in a list can be changed the
+values in a tuple are fixed when it is defined and cannot be
+changed. Tuples are defined using parenthesis as opposed to the
+brackets used to define a list.</p>
+<p lang="en-GB" class="western">Similarly to strings and lists
+tuples support the concatenation and repetition operators. The
+following code shows a tuple in action.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+tupleExample.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myTuple = ("Jon", 22,
+"Jane", 33, "Simon", 33, "Toyah", 45)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print
+myTuple</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myTuple)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print 3rd and 4th
+items form myTuple</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myTuple[2:4])</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Create a new
+tuple</span></p>
+<p lang="en-GB" class="c5"><span class="c6">newTuple = ("Susan",
+22, "Rob", 33) + myTuple[2:4]</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print the new
+tuple</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(newTuple)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Iterate through the
+tuple</span></p>
+<p lang="en-GB" class="c5"><span class="c6">for i in
+newTuple:</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(i)</span></p>
+<p lang="en-GB" class="western">Although the values in the Tuple
+can't be changed the values of the items within it can be change.
+So in the following example the values within the list in the
+following code held in the tuple can be changed.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+tupleExample2.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myTuple = ("Jon", 22,
+[2, 3, 4], 33, "Alison", 33, "Mark", 45)</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print
+myTuple</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myTuple)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># change a item within
+the list</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myTuple[2][1] =
+666</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print
+myTuple</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myTuple)</span></p>
+<h2 lang="en-GB" class="western4">Dictionaries</h2>
+<p lang="en-GB" class="western">Dictionaries consist of records
+each containing a key and a value. The following example defines a
+dictionary with the records containing names as keys and ages as
+numeric values. The keys do not need to be strings they can be any
+immutable object. Dictionaries have no concept of the order of the
+data within them.</p>
+<p lang="en-GB" class="c5"><span class="c6">myDictionary = {“Jon”
+: 22, “Simon” : 30, “Tom” : 55}</span></p>
+<p lang="en-GB" class="western">The records can be changed using
+the slice operator so to change the value of the record with the
+key 'Jon'.</p>
+<p lang="en-GB" class="c5"><span class="c6">myDictionary['Jon'] =
+23</span></p>
+<p lang="en-GB" class="western">The following code shows how
+dictionaries can be used</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+dictionaryExample1.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myDictionary = {"Jon":
+22, "Dave": 33, "Sarah": 33, "Mark": 45}</span></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print
+myDictonary</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myDictionary)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print the keys of
+myDictonary</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myDictionary.keys())</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print the values of
+myDictonary</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myDictionary.values())</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Create a new
+dictionary</span></p>
+<p lang="en-GB" class="c5"><span class="c6">newDictionary =
+{"Becky": 22, "Rob": 33}</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print the new
+dictionary</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(newDictionary)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Change value on a
+record</span></p>
+<p lang="en-GB" class="c5"><span class="c6">newDictionary["Becky"]
+= "Unknown"</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Add a new
+record</span></p>
+<p lang="en-GB" class="c5"><span class="c6">newDictionary["Paul"]
+= 55</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(newDictionary)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># remove
+item</span></p>
+<p lang="en-GB" class="c5"><span class="c6">newDictionary.pop("Paul")</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print the
+keys</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(newDictionary.keys())</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print the
+values</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(newDictionary.values())</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print the
+items</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(newDictionary.items())</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print the number of
+items</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(len(newDictionary))</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># combine
+dictionaries</span></p>
+<p lang="en-GB" class="c5"><span class="c6">myDictionary.update(newDictionary)</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myDictionary)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># delete an
+item</span></p>
+<p lang="en-GB" class="c5"><span class="c6">del
+myDictionary["Dave"]</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myDictionary))</span></p>
+<p lang="en-GB" class="western">The example above shows how
+dictionaries can change size after they have been defined. The
+<b class="calibre2">pop</b> and <b class="calibre2">delete</b> methods remove items specified by
+their key.</p>
+<p lang="en-GB" class="c5"><span class="c6">newDictionary.pop("Paul")</span></p>
+<p lang="en-GB" class="c5"><span class="c6">del
+myDictionary["Dave"]</span></p>
+<p lang="en-GB" class="western">New items are added by adding a
+key and value</p>
+<p lang="en-GB" class="c5"><span class="c6">newDictionary["Paul"]
+= 55</span></p>
+<p lang="en-GB" class="western">or directories can be combined
+with the <b class="calibre2">update</b> method</p>
+<p lang="en-GB" class="c5"><span class="c6">myDictionary.update(newDictionary)</span></p>
+<p lang="en-GB" class="western">Since dictionaries are unordered
+they do not support sequence operations.</p>
+<p lang="en-GB" class="western">The following example shows how
+dictionaries can contain more complex objects than a simple
+variable, it shows a dictionary containing a tuple with "Dog",
+"Cat", "Mouse" and also another dictionary with the sounds the
+animals make.</p>
+<p lang="en-GB" class="c5"><span class="c6"># File:
+dictionaryExample2.py</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6">myDictionary = {"Jon":
+22, "Jane": ["Dog", "Cat", "Mouse"], "Simon": {1: "Bark", 2: "Pur",
+3: "Squeak"}, "Mark": 45}</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print
+myDictonary</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myDictionary)</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print value with the
+key "Jane"</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myDictionary["Jane"])</span></p>
+<p lang="en-GB" class="c7"> <br class="calibre1"/></p>
+<p lang="en-GB" class="c5"><span class="c6"># Print value with the
+key 1 from "Simon"</span></p>
+<p lang="en-GB" class="c5"><span class="c6">print(myDictionary["Simon"][1])</span></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+<p lang="en-GB" class="western"><br class="calibre1"/>
+<br class="calibre1"/></p>
+</body>
+</html>

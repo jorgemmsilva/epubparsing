@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Dynamic Programming | Set 1 (Overlapping Subproblems Property)</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+<div id="dynamic-programming-set-1-overlapping-subproblems-property" class="section level1">
+<h1>Dynamic Programming | Set 1 (Overlapping Subproblems Property)</h1>
+<p>Dynamic Programming is an algorithmic paradigm that solves a given complex problem by breaking it into subproblems and stores the results of subproblems to avoid computing the same results again.<span id="more-12635"></span> Following are the two main properties of a problem that suggest that the given problem can be solved using Dynamic programming.</p>
+<p>1) Overlapping Subproblems<br /> 2) Optimal Substructure</p>
+<p><strong>1) Overlapping Subproblems:</strong><br /> Like Divide and Conquer, Dynamic Programming combines solutions to sub-problems. Dynamic Programming is mainly used when solutions of same subproblems are needed again and again. In dynamic programming, computed solutions to subproblems are stored in a table so that these don’t have to recomputed. So Dynamic Programming is not useful when there are no common (overlapping) subproblems because there is no point storing the solutions if they are not needed again. For example, <a href="http://en.wikipedia.org/wiki/Binary_search_algorithm">Binary Search</a> doesn’t have common subproblems. If we take example of following recursive program for Fibonacci Numbers, there are many subproblems which are solved again and again.</p>
+<pre><code> 
+/* simple recursive program for Fibonacci numbers */
+int fib(int n)
+{
+   if ( n &lt;= 1 )
+      return n;
+   return fib(n-1) + fib(n-2);
+} </code></pre>
+<p>Recursion tree for execution of <em>fib(5)</em></p>
+<pre><code>                               
+                         fib(5)
+                     /             \
+               fib(4)                fib(3)
+             /      \                /     \
+         fib(3)      fib(2)         fib(2)    fib(1)
+        /     \        /    \       /    \
+  fib(2)   fib(1)  fib(1) fib(0) fib(1) fib(0)
+  /    \
+fib(1) fib(0)
+ </code></pre>
+<p>We can see that the function f(3) is being called 2 times. If we would have stored the value of f(3), then instead of computing it again, we would have reused the old stored value. There are following two different ways to store the values so that these values can be reused.</p>
+<p><em>a) Memoization (Top Down):</em><br /> <em>b) Tabulation (Bottom Up):</em></p>
+<p><em>a) Memoization (Top Down):</em> The memoized program for a problem is similar to the recursive version with a small modification that it looks into a lookup table before computing solutions. We initialize a lookup array with all initial values as NIL. Whenever we need solution to a subproblem, we first look into the lookup table. If the precomputed value is there then we return that value, otherwise we calculate the value and put the result in lookup table so that it can be reused later.</p>
+<p>Following is the memoized version for nth Fibonacci Number.</p>
+<pre><code> 
+/* Memoized version for nth Fibonacci number */
+#include&lt;stdio.h&gt;
+#define NIL -1
+#define MAX 100
+
+int lookup[MAX];
+
+/* Function to initialize NIL values in lookup table */
+void _initialize()
+{
+  int i;
+  for (i = 0; i &lt; MAX; i++)
+    lookup[i] = NIL;
+}
+
+/* function for nth Fibonacci number */
+int fib(int n)
+{
+   if(lookup[n] == NIL)
+   {
+    if ( n &lt;= 1 )
+      lookup[n] = n;
+    else
+      lookup[n] = fib(n-1) + fib(n-2);
+   }
+
+   return lookup[n];
+}
+
+int main ()
+{
+  int n = 40;
+  _initialize();
+  printf(&quot;Fibonacci number is %d &quot;, fib(n));
+  getchar();
+  return 0;
+}
+ </code></pre>
+<p><em>b) Tabulation (Bottom Up):</em> The tabulated program for a given problem builds a table in bottom up fashion and returns the last entry from table.</p>
+<pre><code> 
+/* tabulated version */
+#include&lt;stdio.h&gt;
+int fib(int n)
+{
+  int f[n+1];
+  int i;
+  f[0] = 0;   f[1] = 1; 
+  for (i = 2; i &lt;= n; i++)
+      f[i] = f[i-1] + f[i-2];
+
+  return f[n];
+}
+ 
+int main ()
+{
+  int n = 9;
+  printf(&quot;Fibonacci number is %d &quot;, fib(n));
+  getchar();
+  return 0;
+} </code></pre>
+<p>Both tabulated and Memoized store the solutions of subproblems. In Memoized version, table is filled on demand while in tabulated version, starting from the first entry, all entries are filled one by one. Unlike the tabulated version, all entries of the lookup table are not necessarily filled in memoized version. For example, memoized solution of<a href="http://en.wikipedia.org/wiki/Longest_common_subsequence_problem">LCS problem</a> doesn’t necessarily fill all entries.</p>
+<p>To see the optimization achieved by memoized and tabulated versions over the basic recursive version, see the time taken by following runs for 40th Fibonacci number.</p>
+<p><a href="https://ideone.com/HgmDT">Simple recursive program</a><br /> <a href="https://ideone.com/yQd8u">Memoized version</a><br /> <a href="https://ideone.com/S3ATh">tabulated version</a></p>
+<p>Also see method 2 of <a href="http://geeksforgeeks.org/?p=753">Ugly Number post</a> for one more simple example where we have overlapping subproblems and we store the results of subproblems.</p>
+<p>We will be covering Optimal Substructure Property and some more example problems in future posts on Dynamic Programming.</p>
+<p>Try following questions as an exercise of this post.<br /> 1) Write a memoized version for LCS problem. Note that the tabular version is given in the CLRS book.<br /> 2) How would you choose between Memoization and Tabulation?</p>
+<p>Please write comments if you find anything incorrect, or you want to share more information about the topic discussed above.</p>
+<p>References:<br /> <a href="http://www.youtube.com/watch?v=V5hZoJ6uK-s" class="uri">http://www.youtube.com/watch?v=V5hZoJ6uK-s</a></p>
+<p><br /></p>
+<div id="source-4" class="section level3">
+<h3>Source</h3>
+<p><a href="http://www.geeksforgeeks.org/dynamic-programming-set-1/" class="uri">http://www.geeksforgeeks.org/dynamic-programming-set-1/</a></p>
+</div>
+</div>
+</body>
+</html>
+
