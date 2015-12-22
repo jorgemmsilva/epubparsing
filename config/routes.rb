@@ -1,3 +1,6 @@
 Epubparser::Engine.routes.draw do
-  resources :epubs
+  resources :epubs do
+    get "metadata"
+    get "assets"
+  end
 end

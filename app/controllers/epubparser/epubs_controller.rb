@@ -9,27 +9,76 @@ module Epubparser
       @epubs = Epub.all
     end
 
+    def metadata
+		#request for the epub metadata (chapters structure)
 
-
-    # GET /epubs/1
-    def show
-
-    	ActiveSupport.escape_html_entities_in_json = true 
-    	#request for the epub data (chapters content)
-
-		@epub = Epub.find(params[:id])
+		@epub = Epub.find(params[:epub_id])
 		bk = Book.new @epub.book
 		sections = bk.id.sections
 		chap_list = bk.id.chapters.values
 		new_chapters = bk.id.chapters
-		new_chapters["content"] = {}
 		new_heading_id = 1
-		stylesheets = {} # stylesheetId => cloud url
-		imgs = {} # imgId => cloud url
 
-		@debug = ''
+		#iterate throu all the html files contained in the epub
+		sections.each do |s|
 
-		@content = {}
+			path = File.dirname(s.to_s)
+			file = File.open(s.to_s)
+			path.slice! Rails.public_path.to_s
+
+			filename = File.basename(file)
+
+			text = file.read
+
+			doc = Nokogiri::XML.parse(text)
+			doc.remove_namespaces!
+			subchaps = doc.xpath("//*[self::h1 or self::h2]")
+			current_chap = ''
+
+			#check for chapters inside this file
+			chap_list.each do |c|
+				if c["self"].include? filename  #find subchapters
+					subchaps.each do |sc|
+						heading_text = sc.text.strip.gsub(/\s+/, " ")
+						if sc.name == 'h1' and new_chapters.keys.map { |k| k.gsub(/\s+/, " ") }.include? heading_text #there are h1s which are not part of the folder structure!
+							current_chap = heading_text
+						else 
+							if sc.name == 'h2'
+								new_chapters[current_chap][heading_text] = "#{filename}#subchapter#{new_heading_id}"
+								sc.set_attribute("id","subchapter#{new_heading_id}")
+								new_heading_id+=1
+							end
+						end
+					end
+				end
+			end
+
+			file.close
+
+			#write changes to file
+			filecontent = doc.to_xml
+			File.write(s,filecontent)
+
+		end 
+
+		respond_to do |format|
+			format.html # show.html.erb
+			format.json { render json: new_chapters.to_json }
+		end
+    end
+
+
+    def assets
+
+    	ActiveSupport.escape_html_entities_in_json = true 
+    	#request for the epub data (chapters content)
+
+		@epub = Epub.find(params[:epub_id])
+		bk = Book.new @epub.book
+		sections = bk.id.sections
+		response = {}
+		response["content"] = {}
+		response["stylesheets"] = [] # list of stylesheets urls
 
 		epub_path = File.dirname(sections.first)
 		epub_files = Dir.glob("#{epub_path}/**/*")
@@ -39,16 +88,83 @@ module Epubparser
 		img_files = epub_files.map{|f| f if File.extname(f) =~ /.(png|gif|jpg|jpeg|svg)/}.compact# gif jpg jpeg png svg
 		
 		#upload image and css files to cloud server
-		uploaded_css_files = {}
 		css_files.each do |f|
-			uploaded_css_files[File.basename(f)] = upload_to_cloud(f)
+			response["stylesheets"] << upload_to_cloud(f)
+		end
+
+		uploaded_img_files = {} # img name => cloud url
+		img_files.each do |f|
+			uploaded_img_files[File.basename(f)] = upload_to_cloud(f)
+		end
+
+
+		#iterate throu all the html files contained in the epub
+		sections.each do |s|
+
+			path = File.dirname(s.to_s)
+			file = File.open(s.to_s)
+			path.slice! Rails.public_path.to_s
+
+			filename = File.basename(file)
+
+			text = file.read
+
+			doc = Nokogiri::XML.parse(text)
+			doc.remove_namespaces!
+			doc_images = doc.xpath("//*[self::img]")
+
+			#repath the images with the generated cloud url
+			doc_images.each do |i|
+				i["src"] = uploaded_img_files[File.basename(i["src"])]
+			end
+
+			response["content"][filename] = CGI.escapeHTML(doc.xpath("//body//*").to_s)
+
+			file.close
+		end 
+
+		respond_to do |format|
+			format.html # show.html.erb
+			format.json { render json: response.to_json }
+		end
+
+    end
+
+
+
+    # GET /epubs/1
+    def show
+
+    	ActiveSupport.escape_html_entities_in_json = true 
+    	#request for the epub data (chapters content)
+
+		epub = Epub.find(params[:id])
+		bk = Book.new @epub.book
+		sections = bk.id.sections
+		chap_list = bk.id.chapters.values
+		new_chapters = {}
+		new_chapters["chapters"] = bk.id.chapters
+		new_chapters["content"] = {}
+		new_chapters["stylesheets"] = []
+		new_heading_id = 1
+		imgs = {} # img name => cloud url
+
+		epub_path = File.dirname(sections.first)
+		epub_files = Dir.glob("#{epub_path}/**/*")
+
+		# find images and stylesheets present in the epub
+		css_files = epub_files.map{|f| f if File.extname(f).include? ".css"}.compact  # css
+		img_files = epub_files.map{|f| f if File.extname(f) =~ /.(png|gif|jpg|jpeg|svg)/}.compact# gif jpg jpeg png svg
+		
+		#upload image and css files to cloud server
+		css_files.each do |f|
+			new_chapters["stylesheets"] << upload_to_cloud(f)
 		end
 
 		uploaded_img_files = {}
 		img_files.each do |f|
 			uploaded_img_files[File.basename(f)] = upload_to_cloud(f)
 		end
-
 
 		#iterate throu all the html files contained in the epub
 		sections.each do |s|
@@ -81,11 +197,11 @@ module Epubparser
 				if c["self"].include? filename  #find subchapters
 					subchaps.each do |sc|
 						heading_text = sc.text.strip.gsub(/\s+/, " ")
-						if sc.name == 'h1' and new_chapters.keys.map { |k| k.gsub(/\s+/, " ") }.include? heading_text #there are h1s which are not part of the folder structure!
+						if sc.name == 'h1' and new_chapters["chapters"].keys.map { |k| k.gsub(/\s+/, " ") }.include? heading_text #there are h1s which are not part of the folder structure!
 							current_chap = heading_text
 						else 
 							if sc.name == 'h2'
-								new_chapters[current_chap][heading_text] = "#{filename}#subchapter#{new_heading_id}"
+								new_chapters["chapters"][current_chap][heading_text] = "#{filename}#subchapter#{new_heading_id}"
 								sc.set_attribute("id","subchapter#{new_heading_id}")
 								new_heading_id+=1
 							end
@@ -96,11 +212,12 @@ module Epubparser
 
 			new_chapters["content"][filename] = CGI.escapeHTML(doc.xpath("//body//*").to_s)
 
+			file.close
 		end 
 
 		respond_to do |format|
 			format.html # show.html.erb
-			format.json { render json: @new_chapters.to_json }
+			format.json { render json: new_chapters.to_json }
 		end
 
     end
@@ -126,9 +243,6 @@ module Epubparser
 			#epub parsed successfully
 			@upload.book = EpubUtils.parse(Rails.public_path.to_s + @upload.epub.url.to_s)
 			@upload.save
-
-
-			#raise [@upload.get_metadata].to_json
 
 			format.html {
 				render :json => [@upload.get_metadata].to_json,
@@ -205,7 +319,7 @@ module Epubparser
 		#file.content_type = substep.mime_type
 
 		if file.save
-		   @debug+= " url: #{file.url}  "
+		   return file.url
 		end
     end
 

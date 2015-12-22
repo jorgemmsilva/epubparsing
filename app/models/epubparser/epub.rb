@@ -21,8 +21,9 @@ module Epubparser
       aux_book = read_attribute(:book)
 
     {
+      "id" => id,
       #{}"book" => read_attribute(:book).id
-      "id" => aux_book.id,
+      "identifier" => aux_book.id,
       "title" => aux_book.title,
       "creator" => aux_book.creator,
       "publisher" => aux_book.publisher,
