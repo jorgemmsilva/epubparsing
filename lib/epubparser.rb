@@ -246,7 +246,7 @@ module Epubparser
 		def self.parse (epub_path)
 
 			epubFolder = File.dirname(epub_path)
-			tmp_folder = File.dirname(epubFolder) + '/tmp/'
+			tmp_folder = File.dirname(epub_path)
 
 			unzip_epubs(epubFolder,tmp_folder)
 			book = parse_epub(tmp_folder)
