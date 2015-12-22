@@ -163,9 +163,10 @@ module Epubparser
 			 		new_filename = new_filename[0..new_filename.rindex('#')-1]
 			 	end
 
-			 	to_rename[old_filename] = new_filename
+			 	to_rename[File.basename(old_filename)] = File.basename(new_filename)
 			 	#puts "to_rename #{old_filename}  ------   #{new_filename}"
 			end
+
 
 			#rename the filenames
 			file_array.each do |file|
