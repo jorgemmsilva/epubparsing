@@ -11,9 +11,10 @@ module Epubparser
 
     def metadata
 		#request for the epub metadata (chapters structure)
+		epub = Epub.find(params[:epub_id])
 
-		@epub = Epub.find(params[:epub_id])
-		bk = Book.new @epub.book
+		bk = Book.new epub.book
+
 		sections = bk.id.sections
 		chap_list = bk.id.chapters.values
 		new_chapters = bk.id.chapters
@@ -24,7 +25,7 @@ module Epubparser
 
 			path = File.dirname(s.to_s)
 			file = File.open(s.to_s)
-			path.slice! Rails.public_path.to_s
+			path.slice! Rails.root.to_s
 
 			filename = File.basename(file)
 
@@ -73,8 +74,8 @@ module Epubparser
     	ActiveSupport.escape_html_entities_in_json = true 
     	#request for the epub data (chapters content)
 
-		@epub = Epub.find(params[:epub_id])
-		bk = Book.new @epub.book
+		epub = Epub.find(params[:epub_id])
+		bk = Book.new epub.book
 		sections = bk.id.sections
 		response = {}
 		response["content"] = {}
@@ -103,7 +104,7 @@ module Epubparser
 
 			path = File.dirname(s.to_s)
 			file = File.open(s.to_s)
-			path.slice! Rails.public_path.to_s
+			path.slice! Rails.root.to_s
 
 			filename = File.basename(file)
 
@@ -138,87 +139,87 @@ module Epubparser
     	ActiveSupport.escape_html_entities_in_json = true 
     	#request for the epub data (chapters content)
 
-		epub = Epub.find(params[:id])
-		bk = Book.new @epub.book
-		sections = bk.id.sections
-		chap_list = bk.id.chapters.values
-		new_chapters = {}
-		new_chapters["chapters"] = bk.id.chapters
-		new_chapters["content"] = {}
-		new_chapters["stylesheets"] = []
-		new_heading_id = 1
-		imgs = {} # img name => cloud url
+      epub = Epub.find(params[:id])
+      bk = Book.new epub.book
+      sections = bk.id.sections
+      chap_list = bk.id.chapters.values
+      new_chapters = {}
+      new_chapters["chapters"] = bk.id.chapters
+      new_chapters["content"] = {}
+      new_chapters["stylesheets"] = []
+      new_heading_id = 1
+      imgs = {} # img name => cloud url
 
-		epub_path = File.dirname(sections.first)
-		epub_files = Dir.glob("#{epub_path}/**/*")
+      epub_path = File.dirname(sections.first)
+      epub_files = Dir.glob("#{epub_path}/**/*")
 
-		# find images and stylesheets present in the epub
-		css_files = epub_files.map{|f| f if File.extname(f).include? ".css"}.compact  # css
-		img_files = epub_files.map{|f| f if File.extname(f) =~ /.(png|gif|jpg|jpeg|svg)/}.compact# gif jpg jpeg png svg
-		
-		#upload image and css files to cloud server
-		css_files.each do |f|
-			new_chapters["stylesheets"] << upload_to_cloud(f)
-		end
+      # find images and stylesheets present in the epub
+      css_files = epub_files.map{|f| f if File.extname(f).include? ".css"}.compact  # css
+      img_files = epub_files.map{|f| f if File.extname(f) =~ /.(png|gif|jpg|jpeg|svg)/}.compact# gif jpg jpeg png svg
 
-		uploaded_img_files = {}
-		img_files.each do |f|
-			uploaded_img_files[File.basename(f)] = upload_to_cloud(f)
-		end
+      #upload image and css files to cloud server
+      css_files.each do |f|
+      	new_chapters["stylesheets"] << upload_to_cloud(f)
+      end
 
-		#iterate throu all the html files contained in the epub
-		sections.each do |s|
+      uploaded_img_files = {}
+      img_files.each do |f|
+      	uploaded_img_files[File.basename(f)] = upload_to_cloud(f)
+      end
 
-			path = File.dirname(s.to_s)
-			file = File.open(s.to_s)
-			path.slice! Rails.public_path.to_s
+      #iterate throu all the html files contained in the epub
+      sections.each do |s|
 
-			filename = File.basename(file)
+      	path = File.dirname(s.to_s)
+      	file = File.open(s.to_s)
+      	path.slice! Rails.root.to_s
 
-			text = file.read
+      	filename = File.basename(file)
 
-			#√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√ ON HOLD √√√√√√√√√√√√√√√√√√√√√√√√√√√√
-			#rewrite all references to external files (css, imgs,html hrefs, etc)
-			#text = text.gsub(/src=\"(?!http)(?!www)|href=\"(?!http)(?!www)/, "src=\"" => "src=\"#{path}/","href=\"" => "href=\"#{path}/")
+      	text = file.read
 
-			doc = Nokogiri::XML.parse(text)
-			doc.remove_namespaces!
-			subchaps = doc.xpath("//*[self::h1 or self::h2]")
-			doc_images = doc.xpath("//*[self::img]")
-			current_chap = ''
+      	#√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√√ ON HOLD √√√√√√√√√√√√√√√√√√√√√√√√√√√√
+      	#rewrite all references to external files (css, imgs,html hrefs, etc)
+      	#text = text.gsub(/src=\"(?!http)(?!www)|href=\"(?!http)(?!www)/, "src=\"" => "src=\"#{path}/","href=\"" => "href=\"#{path}/")
 
-			#repath the images with the generated cloud url
-			doc_images.each do |i|
-				i["src"] = uploaded_img_files[File.basename(i["src"])]
-			end
+      	doc = Nokogiri::XML.parse(text)
+      	doc.remove_namespaces!
+      	subchaps = doc.xpath("//*[self::h1 or self::h2]")
+      	doc_images = doc.xpath("//*[self::img]")
+      	current_chap = ''
 
-			#check for chapters inside this file
-			chap_list.each do |c|
-				if c["self"].include? filename  #find subchapters
-					subchaps.each do |sc|
-						heading_text = sc.text.strip.gsub(/\s+/, " ")
-						if sc.name == 'h1' and new_chapters["chapters"].keys.map { |k| k.gsub(/\s+/, " ") }.include? heading_text #there are h1s which are not part of the folder structure!
-							current_chap = heading_text
-						else 
-							if sc.name == 'h2'
-								new_chapters["chapters"][current_chap][heading_text] = "#{filename}#subchapter#{new_heading_id}"
-								sc.set_attribute("id","subchapter#{new_heading_id}")
-								new_heading_id+=1
-							end
-						end
-					end
-				end
-			end
+      	#repath the images with the generated cloud url
+      	doc_images.each do |i|
+      		i["src"] = uploaded_img_files[File.basename(i["src"])]
+      	end
 
-			new_chapters["content"][filename] = CGI.escapeHTML(doc.xpath("//body//*").to_s)
+      	#check for chapters inside this file
+      	chap_list.each do |c|
+      		if c["self"].include? filename  #find subchapters
+      			subchaps.each do |sc|
+      				heading_text = sc.text.strip.gsub(/\s+/, " ")
+      				if sc.name == 'h1' and new_chapters["chapters"].keys.map { |k| k.gsub(/\s+/, " ") }.include? heading_text #there are h1s which are not part of the folder structure!
+      					current_chap = heading_text
+      				else 
+      					if sc.name == 'h2'
+      						new_chapters["chapters"][current_chap][heading_text] = "#{filename}#subchapter#{new_heading_id}"
+      						sc.set_attribute("id","subchapter#{new_heading_id}")
+      						new_heading_id+=1
+      					end
+      				end
+      			end
+      		end
+      	end
 
-			file.close
-		end 
+      	new_chapters["content"][filename] = CGI.escapeHTML(doc.xpath("//body//*").to_s)
 
-		respond_to do |format|
-			format.html # show.html.erb
-			format.json { render json: new_chapters.to_json }
-		end
+      	file.close
+      end 
+
+      respond_to do |format|
+      	format.html # show.html.erb
+      	format.json { render json: new_chapters.to_json }
+      end
 
     end
 
@@ -241,7 +242,7 @@ module Epubparser
         if @upload.save
 
 			#epub parsed successfully
-			@upload.book = EpubUtils.parse(Rails.public_path.to_s + @upload.epub.url.to_s)
+			@upload.book = EpubUtils.parse(@upload.epub.path)
 			@upload.save
 
 			format.html {
@@ -308,7 +309,7 @@ module Epubparser
 		#download = open(url)
 
 
-		amazon = S3::Service.new(access_key_id: AWS_ACCESS_KEY_ID, secret_access_key: AWS_SECRET_ACCESS_KEY)
+		amazon = S3::Service.new(access_key_id: ENV['AWS_ACCESS_KEY_ID'], secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'])
 		bucket = amazon.buckets.find('stukproductionimages')
 		download = open(filepath)
 

@@ -1,6 +1,6 @@
 module Epubparser
   class Epub < ActiveRecord::Base
-    has_attached_file :epub
+    has_attached_file :epub, :path => ":rails_root/tmp/epubs/:id/:filename"
     validates_attachment :epub, content_type: { content_type: "application/epub+zip" }
 
     include Rails.application.routes.url_helpers

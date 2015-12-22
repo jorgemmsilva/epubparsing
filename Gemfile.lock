@@ -2,9 +2,12 @@ PATH
   remote: .
   specs:
     epubparser (0.0.1)
+      aws-sdk
       jquery-fileupload-rails
       jquery-rails
+      paperclip
       rails (~> 4.2.5)
+      s3
 
 GEM
   remote: https://rubygems.org/
