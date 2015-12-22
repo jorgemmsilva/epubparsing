@@ -241,26 +241,28 @@ module Epubparser
 
         if @upload.save
 
-			#epub parsed successfully
-			@upload.book = EpubUtils.parse(@upload.epub.path)
-			@upload.save
+          #epub parsed successfully
+          
+          @upload.book = EpubUtils.parse(@upload.epub.path)
 
-			format.html {
-				render :json => [@upload.get_metadata].to_json,
-				:content_type => 'text/html',
-				:layout => false
-			}
+          @upload.save
 
-			
-			format.json { render json: {files: [@upload.get_metadata]}, status: :created}
+          format.html {
+          	render :json => [@upload.get_metadata].to_json,
+          	:content_type => 'text/html',
+          	:layout => false
+          }
 
-			# format.html {
-			# 	render :json => [@upload.to_jq_upload].to_json,
-			# 	:content_type => 'text/html',
-			# 	:layout => false
-			# }
 
-			# format.json { render json: {files: [@upload.to_jq_upload]}, status: :created}
+          format.json { render json: {files: [@upload.get_metadata]}, status: :created}
+
+          # format.html {
+          # 	render :json => [@upload.to_jq_upload].to_json,
+          # 	:content_type => 'text/html',
+          # 	:layout => false
+          # }
+
+    			# format.json { render json: {files: [@upload.to_jq_upload]}, status: :created}
         else
           format.html { render action: "new" }
           format.json { render json: @upload.errors, status: :unprocessable_entity }
