@@ -9,10 +9,10 @@ Gem::Specification.new do |s|
   s.version     = Epubparser::VERSION
   s.authors     = ["Jorge"]
   s.email       = ["jorge@codeplace.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Epubparser."
-  s.description = "TODO: Description of Epubparser."
-  s.license     = "MIT"
+  s.homepage    = "https://www.codeplace.com"
+  s.summary     = "ePUB parsing"
+  s.description = "To parse epubs for codeplace"
+  s.license     = "Codeplace"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]

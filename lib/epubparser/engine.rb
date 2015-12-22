@@ -1,6 +1,9 @@
+require 'paperclip'
+require 'jquery-rails'
+
 module Epubparser
   class Engine < ::Rails::Engine
-  	require 'jquery-rails'
+  	engine_name "epubparser"
     isolate_namespace Epubparser
   end
 end
