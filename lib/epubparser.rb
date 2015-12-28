@@ -112,8 +112,8 @@ module Epubparser
 			toc.remove_namespaces!
 			navPoints = toc.xpath("//ncx//navMap//navPoint")
 			navPoints.each do |nav|
-				chapter = nav.xpath(".//text").text.gsub(/\s+/, " ")
-				file = nav.xpath(".//content//@src").text.gsub(/\s+/, " ")
+				chapter = nav.xpath(".//navLabel//text").first.text.gsub(/\s+/, " ")
+				file = nav.xpath(".//content//@src").first.text.gsub(/\s+/, " ")
 				chapters[chapter] = {}
 				chapters[chapter]["self"] = file
 			end

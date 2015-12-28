@@ -20,6 +20,8 @@ module Epubparser
 		new_chapters = bk.id.chapters
 		new_heading_id = 1
 
+    #raise bk.id.chapters.inspect
+
 		#iterate throu all the html files contained in the epub
 		sections.each do |s|
 
@@ -35,7 +37,9 @@ module Epubparser
 			doc.remove_namespaces!
 			subchaps = doc.xpath("//*[self::h1 or self::h2]")
 			current_chap = ''
-
+      puts "-----------"
+      puts subchaps.map{ |k| k.to_s }.inspect if filename.include? "6.xhtml"
+      puts "-----------"
 			#check for chapters inside this file
 			chap_list.each do |c|
 				if c["self"].include? filename  #find subchapters
@@ -44,7 +48,7 @@ module Epubparser
 						if sc.name == 'h1' and new_chapters.keys.map { |k| k.gsub(/\s+/, " ") }.include? heading_text #there are h1s which are not part of the folder structure!
 							current_chap = heading_text
 						else 
-							if sc.name == 'h2'
+							if sc.name == 'h2' and new_chapters.keys.include? current_chap
 								new_chapters[current_chap][heading_text] = "#{filename}#subchapter#{new_heading_id}"
 								sc.set_attribute("id","subchapter#{new_heading_id}")
 								new_heading_id+=1
