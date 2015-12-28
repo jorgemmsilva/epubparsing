@@ -3,4 +3,4 @@ log/*.log
 pkg/
 test/*
 bin/
-app/assets/javascript/epubparser/application.js
+app/assets/javascripts/epubparser/application.js
