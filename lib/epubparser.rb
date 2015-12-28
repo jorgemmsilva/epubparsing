@@ -251,16 +251,6 @@ module Epubparser
 
 			unzip_epubs(epubFolder,tmp_folder)
 			book = parse_epub(tmp_folder)
-			# puts "ΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩ"
-			# puts book.id
-			# puts book.title
-			# puts book.creator
-			# puts book.publisher
-			# puts book.description
-			# puts book.subject
-			# puts book.sections
-			# puts book.chapters
-			# puts "ΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩ"
 			return book
 		end
 
