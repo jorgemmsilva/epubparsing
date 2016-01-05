@@ -109,13 +109,26 @@ module Epubparser
 
 			#puts "toc.ncx @ :" + toc_file
 			toc = Nokogiri::XML.parse(File.open(toc_file))
-			toc.remove_namespaces!
-			navPoints = toc.xpath("//ncx//navMap//navPoint")
+			toc.remove_namespaces!	
+			navMap = toc.xpath("ncx//navMap")
+			navPoints = navMap.xpath("navPoint")
 			navPoints.each do |nav|
-				chapter = nav.xpath(".//navLabel//text").first.text.gsub(/\s+/, " ")
-				file = nav.xpath(".//content//@src").first.text.gsub(/\s+/, " ")
+
+				#puts "#{nav.to_s} - #{nav.xpath("navLabel//text").to_s}  - #{nav.xpath("content//@src").to_s}\nYOOOOOOOOOOOOOO\n\n"
+
+				chapter = nav.xpath("navLabel//text").text.gsub(/\s+/, " ")
+				file = nav.xpath("content//@src").to_s.gsub(/\s+/, " ")
+
 				chapters[chapter] = {}
 				chapters[chapter]["self"] = file
+
+				subchapters = nav.xpath("navPoint")
+				subchapters.each do |sc|
+					subchapter = sc.xpath("navLabel//text").text.gsub(/\s+/, " ")
+					subfile = sc.xpath("content//@src").to_s.gsub(/\s+/, " ")
+					chapters[chapter][subchapter] = subfile
+				end
+
 			end
 
 			return chapters
