@@ -28,7 +28,7 @@ module Epubparser
       "publisher" => aux_book.publisher,
       "description" => aux_book.description,
       "subject" => aux_book.subject,
-      #"sections" => aux_book.sections,
+      "rights" => aux_book.rights,
       #'chapters' => aux_book.chapters,
       "url" => epub.url(:original),
       "file_name" => read_attribute(:epub_file_name),
@@ -59,7 +59,6 @@ module Epubparser
       img_files = epub_files.map{|f| f if File.extname(f) =~ /.(png|gif|jpg|jpeg|svg)/}.compact# gif jpg jpeg png svg
 
 
-
       #upload image and css files to cloud server
       css_files.each do |f|
         filename = File.basename(f)
@@ -69,6 +68,8 @@ module Epubparser
       end
 
       uploaded_img_files = {}
+      
+
       img_files.each do |f|
         filename = File.basename(f)
         new_file = File.dirname(f) + "/" + id.to_s + "-" + filename
@@ -232,7 +233,7 @@ module Epubparser
       end
 
       to_return = {}
-      to_return["book"] = output.to_json
+      to_return["book"] = output
       to_return["css"] =[]
       to_return["css"] = new_chapters["stylesheets"]
       return to_return.to_json

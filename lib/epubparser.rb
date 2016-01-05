@@ -10,6 +10,8 @@ module Epubparser
 			@publisher = publisher
 			@description = description
 			@subject = subject
+			@date = date
+			@rights = rights
 			@sections = []
 			@chapters = {}
 		end
@@ -267,19 +269,5 @@ module Epubparser
 			return book
 		end
 
-
-		# #console parameters
-		# epubFolder = ARGV[0]	#epub files folder
-
-		# #parameters
-		# tmp_folder = 'tmp/'
-		# #@final_folder = 'final/'
-
-
-		# # yo = Book.new("123")
-		# # puts yo.instance_variable_get("@title")
-
-		# unzip_epubs(epubFolder,tmp_folder)
-		# books = parse_epubs(tmp_folder)
 	end
 end
