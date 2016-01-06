@@ -243,7 +243,7 @@ module Epubparser
     private
        def upload_to_cloud(filepath,mimetype = nil)
 
-        amazon = S3::Service.new(access_key_id: ENV['AWS_ACCESS_KEY_ID'], secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'], secure: true)
+        amazon = S3::Service.new(access_key_id: ENV['AWS_ACCESS_KEY_ID'], secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'])
         bucket = amazon.buckets.find("codeplaceepubsassets")
         download = open(filepath)
 
@@ -254,7 +254,7 @@ module Epubparser
         file.content_type = mimetype if mimetype
 
         if file.save
-           return file.url
+           return file.url.gsub("http","https")
         end
       end
 
