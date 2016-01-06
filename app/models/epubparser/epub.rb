@@ -58,17 +58,33 @@ module Epubparser
       img_files = epub_files.map{|f| f if File.extname(f) =~ /.(png|gif|jpg|jpeg|svg)/}.compact# gif jpg jpeg png svg
 
 
-      #upload image and css files to cloud server
+      #convert css files and upload them to cloud server
       css_files.each do |f|
+
+        css_content = ""
+
+        #add parent element to the stylesheet (sass), convert to regular css and rename the file
+        File.open(f, "r") { |file|
+          css_content =  file.read
+          engine = Sass::Engine.new(".book-wrapper {#{css_content}}", :syntax => :scss)
+          css_content = engine.render
+        }
+
+        File.open(f, "w+") { |file|
+          file.write(css_content)
+        }
+
         filename = File.basename(f)
         new_file = File.dirname(f) + "/" + id.to_s + "-" + filename
         File.rename(f,new_file) #rename the images to have the epub id
         new_chapters["stylesheets"] << upload_to_cloud(new_file,"text/css")
+
       end
 
       uploaded_img_files = {}
       
 
+      #upload image files to cloud server
       img_files.each do |f|
         filename = File.basename(f)
         new_file = File.dirname(f) + "/" + id.to_s + "-" + filename
