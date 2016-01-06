@@ -8,7 +8,7 @@ module Epubparser
                     :s3_credentials => Proc.new{|a| a.instance.s3_credentials }
 
     def s3_credentials
-      {:bucket => "codeplaceepubsassets", :access_key_id => ENV['AWS_ACCESS_KEY_ID'], :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'], :s3_host_name => 's3-us-west-2.amazonaws.com'}
+      {:bucket => "codeplaceepubsassets", :access_key_id => ENV['AWS_ACCESS_KEY_ID'], :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'], :s3_host_name => 's3-us-west-2.amazonaws.com', :secure => true}
     end
 
 
@@ -243,7 +243,7 @@ module Epubparser
     private
        def upload_to_cloud(filepath,mimetype = nil)
 
-        amazon = S3::Service.new(access_key_id: ENV['AWS_ACCESS_KEY_ID'], secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'])
+        amazon = S3::Service.new(access_key_id: ENV['AWS_ACCESS_KEY_ID'], secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'], secure: true)
         bucket = amazon.buckets.find("codeplaceepubsassets")
         download = open(filepath)
 
