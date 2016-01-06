@@ -1,4 +1,5 @@
 require "epubparser/engine"
+require 'open-uri'
 
 module Epubparser
 
@@ -261,8 +262,15 @@ module Epubparser
 
 		def self.parse (epub_path)
 
-			epubFolder = File.dirname(epub_path)
-			tmp_folder = File.dirname(epub_path) + '/tmp/'
+			filepath = "#{Rails.root}/tmp/file.epub"
+
+			# open(filepath, 'wb') do |file|
+			# 	file << open("#{epub_path}").read
+			# end
+			IO.copy_stream(open(epub_path), filepath)
+
+			epubFolder = File.dirname(filepath)
+			tmp_folder = File.dirname(filepath) + '/tmp/'
 
 			unzip_epubs(epubFolder,tmp_folder)
 			book = parse_epub(tmp_folder)

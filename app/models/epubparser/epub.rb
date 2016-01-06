@@ -1,27 +1,25 @@
 module Epubparser
   class Epub < ActiveRecord::Base
-    has_attached_file :epub, :path => ":rails_root/tmp/epubs/:id/:filename"
+
+
+    #has_attached_file :epub, :path => ":rails_root/tmp/epubs/:id/:filename"
+    has_attached_file :epub, :path => "epubs/:id/:filename",
+                    :storage => :s3,
+                    :s3_credentials => Proc.new{|a| a.instance.s3_credentials }
+
+    def s3_credentials
+      {:bucket => "codeplaceepubsassets", :access_key_id => ENV['AWS_ACCESS_KEY_ID'], :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'], :s3_host_name => 's3-us-west-2.amazonaws.com'}
+    end
+
+
     validates_attachment :epub, content_type: { content_type: ["application/epub+zip", "application/zip" ] }
 
     include Rails.application.routes.url_helpers
-
-
-    def to_jq_upload
-    {
-      "name" => read_attribute(:epub_file_name),
-      "size" => read_attribute(:epub_file_size),
-      "url" => epub.url(:original),
-      #"delete_url" => epub_path(self),
-      "delete_type" => "DELETE"
-    }
-    end
-
 
     def get_metadata
       aux_book = read_attribute(:book)
     {
       "id" => id,
-      #{}"book" => read_attribute(:book).id
       "identifier" => aux_book.id,
       "title" => aux_book.title,
       "creator" => aux_book.creator,
@@ -33,14 +31,15 @@ module Epubparser
       "url" => epub.url(:original),
       "file_name" => read_attribute(:epub_file_name),
       "file_size" => read_attribute(:epub_file_size)
-      #"delete_url" => epub_path(self),
-      #{}"delete_type" => "DELETE"
     }
     end
 
 
     def get_data
     
+      #EpubUtils.unzip(epub.path,location (tmpfoldeR) )
+      EpubUtils.parse(epub.url)
+
       bk = read_attribute(:book)
       sections = bk.sections
       chap_list = bk.chapters.values
@@ -245,7 +244,7 @@ module Epubparser
        def upload_to_cloud(filepath)
 
         amazon = S3::Service.new(access_key_id: ENV['AWS_ACCESS_KEY_ID'], secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'])
-        bucket = amazon.buckets.find('codeplaceepubsassets')
+        bucket = amazon.buckets.find("codeplaceepubsassets")
         download = open(filepath)
 
         filename = File.basename(filepath)
