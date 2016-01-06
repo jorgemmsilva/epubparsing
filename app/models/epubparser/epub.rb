@@ -63,7 +63,7 @@ module Epubparser
         filename = File.basename(f)
         new_file = File.dirname(f) + "/" + id.to_s + "-" + filename
         File.rename(f,new_file) #rename the images to have the epub id
-        new_chapters["stylesheets"] << upload_to_cloud(new_file)
+        new_chapters["stylesheets"] << upload_to_cloud(new_file,"text/css")
       end
 
       uploaded_img_files = {}
@@ -241,7 +241,7 @@ module Epubparser
     serialize :book
 
     private
-       def upload_to_cloud(filepath)
+       def upload_to_cloud(filepath,mimetype = nil)
 
         amazon = S3::Service.new(access_key_id: ENV['AWS_ACCESS_KEY_ID'], secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'])
         bucket = amazon.buckets.find("codeplaceepubsassets")
@@ -250,6 +250,8 @@ module Epubparser
         filename = File.basename(filepath)
         file = bucket.objects.build(filename)
         file.content = (File.read download)
+
+        file.content_type = mimetype if mimetype
 
         if file.save
            return file.url
