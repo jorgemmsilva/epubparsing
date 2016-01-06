@@ -38,9 +38,9 @@ module Epubparser
     def get_data
     
       #EpubUtils.unzip(epub.path,location (tmpfoldeR) )
-      EpubUtils.parse(epub.url)
-
-      bk = read_attribute(:book)
+      bk = EpubUtils.parse(epub.url)
+      #book_path =  "#{Rails.root}/tmp/file.epub"
+      #bk = read_attribute(:book)
       sections = bk.sections
       chap_list = bk.chapters.values
       new_chapters = {}
@@ -51,7 +51,7 @@ module Epubparser
       imgs = {} # img name => cloud url
 
       epub_path = File.dirname(sections.first)
-      epub_files = Dir.glob("#{File.dirname(epub.path)}/tmp/**/*")
+      epub_files = Dir.glob("#{Rails.root}/tmp/tmp/**/*")
 
       # find images and stylesheets present in the epub
       css_files = epub_files.map{|f| f if File.extname(f).include? ".css"}.compact  # css
