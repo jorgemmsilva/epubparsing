@@ -36,11 +36,9 @@ module Epubparser
 
 
     def get_data
-    
-      #EpubUtils.unzip(epub.path,location (tmpfoldeR) )
-      bk = EpubUtils.parse(epub.url)
-      #book_path =  "#{Rails.root}/tmp/file.epub"
-      #bk = read_attribute(:book)
+
+      bk = EpubUtils.parse(epub.url,id)
+
       sections = bk.sections
       chap_list = bk.chapters.values
       new_chapters = {}
@@ -60,36 +58,15 @@ module Epubparser
 
       #convert css files and upload them to cloud server
       css_files.each do |f|
-
-        css_content = ""
-
-        #add parent element to the stylesheet (sass), convert to regular css and rename the file
-        File.open(f, "r") { |file|
-          css_content =  file.read
-          engine = Sass::Engine.new(".book-wrapper {#{css_content}}", :syntax => :scss)
-          css_content = engine.render
-        }
-
-        File.open(f, "w+") { |file|
-          file.write(css_content)
-        }
-
-        filename = File.basename(f)
-        new_file = File.dirname(f) + "/" + id.to_s + "-" + filename
-        File.rename(f,new_file) #rename the images to have the epub id
-        new_chapters["stylesheets"] << upload_to_cloud(new_file,"text/css")
-
+        new_chapters["stylesheets"] << upload_to_cloud(convert_css(f),"text/css")
       end
 
       uploaded_img_files = {}
-      
 
       #upload image files to cloud server
       img_files.each do |f|
         filename = File.basename(f)
-        new_file = File.dirname(f) + "/" + id.to_s + "-" + filename
-        File.rename(f,new_file) #rename the images to have the epub id
-        uploaded_img_files[filename] = upload_to_cloud(new_file)
+        uploaded_img_files[filename] = upload_to_cloud(rename_file(f))
       end
 
       #iterate throu all the html files contained in the epub, substitute images and (sub)chapters to book structure
@@ -105,7 +82,7 @@ module Epubparser
 
         doc = Nokogiri::XML.parse(text)
         doc.remove_namespaces!
-        subchaps = doc.xpath("//*[self::h1 or self::h2]")
+        subchaps = doc.xpath("//*[self::h1 or self::h2 or self::h3]")
         doc_images = doc.xpath("//*[self::img]")
         current_chap = ''
 
@@ -122,7 +99,7 @@ module Epubparser
               if sc.name == 'h1' and new_chapters['chapters'].keys.map { |k| k.gsub(/\s+/, " ") }.include? heading_text #there are h1s which are not part of the folder structure!
                 current_chap = heading_text
               else 
-                if sc.name == 'h2'
+                if sc.name == 'h2' or sc.name == 'h3'
                   new_chapters['chapters'][current_chap][heading_text] = "#{filename}#subchapter#{new_heading_id}"
                   sc.set_attribute("id","subchapter#{new_heading_id}")
                   new_heading_id+=1
@@ -137,127 +114,158 @@ module Epubparser
         file.close
       end 
 
-      working_chap = nil
-      output = new_chapters['chapters']
-      
-      chapters_in_file = new_chapters['chapters'].values.map{|k| k['self']}.flatten
-      chapters_in_file =  chapters_in_file.map{ |c| c.include?('/') ? c[c.rindex('/')+1..c.size] : c}
+      output = {}
+      output["book"] = split_chapters(new_chapters,sections)
+      output["css"] =[]
+      output["css"] = new_chapters["stylesheets"]
 
-      chapters_in_file_str = "=" + chapters_in_file.join('=')
-
-      sections.each do |s|
-        filename = File.basename(s.to_s)
-
-        html_content = new_chapters["content"][filename].gsub(/\n/,' ')
-
-        #perceber quais os ficheiros que tem mais que um capitulo
-        number_of_chaps_in_file = chapters_in_file_str.scan(/(?==#{filename})/).count
-
-        if number_of_chaps_in_file > 1
-          #caso existam mais que um capitulo por ficheiro, e preciso parti-lo
-          doc = Nokogiri::XML.parse(html_content)
-          child_tree = getChildTree(doc)
-
-          chaps_to_split = [] #quais os capitulos a partir
-
-          new_chapters['chapters'].keys.each do |c|
-            str = new_chapters['chapters'][c]['self']
-            str =  str[str.rindex('/')+1..str.size] unless !str.include? '/'
-            str =  str[0..str.rindex('#')-1] unless !str.include? '#'
-            if str == filename
-              chaps_to_split << c
-            end
-          end
-
-
-
-          first = child_tree.children.first
-          last =  child_tree.children.last
-
-          index = 0
-          chaps_to_split.each do |c|
-            # 1 - partir do inicio do ficheiro até ao 2º capitulo da pagina
-            if index == 0
-              first = child_tree.children.first
-              second_chap_id = new_chapters['chapters'][chaps_to_split.second]['self']
-              second_chap_id = second_chap_id[second_chap_id.rindex('#')..second_chap_id.size]
-              last = first
-
-              while (last.next.css("#{second_chap_id}")).empty?
-                last = last.next
-              end
-            else
-              
-              # 2 - partir de capitulo em capitulo ate ao fim do ficheiro
-              first_chap_id = new_chapters['chapters'][chaps_to_split[index]]['self']
-              first_chap_id = first_chap_id[first_chap_id.rindex('#')..first_chap_id.size]
-
-              first = child_tree.children.first
-              while (first.css("#{first_chap_id}")).empty?
-                first = first.next
-              end
-
-              last =  child_tree.children.last
-
-              if(c != chaps_to_split.last) #caso ainda nao seja o ultimo cap da pagina
-                second_chap_id = new_chapters['chapters'][chaps_to_split[index+1]]['self']
-                second_chap_id = second_chap_id[second_chap_id.rindex('#')..second_chap_id.size]
-
-                last = first
-
-                while (last.next.css("#{second_chap_id}")).empty?
-                  last = last.next
-                end
-              end
-            end
-
-            #3 - colocar no "self" o html partido de cada um dos capitulos
-            output[c]['self'] = CGI.escapeHTML(collect_between(first, last))
-            index += 1
-            working_chap = c
-            
-          end
-        else 
-          if number_of_chaps_in_file == 1
-            #4 - colocar o html integral dos ficheiros que so tem 1 capitulo no "self"
-            new_chapters['chapters'].keys.each do |c|
-              str = new_chapters['chapters'][c]['self']
-              str =  str[str.rindex('/')+1..str.size] unless !str.include? '/'
-              str =  str[0..str.rindex('#')-1] unless !str.include? '#'
-              if str == filename
-                output[c]['self'] = CGI.escapeHTML(html_content)
-                working_chap = c
-              end
-            end
-          else #number_of_chapsin file == 0
-              #5 - FALTA INSERIR OS FICHEIROS QUE NAO ESTAO EM 'chapters'
-              if (working_chap.nil?) #fist pages of the book (probably cover,index,prefac,etc)
-                if !output['first_pages'].nil?
-                  output['first_pages']['self'] += CGI.escapeHTML(html_content)
-                else
-                  tmp = {}
-                  tmp['first_pages'] = {'self' => CGI.escapeHTML(html_content)}
-                  tmp.merge!(output)
-                  output = tmp
-                end
-              else
-                output[working_chap]['self'] += CGI.escapeHTML(html_content)
-              end
-          end
-        end
-      end
-
-      to_return = {}
-      to_return["book"] = output
-      to_return["css"] =[]
-      to_return["css"] = new_chapters["stylesheets"]
-      return to_return.to_json
+      return output.to_json
     end
 
     serialize :book
 
     private
-       def upload_to_cloud(filepath,mimetype = nil)
+      def rename_file (f)
+        filename = File.basename(f)
+        new_file = File.dirname(f) + "/" + id.to_s + "-" + filename
+        File.rename(f,new_file) #rename the files to have the epub id
+        return new_file
+      end
+      
+      def convert_css (f)
+        css_content = ""
+
+        #add parent element to the stylesheet (sass), convert to regular css and rename the file
+        File.open(f, "r") { |file|
+          css_content =  file.read
+          engine = Sass::Engine.new(".book-wrapper {#{css_content}}", :syntax => :scss)
+          css_content = engine.render
+        }
+
+        File.open(f, "w+") { |file|
+          file.write(css_content)
+        }
+
+        return rename_file(f)
+
+        rescue Sass::SyntaxError, NameError => boom
+        raise "??????????#{boom}????????????"
+      end
+
+      def split_chapters(chapters,sections)
+        
+        output = chapters['chapters']
+
+        working_chap = nil
+
+        chapters_in_file = chapters['chapters'].values.map{|k| k['self']}.flatten
+        chapters_in_file =  chapters_in_file.map{ |c| c.include?('/') ? c[c.rindex('/')+1..c.size] : c}
+
+        chapters_in_file_str = "=" + chapters_in_file.join('=')
+
+        sections.each do |s|
+          filename = File.basename(s.to_s)
+
+          html_content = chapters["content"][filename].gsub(/\n/,' ')
+
+          #perceber quais os ficheiros que tem mais que um capitulo
+          number_of_chaps_in_file = chapters_in_file_str.scan(/(?==#{filename})/).count
+
+          if number_of_chaps_in_file > 1
+            #caso existam mais que um capitulo por ficheiro, e preciso parti-lo
+            doc = Nokogiri::XML.parse(html_content)
+            child_tree = getChildTree(doc)
+
+            chaps_to_split = [] #quais os capitulos a partir
+
+            chapters['chapters'].keys.each do |c|
+              str = chapters['chapters'][c]['self']
+              str =  str[str.rindex('/')+1..str.size] unless !str.include? '/'
+              str =  str[0..str.rindex('#')-1] unless !str.include? '#'
+              if str == filename
+                chaps_to_split << c
+              end
+            end
+
+            first = child_tree.children.first
+            last =  child_tree.children.last
+
+            index = 0
+            chaps_to_split.each do |c|
+              # 1 - partir do inicio do ficheiro até ao 2º capitulo da pagina
+              if index == 0
+                first = child_tree.children.first
+                second_chap_id = chapters['chapters'][chaps_to_split.second]['self']
+                second_chap_id = second_chap_id[second_chap_id.rindex('#')..second_chap_id.size]
+                last = first
+
+                while (last.next.css("#{second_chap_id}")).empty?
+                  last = last.next
+                end
+              else
+                
+                # 2 - partir de capitulo em capitulo ate ao fim do ficheiro
+                first_chap_id = chapters['chapters'][chaps_to_split[index]]['self']
+                first_chap_id = first_chap_id[first_chap_id.rindex('#')..first_chap_id.size]
+
+                first = child_tree.children.first
+                while (first.css("#{first_chap_id}")).empty?
+                  first = first.next
+                end
+
+                last =  child_tree.children.last
+
+                if(c != chaps_to_split.last) #caso ainda nao seja o ultimo cap da pagina
+                  second_chap_id = chapters['chapters'][chaps_to_split[index+1]]['self']
+                  second_chap_id = second_chap_id[second_chap_id.rindex('#')..second_chap_id.size]
+
+                  last = first
+
+                  while (last.next.css("#{second_chap_id}")).empty?
+                    last = last.next
+                  end
+                end
+              end
+
+              #3 - colocar no "self" o html partido de cada um dos capitulos
+              output[c]['self'] = CGI.escapeHTML(collect_between(first, last))
+              index += 1
+              working_chap = c
+              
+            end
+          else 
+            if number_of_chaps_in_file == 1
+              #4 - colocar o html integral dos ficheiros que so tem 1 capitulo no "self"
+              chapters['chapters'].keys.each do |c|
+                str = chapters['chapters'][c]['self']
+                str =  str[str.rindex('/')+1..str.size] unless !str.include? '/'
+                str =  str[0..str.rindex('#')-1] unless !str.include? '#'
+                if str == filename
+                  output[c]['self'] = CGI.escapeHTML(html_content)
+                  working_chap = c
+                end
+              end
+            else #number_of_chapsin file == 0
+                #5 - FALTA INSERIR OS FICHEIROS QUE NAO ESTAO EM 'chapters'
+                if (working_chap.nil?) #fist pages of the book (probably cover,index,prefac,etc)
+                  if !output['first_pages'].nil?
+                    output['first_pages']['self'] += CGI.escapeHTML(html_content)
+                  else
+                    tmp = {}
+                    tmp['first_pages'] = {'self' => CGI.escapeHTML(html_content)}
+                    tmp.merge!(output)
+                    output = tmp
+                  end
+                else
+                  output[working_chap]['self'] += CGI.escapeHTML(html_content)
+                end
+            end
+          end
+        end
+        return output
+      end
+
+      def upload_to_cloud(filepath,mimetype = nil)
 
         amazon = S3::Service.new(access_key_id: ENV['AWS_ACCESS_KEY_ID'], secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'])
         bucket = amazon.buckets.find("codeplaceepubsassets")

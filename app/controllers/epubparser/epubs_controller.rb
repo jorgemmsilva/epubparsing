@@ -43,7 +43,7 @@ module Epubparser
 
           #epub parsed successfully
           
-          @upload.book = EpubUtils.parse(@upload.epub.url)
+          @upload.book = EpubUtils.parse(@upload.epub.url,@upload.id)
 
           @upload.save
 

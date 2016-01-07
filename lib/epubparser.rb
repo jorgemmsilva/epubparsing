@@ -260,13 +260,16 @@ module Epubparser
 			return books
 		end
 
-		def self.parse (epub_path)
+		def self.parse (epub_path,epub_id)
 
-			filepath = "#{Rails.root}/tmp/file.epub"
-
+			filepath = "#{Rails.root}/tmp/#{epub_id}"
+			FileUtils.mkdir_p (filepath)
+			filepath += "/file.epub"
+			
 			# open(filepath, 'wb') do |file|
 			# 	file << open("#{epub_path}").read
 			# end
+
 			IO.copy_stream(open(epub_path), filepath)
 
 			epubFolder = File.dirname(filepath)
