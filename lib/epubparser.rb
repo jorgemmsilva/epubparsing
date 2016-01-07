@@ -264,8 +264,8 @@ module Epubparser
 
 			filepath = "#{Rails.root}/tmp/#{epub_id}"
 			FileUtils.mkdir_p (filepath)
-			filepath += "/file.epub"
-			
+			filepath += "/#{epub_id}-epub.epub"
+
 			# open(filepath, 'wb') do |file|
 			# 	file << open("#{epub_path}").read
 			# end

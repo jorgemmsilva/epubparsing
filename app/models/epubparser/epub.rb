@@ -49,7 +49,7 @@ module Epubparser
       imgs = {} # img name => cloud url
 
       epub_path = File.dirname(sections.first)
-      epub_files = Dir.glob("#{Rails.root}/tmp/tmp/**/*")
+      epub_files = Dir.glob("#{Rails.root}/tmp/#{id}/tmp/**/*")
 
       # find images and stylesheets present in the epub
       css_files = epub_files.map{|f| f if File.extname(f).include? ".css"}.compact  # css
@@ -131,10 +131,30 @@ module Epubparser
         File.rename(f,new_file) #rename the files to have the epub id
         return new_file
       end
+
+      def remove_line_from_file(file,line_number)
+        f = File.new(file, 'r+')
+        linecounter = 1
+
+        f.each do |line|
+          #raise "#{linecounter} |||||| #{line}"
+          linecounter+=1
+          if "#{linecounter}" == line_number
+            # seek back to the beginning of the line.
+            f.seek(-line.length, IO::SEEK_CUR)
+            # overwrite line with spaces and add a newline char
+            f.write(' ' * (line.length - 1))
+            f.write("\n")
+            f.close
+            return
+          end
+          
+        end
+        f.close
+      end
       
       def convert_css (f)
         css_content = ""
-
         #add parent element to the stylesheet (sass), convert to regular css and rename the file
         File.open(f, "r") { |file|
           css_content =  file.read
@@ -148,8 +168,13 @@ module Epubparser
 
         return rename_file(f)
 
-        rescue Sass::SyntaxError, NameError => boom
-        raise "??????????#{boom}????????????"
+        rescue Sass::SyntaxError => e
+          #raise e.backtrace.inspect
+          error_line = e.backtrace.first
+          error_line = error_line[error_line.rindex(':')+1..error_line.size]
+          remove_line_from_file(f,error_line)
+          #convert_css(f)
+          retry
       end
 
       def split_chapters(chapters,sections)
