@@ -18,20 +18,19 @@ module Epubparser
 
     def get_metadata
       aux_book = read_attribute(:book)
-    {
-      "id" => id,
-      "identifier" => aux_book.id,
-      "title" => aux_book.title,
-      "creator" => aux_book.creator,
-      "publisher" => aux_book.publisher,
-      "description" => aux_book.description,
-      "subject" => aux_book.subject,
-      "rights" => aux_book.rights,
-      #'chapters' => aux_book.chapters,
-      "url" => epub.url(:original),
-      "file_name" => read_attribute(:epub_file_name),
-      "file_size" => read_attribute(:epub_file_size)
-    }
+      {
+        "id" => id,
+        "identifier" => aux_book.id,
+        "title" => aux_book.title,
+        "creator" => aux_book.creator,
+        "publisher" => aux_book.publisher,
+        "description" => aux_book.description,
+        "subject" => aux_book.subject,
+        "rights" => aux_book.rights,
+        "url" => epub.url(:original),
+        "file_name" => read_attribute(:epub_file_name),
+        "file_size" => read_attribute(:epub_file_size)
+      }.to_json
     end
 
 
@@ -137,7 +136,6 @@ module Epubparser
         linecounter = 1
 
         f.each do |line|
-          #raise "#{linecounter} |||||| #{line}"
           linecounter+=1
           if "#{linecounter}" == line_number
             # seek back to the beginning of the line.
@@ -169,11 +167,9 @@ module Epubparser
         return rename_file(f)
 
         rescue Sass::SyntaxError => e
-          #raise e.backtrace.inspect
           error_line = e.backtrace.first
           error_line = error_line[error_line.rindex(':')+1..error_line.size]
           remove_line_from_file(f,error_line)
-          #convert_css(f)
           retry
       end
 

@@ -41,19 +41,19 @@ module Epubparser
 
         if @upload.save
 
-          #epub parsed successfully
+          UploadEpubGetMetadataJob.perform_later(@upload.id)
           
-          @upload.book = EpubUtils.parse(@upload.epub.url,@upload.id)
+          # @upload.book = EpubUtils.parse(@upload.epub.url,@upload.id)
 
-          @upload.save
+          # @upload.save
 
-          format.html {
-          	render :json => [@upload.get_metadata].to_json,
-          	:content_type => 'text/html',
-          	:layout => false
-          }
+          # format.html {
+          # 	render :json => [@upload.get_metadata].to_json,
+          # 	:content_type => 'text/html',
+          # 	:layout => false
+          # }
 
-          format.json { render json: {files: [@upload.get_metadata]}, status: :created}
+          format.json { head :no_content}
 
         else
           format.html { render action: "new" }
