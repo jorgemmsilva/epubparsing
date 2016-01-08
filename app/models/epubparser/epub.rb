@@ -1,7 +1,6 @@
 module Epubparser
   class Epub < ActiveRecord::Base
 
-
     #has_attached_file :epub, :path => ":rails_root/tmp/epubs/:id/:filename"
     has_attached_file :epub, :path => "epubs/:id/:filename",
                     :storage => :s3,
