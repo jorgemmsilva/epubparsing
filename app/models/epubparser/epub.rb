@@ -94,12 +94,12 @@ module Epubparser
           if c["self"].include? filename  #find subchapters
             subchaps.each do |sc|
               heading_text = sc.text.strip.gsub(/\s+/, " ")
-              if sc.name == 'h1' and new_chapters['chapters'].keys.map { |k| k.gsub(/\s+/, " ") }.include? heading_text #there are h1s which are not part of the folder structure!
+              if (sc.name == 'h1' or sc.name == 'h2') and new_chapters['chapters'].keys.map { |k| k.gsub(/\s+/, " ") }.include? heading_text #there are h1s which are not part of the folder structure!
                 current_chap = heading_text
               else 
                 if sc.name == 'h2' or sc.name == 'h3'
                   new_chapters['chapters'][current_chap][heading_text] = "#{filename}#subchapter#{new_heading_id}"
-                  sc.set_attribute("id","subchapter#{new_heading_id}")
+                  sc.set_attribute("id","#{new_heading_id}")
                   new_heading_id+=1
                 end
               end
