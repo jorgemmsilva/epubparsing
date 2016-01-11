@@ -56,82 +56,99 @@ module Epubparser
 		end
 
 		def self.parse_metadata (containerFile)
-			puts "--------------------BOOK METADATA-------------------------------"
+			#puts "--------------------BOOK METADATA-------------------------------"
 			#open the .opf file and parse the metadata
-			puts containerFile
+			#puts containerFile
 			opf = Nokogiri::XML.parse(File.open(containerFile))
 			opf.remove_namespaces!
 
 			uid = opf.xpath("//@unique-identifier").text
-			puts "unique-identifier attribute: " + uid
+			#puts "unique-identifier attribute: " + uid
 
 			id = opf.xpath("//package//metadata//*[@id=\"#{uid}\"]").text
-			puts "identifier (#{uid}) : " + id
+			#puts "identifier (#{uid}) : " + id
 			# ids.each do |id|
-			# 	puts "book identifier (#{uid}) : " + id.text
+			# 	#puts "book identifier (#{uid}) : " + id.text
 			# end
 
 			title = opf.xpath("//package//metadata//title").text
-			puts "title: " + title
+			#puts "title: " + title
 
 			creator = opf.xpath("//package//metadata//creator").text
-			puts "creator: " + creator
+			#puts "creator: " + creator
 
 			subject = opf.xpath("//package//metadata//subject").text
-			puts "subject: " + subject
+			#puts "subject: " + subject
 
 			publisher = opf.xpath("//package//metadata//publisher").text
-			puts "publisher: " + publisher
+			#puts "publisher: " + publisher
 
 			date = opf.xpath("//package//metadata//date").text
-			puts "date: " + date
+			#puts "date: " + date
 
 			rights = opf.xpath("//package//metadata//rights").text
-			puts "rights: " + rights
+			#puts "rights: " + rights
 
 			description = opf.xpath("//package//metadata//description").text
-			puts "description: " + description
+			#puts "description: " + description
 
 			book = Book.new(id,title,creator,publisher,description,subject,date,rights)
 
 			#parse book sections
 			sections = opf.xpath("//package//manifest//item//@href")
 			sections.each do |p|
-				if !p.text.match(/.html|.xhtml|.xml/).nil?
-					book.add_section(p.text)
+				str = p.to_s
+				if !str.rindex('.').nil?
+					if [".html",".xhtml"].include? str[str.rindex('.')..str.size]
+						book.add_section(str)
+					end
 				end
+				# if !p.text.match(/.html|.xhtml|.xml/).nil?
+				# 	book.add_section(p.text)
+				# end
 			end
 
 			return book
 		end
 
 		#parses the table of contents of a single epub
-		def self.parse_toc(toc_file)
+		def self.parse_toc(toc_file,sections)
 
 			chapters = {}
+			
+			if File.exist?(toc_file)
+				##puts "toc.ncx @ :" + toc_file
+				toc = Nokogiri::XML.parse(File.open(toc_file))
+				toc.remove_namespaces!	
+				navMap = toc.xpath("ncx//navMap")
+				navPoints = navMap.xpath("navPoint")
+				navPoints.each do |nav|
 
-			#puts "toc.ncx @ :" + toc_file
-			toc = Nokogiri::XML.parse(File.open(toc_file))
-			toc.remove_namespaces!	
-			navMap = toc.xpath("ncx//navMap")
-			navPoints = navMap.xpath("navPoint")
-			navPoints.each do |nav|
+					##puts "#{nav.to_s} - #{nav.xpath("navLabel//text").to_s}  - #{nav.xpath("content//@src").to_s}\nYOOOOOOOOOOOOOO\n\n"
 
-				#puts "#{nav.to_s} - #{nav.xpath("navLabel//text").to_s}  - #{nav.xpath("content//@src").to_s}\nYOOOOOOOOOOOOOO\n\n"
+					chapter = nav.xpath("navLabel//text").text.gsub(/\s+/, " ")
+					file = nav.xpath("content//@src").to_s.gsub(/\s+/, " ")
 
-				chapter = nav.xpath("navLabel//text").text.gsub(/\s+/, " ")
-				file = nav.xpath("content//@src").to_s.gsub(/\s+/, " ")
+					chapters[chapter] = {}
+					chapters[chapter]["self"] = file
 
-				chapters[chapter] = {}
-				chapters[chapter]["self"] = file
+					subchapters = nav.xpath("navPoint")
+					subchapters.each do |sc|
+						subchapter = sc.xpath("navLabel//text").text.gsub(/\s+/, " ")
+						subfile = sc.xpath("content//@src").to_s.gsub(/\s+/, " ")
+						chapters[chapter][subchapter] = subfile
+					end
 
-				subchapters = nav.xpath("navPoint")
-				subchapters.each do |sc|
-					subchapter = sc.xpath("navLabel//text").text.gsub(/\s+/, " ")
-					subfile = sc.xpath("content//@src").to_s.gsub(/\s+/, " ")
-					chapters[chapter][subchapter] = subfile
 				end
-
+			else
+				sections.each do |s|
+					if s.include? "/"
+						str = s[s.rindex('/')+1..s.size]
+						chapters[str] = {"self" => str}
+					else 
+						chapters[s] = {"self" => s}
+					end
+				end
 			end
 
 			return chapters
@@ -180,7 +197,7 @@ module Epubparser
 			 	end
 
 			 	to_rename[File.basename(old_filename)] = File.basename(new_filename)
-			 	#puts "to_rename #{old_filename}  ------   #{new_filename}"
+			 	##puts "to_rename #{old_filename}  ------   #{new_filename}"
 			end
 
 
@@ -188,7 +205,7 @@ module Epubparser
 			file_array.each do |file|
 				filename = File.basename(file)
 				if to_rename.keys.include? filename
-		 			#puts "-----> renaming file: #{filename} into #{to_rename[filename]}"
+		 			##puts "-----> renaming file: #{filename} into #{to_rename[filename]}"
 		 			File.rename(file,File.dirname(file) + '/' + to_rename[filename])
 		 		end
 
@@ -199,12 +216,68 @@ module Epubparser
 			#Dir.chdir(@parent_folder)
 
 			return book
-		 	
+		end
+
+		#parses the a single epub
+		def self.parse_epub(folder)
+
+
+			Dir.chdir(folder)
+			
+			container = Nokogiri::XML.parse(File.open(folder + "/META-INF/container.xml"))
+			
+			#check for parsing erros
+			if container.errors.size != 0 
+				#puts "XML parsing errors: " 
+				#puts container.errors
+			end
+
+
+			#find the root .opf file
+			rootfile = container.xpath("//xmlns:rootfile//@full-path")
+			rootfile = folder + "/" + rootfile.to_s
+			return false unless FileTest.exist?(rootfile)
+			#puts "rootfile found at: " + rootfile
+
+			content_folder = File.dirname(rootfile)
+			
+			#parse book metadata
+			book = parse_metadata(rootfile)
+			
+			#renames the epub chapters
+			book = rename_sections(content_folder,book)
+			
+			#parse book table of contents
+			book.add_chapters(parse_toc(content_folder + "/toc.ncx",book.sections))
+
+			#puts "------------------------SECTIONS"
+			#puts book.sections
+
+			#puts "\n\n---------------------CHAPTERS"
+			#puts book.chapters
+
+			return book
+		end
+
+		def self.parse_epubs(folder)
+
+			books = Array.new
+
+			Dir.chdir(folder) #changes current directory to the tmp folder
+			@parent_folder = Dir.pwd
+			epubs_array = Dir.glob('*').select {|f| File.directory? f}
+			
+			#puts "--------------------"
+			#puts "Number of extracted epubs:" + epubs_array.size.to_s
+			#puts "--------------------"
+			epubs_array.each do |f|
+				books << parse_epub(f)
+			end
+			return books
 		end
 
 		#parses the metadata of a single epub
-		def self.parse_epub(folder)
-
+		def self.simple_parse_epub(folder)
 
 			Dir.chdir(folder)
 			
@@ -221,43 +294,35 @@ module Epubparser
 			rootfile = container.xpath("//xmlns:rootfile//@full-path")
 			rootfile = folder + "/" + rootfile.to_s
 			return false unless FileTest.exist?(rootfile)
-			puts "rootfile found at: " + rootfile
+			#puts "rootfile found at: " + rootfile
 
 			content_folder = File.dirname(rootfile)
 			
 			#parse book metadata
 			book = parse_metadata(rootfile)
-			
-			#renames the epub chapters
-			book = rename_sections(content_folder,book)
-			
-			#parse book table of contents
-			book.add_chapters(parse_toc(content_folder + "/toc.ncx"))
-
-			puts "------------------------SECTIONS"
-			puts book.sections
-
-			puts "\n\n---------------------CHAPTERS"
-			puts book.chapters
 
 			return book
 		end
 
-		def self.parse_epubs(folder)
 
-			books = Array.new
 
-			Dir.chdir(folder) #changes current directory to the tmp folder
-			@parent_folder = Dir.pwd
-			epubs_array = Dir.glob('*').select {|f| File.directory? f}
-			
-			puts "--------------------"
-			puts "Number of extracted epubs:" + epubs_array.size.to_s
-			puts "--------------------"
-			epubs_array.each do |f|
-				books << parse_epub(f)
-			end
-			return books
+		def self.get_metadata (epub_path,epub_id)
+			filepath = "#{Rails.root}/tmp/#{epub_id}"
+			FileUtils.mkdir_p (filepath)
+			filepath += "/#{epub_id}-epub.epub"
+
+			# open(filepath, 'wb') do |file|
+			# 	file << open("#{epub_path}").read
+			# end
+
+			IO.copy_stream(open(epub_path), filepath)
+
+			epubFolder = File.dirname(filepath)
+			tmp_folder = File.dirname(filepath) + '/tmp/'
+
+			unzip_epubs(epubFolder,tmp_folder)
+			book = simple_parse_epub(tmp_folder)
+			return book
 		end
 
 		def self.parse (epub_path,epub_id)

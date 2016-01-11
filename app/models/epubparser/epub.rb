@@ -91,6 +91,7 @@ module Epubparser
 
         #check for chapters inside this file
         chap_list.each do |c|
+
           if c["self"].include? filename  #find subchapters
             subchaps.each do |sc|
               heading_text = sc.text.strip.gsub(/\s+/, " ")
