@@ -51,8 +51,7 @@ module Epubparser
 
       # find images and stylesheets present in the epub
       css_files = epub_files.map{|f| f if File.extname(f).include? ".css"}.compact  # css
-      img_files = epub_files.map{|f| f if File.extname(f) =~ /.(png|gif|jpg|jpeg|svg)/}.compact# gif jpg jpeg png svg
-
+      img_files = epub_files.map{|f| f if File.extname(f) =~ /.(png|gif|jpg|jpeg|svg|bmp)/}.compact# gif jpg jpeg png svg
 
       #convert css files and upload them to cloud server
       css_files.each do |f|
@@ -81,12 +80,25 @@ module Epubparser
         doc = Nokogiri::XML.parse(text)
         doc.remove_namespaces!
         subchaps = doc.xpath("//*[self::h1 or self::h2 or self::h3]")
-        doc_images = doc.xpath("//*[self::img]")
+        doc_images = doc.xpath("//*[self::img or self::image]")
         current_chap = ''
 
         #repath the images with the generated cloud url
         doc_images.each do |i|
-          i["src"] = uploaded_img_files[File.basename(i["src"])]
+          if !i["src"].nil?
+            i["src"] = uploaded_img_files[File.basename(i["src"])]
+          else
+            #<img src="https://codeplaceepubsassets.s3.amazonaws.com/296-cover.jpg">
+            new_node = Nokogiri::XML::Node.new "img", doc
+            new_node["src"] = uploaded_img_files[File.basename(i["href"])]
+            parent_node = i.parent
+            if parent_node.name = "svg"
+              parent_node = parent_node.parent
+            end
+            parent_node.inner_html = ""
+            parent_node.add_child(new_node)
+            #i["href"] = uploaded_img_files[File.basename(i["href"])]
+          end
         end
 
         #check for chapters inside this file
@@ -296,7 +308,11 @@ module Epubparser
         file = bucket.objects.build(filename)
         file.content = (File.read download)
 
-        file.content_type = mimetype if mimetype
+        if mimetype
+          file.content_type = mimetype
+        else
+          file.content_type = MIME::Types.type_for(filepath).first.content_type
+        end
 
         if file.save
            return file.url.gsub("http","https")

@@ -94,19 +94,29 @@ module Epubparser
 
 			book = Book.new(id,title,creator,publisher,description,subject,date,rights)
 
+			#get book spine
+			spine = opf.xpath("package/spine//itemref")
+			spine_arr = spine.map{ |v| v.attributes['idref'].text}
+
 			#parse book sections
-			sections = opf.xpath("//package//manifest//item//@href")
-			sections.each do |p|
-				str = p.to_s
-				if !str.rindex('.').nil?
-					if [".html",".xhtml"].include? str[str.rindex('.')..str.size]
-						book.add_section(str)
-					end
+			spine_arr.each do |file_id|
+				section = opf.xpath("package/manifest//item[@id=\"#{file_id}\"]").first
+				str = section.attributes['href'].text
+				if !str.rindex('.').nil? and [".html",".xhtml"].include? str[str.rindex('.')..str.size]
+						book.add_section(CGI::unescapeHTML(str))
 				end
-				# if !p.text.match(/.html|.xhtml|.xml/).nil?
-				# 	book.add_section(p.text)
-				# end
 			end
+
+			#parse book sections
+			# sections = opf.xpath("package/manifest//item//@href")
+			# sections.each do |p|
+			# 	str = p.to_s
+			# 	if !str.rindex('.').nil?
+			# 		if [".html",".xhtml"].include? str[str.rindex('.')..str.size]
+			# 			book.add_section(str)
+			# 		end
+			# 	end
+			#end
 
 			return book
 		end
@@ -126,16 +136,16 @@ module Epubparser
 
 					##puts "#{nav.to_s} - #{nav.xpath("navLabel//text").to_s}  - #{nav.xpath("content//@src").to_s}\nYOOOOOOOOOOOOOO\n\n"
 
-					chapter = nav.xpath("navLabel//text").text.gsub(/\s+/, " ")
-					file = nav.xpath("content//@src").to_s.gsub(/\s+/, " ")
+					chapter = CGI::unescapeHTML(nav.xpath("navLabel//text").text.gsub(/\s+/, " "))
+					file = CGI::unescapeHTML(nav.xpath("content//@src").to_s.gsub(/\s+/, " "))
 
 					chapters[chapter] = {}
 					chapters[chapter]["self"] = file
 
 					subchapters = nav.xpath("navPoint")
 					subchapters.each do |sc|
-						subchapter = sc.xpath("navLabel//text").text.gsub(/\s+/, " ")
-						subfile = sc.xpath("content//@src").to_s.gsub(/\s+/, " ")
+						subchapter = CGI::unescapeHTML(sc.xpath("navLabel//text").text.gsub(/\s+/, " "))
+						subfile = CGI::unescapeHTML(sc.xpath("content//@src").to_s.gsub(/\s+/, " "))
 						chapters[chapter][subchapter] = subfile
 					end
 
@@ -144,9 +154,9 @@ module Epubparser
 				sections.each do |s|
 					if s.include? "/"
 						str = s[s.rindex('/')+1..s.size]
-						chapters[str] = {"self" => str}
+						chapters[str] = {"self" => CGI::unescapeHTML(str)}
 					else 
-						chapters[s] = {"self" => s}
+						chapters[s] = {"self" => CGI::unescapeHTML(s)}
 					end
 				end
 			end
@@ -181,7 +191,7 @@ module Epubparser
 					text = File.read(file)
 
 					#new_contents = text.gsub(/search_regexp/, "replacement string")
-					new_contents = text.gsub(old_filename, new_filename)
+					new_contents = text.gsub(CGI.escape(old_filename), new_filename)
 					
 					#write changes to the file,
 				 	File.open(file, "w") {|file| file.puts new_contents }
@@ -234,7 +244,7 @@ module Epubparser
 
 
 			#find the root .opf file
-			rootfile = container.xpath("//xmlns:rootfile//@full-path")
+			rootfile = CGI::unescapeHTML(container.xpath("//xmlns:rootfile//@full-path").text)
 			rootfile = folder + "/" + rootfile.to_s
 			return false unless FileTest.exist?(rootfile)
 			#puts "rootfile found at: " + rootfile
@@ -291,7 +301,7 @@ module Epubparser
 
 
 			#find the root .opf file
-			rootfile = container.xpath("//xmlns:rootfile//@full-path")
+			rootfile = CGI::unescapeHTML(container.xpath("//xmlns:rootfile//@full-path").text)
 			rootfile = folder + "/" + rootfile.to_s
 			return false unless FileTest.exist?(rootfile)
 			#puts "rootfile found at: " + rootfile

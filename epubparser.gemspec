@@ -26,5 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency  "s3"
   s.add_dependency  "paperclip"
 
+  s.add_dependency  "mime-types"
+
   s.add_development_dependency "sqlite3"
 end
