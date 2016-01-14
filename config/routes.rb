@@ -1,6 +1,7 @@
 Epubparser::Engine.routes.draw do
-  resources :epubs do
-    get "metadata"
-    get "assets"
+  resources :epubs, only: [:create] do
+    member do
+      patch :update, as: "update"
+    end
   end
 end

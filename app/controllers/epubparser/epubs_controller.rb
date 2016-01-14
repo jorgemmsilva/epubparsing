@@ -4,10 +4,6 @@ module Epubparser
   class EpubsController < ApplicationController
     before_action :set_epub, only: [:show, :edit, :update, :destroy]
 
-    # GET /epubs
-    def index
-      @epubs = Epub.all
-    end
 
     # GET /epubs/1
     def show
@@ -28,9 +24,6 @@ module Epubparser
       @epub = Epub.new
     end
 
-    # GET /epubs/1/edit
-    def edit
-    end
 
     # POST /epubs
     def create
@@ -42,16 +35,6 @@ module Epubparser
         if @upload.save
 
           UploadEpubGetMetadataJob.perform_later(@upload.id)
-          
-          # @upload.book = EpubUtils.parse(@upload.epub.url,@upload.id)
-
-          # @upload.save
-
-          # format.html {
-          # 	render :json => [@upload.get_metadata].to_json,
-          # 	:content_type => 'text/html',
-          # 	:layout => false
-          # }
 
           format.json { head :no_content}
 
@@ -65,17 +48,21 @@ module Epubparser
 
     # PATCH/PUT /epubs/1
     def update
-      if @epub.update(epub_params)
-        redirect_to @epub, notice: 'Epub was successfully updated.'
-      else
-        render :edit
-      end
-    end
+      @upload = Epub.new({epub: params[:epub].first})
 
-    # DELETE /epubs/1
-    def destroy
-      @epub.destroy
-      redirect_to epubs_url, notice: 'Epub was successfully destroyed.'
+      respond_to do |format|
+
+        if @upload.save
+
+          UploadEpubGetMetadataJob.perform_later(@upload.id)
+
+          format.json { head :no_content}
+
+        else
+          format.html { render action: "new" }
+          format.json { render json: @upload.errors, status: :unprocessable_entity }
+        end
+      end
     end
 
     private
