@@ -6,18 +6,18 @@ module Epubparser
 
 
     # GET /epubs/1
-    def show
+    # def show
 
-    	ActiveSupport.escape_html_entities_in_json = true 
+    # 	ActiveSupport.escape_html_entities_in_json = true 
 
-      epub = Epub.find(params[:id])
+    #   epub = Epub.find(params[:id])
 
-      respond_to do |format|
-      	format.html # show.html.erb
-      	format.json { render json: epub.get_data}
-      end
+    #   respond_to do |format|
+    #   	format.html # show.html.erb
+    #   	format.json { render json: epub.get_data}
+    #   end
 
-    end
+    # end
 
     # GET /epubs/new
     def new
